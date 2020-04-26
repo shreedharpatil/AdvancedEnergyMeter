@@ -17,15 +17,28 @@
           <div class="col-lg-6 bg-white">
             <div class="form d-flex align-items-center">
               <div class="content">
-                <form method="get" class="form-validate">
+                <form class="form-validate" [formGroup]='loginForm' (ngSubmit)='login()'>
+                <div *ngIf="isSubmitted && !credentialsValid" class="input-material">
+                    Username or password is invalid
+                </div>
                   <div class="form-group">
-                    <input id="login-username" type="text" name="loginUsername" required data-msg="Please enter your username" class="input-material">
+                    <input id="login-username" type="text" name="username" formControlName='username' required data-msg="Please enter your username" class="input-material">
                     <label for="login-username" class="label-material">User Name</label>
                   </div>
+                  <div *ngIf="isSubmitted && formControls.username.errors">
+                      <div *ngIf="formControls.username.errors.required">
+                          Username required
+                      </div>
+                  </div>
                   <div class="form-group">
-                    <input id="login-password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
+                    <input id="login-password" type="password" name="loginPassword" formControlName='password' required data-msg="Please enter your password" class="input-material">
                     <label for="login-password" class="label-material">Password</label>
-                  </div><a id="login" href="index.html" class="btn btn-primary">Login</a>
+                    <div *ngIf="isSubmitted && formControls.password.errors">
+                        <div *ngIf="formControls.password.errors.required">
+                            Password is required
+                        </div>
+                    </div>
+                  </div><button id="login" (onClick)="login()" class="btn btn-primary">Login</button>
                 </form>
               </div>
             </div>

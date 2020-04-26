@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPS.AEM.Database.Contexts;
 using SPS.AEM.Database.Entities;
 using SPS.AEM.Repository.Interfaces;
@@ -16,6 +18,11 @@ namespace SPS.AEM.Repository.Implementations
         public UserRepository(AemDatabaseContext context)
         {
             this.context = context;
+        }
+
+        public async Task<bool> ValidateUserCredentials(UserCredentialsDto user)
+        {
+            return await this.context.Logins.AnyAsync(p => p.Username == user.Username && p.Password == user.Password);
         }
 
         public async Task AddUserAsync(UserDto user)
