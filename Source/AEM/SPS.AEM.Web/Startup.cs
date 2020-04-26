@@ -32,6 +32,7 @@ namespace SPS.AEM.Web
             services.AddDbContext<AemDatabaseContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:Aem"], b => b.MigrationsAssembly("SPS.AEM.Web")));
             services.AddControllers();
 
+            services.AddTransient<ILoadTypeRepository, LoadTypeRepository>();
             services.AddTransient<IDistrictRepository, DistrictRepository>();
             services.AddTransient<ITalukaRepository, TalukaRepository>();
             services.AddTransient<IVillageRepository, VillageRepository>();
