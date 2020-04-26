@@ -102,6 +102,8 @@ namespace SPS.AEM.Database.Contexts
                 new Taluka {Id = 7, DistrictId = 1, Name = "Guledgudda"},
                 new Taluka {Id = 8, DistrictId = 1, Name = "RabakaviBanahatti"}
             });
+
+            modelBuilder.Entity<Role>().HasData(new Role {Id = 1, Name = "Admin", Description = "Admin"}, new Role { Id = 2, Name = "LineClerk", Description = "Line Clerk"});
         }
     }
 }
