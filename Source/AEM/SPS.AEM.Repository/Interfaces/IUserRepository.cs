@@ -8,6 +8,8 @@ namespace SPS.AEM.Repository.Interfaces
 {
     public interface IUserRepository
     {
+        Task<bool> ValidateUserCredentials(UserCredentialsDto user);
+
         Task AddUserAsync(UserDto user);
     }
 }

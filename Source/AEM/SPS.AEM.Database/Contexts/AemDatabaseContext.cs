@@ -40,7 +40,8 @@ namespace SPS.AEM.Database.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Login>().ToTable(nameof(Login)).HasNoKey();
+            modelBuilder.Entity<Login>().ToTable(nameof(Login)).HasKey(p => p.Id);
+            modelBuilder.Entity<Login>().Property(p => p.Id).UseIdentityColumn();
 
             modelBuilder.Entity<User>().ToTable(nameof(User)).HasKey(p => p.Id);
             modelBuilder.Entity<User>().Property(p => p.Id).UseIdentityColumn();
