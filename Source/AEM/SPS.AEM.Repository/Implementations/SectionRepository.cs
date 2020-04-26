@@ -11,25 +11,25 @@ using SPS.AEM.Repository.Models;
 
 namespace SPS.AEM.Repository.Implementations
 {
-    public class FeederRepository : IFeederRepository
+    public class SectionRepository : ISectionRepository
     {
         private readonly AemDatabaseContext context;
 
-        public FeederRepository(AemDatabaseContext context)
+        public SectionRepository(AemDatabaseContext context)
         {
             this.context = context;
         }
 
-        public async Task<IEnumerable<FeederDto>> GetFeedersAsync(int sectionId)
+        public async Task<IEnumerable<SectionDto>> GetSectionsAsync(int stationId)
         {
-            return await context.Feeders.Where(p => p.SectionId == sectionId)
-                .Select(p => new FeederDto{ Id = p.Id, Name = p.Name, SectionId = p.SectionId})
+            return await context.Sections.Where(p => p.StationId == stationId)
+                .Select(p => new SectionDto{ Id = p.Id, Name = p.Name, StationId = p.StationId})
                 .ToListAsync();
         }
 
-        public async Task AddFeederAsync(FeederDto feeder)
+        public async Task AddSectionAsync(SectionDto section)
         {
-            context.Feeders.Add(new Feeder{ Name = feeder.Name, SectionId = feeder.SectionId });
+            context.Sections.Add(new Section{ Name = section.Name, StationId = section.StationId });
             await context.SaveChangesAsync();
         }
     }

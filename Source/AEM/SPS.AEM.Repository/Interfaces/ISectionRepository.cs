@@ -6,10 +6,10 @@ using SPS.AEM.Repository.Models;
 
 namespace SPS.AEM.Repository.Interfaces
 {
-    public interface IFeederRepository
+    public interface ISectionRepository
     {
-        Task<IEnumerable<FeederDto>> GetFeedersAsync(int sectionId);
+        Task<IEnumerable<SectionDto>> GetSectionsAsync(int stationId);
 
-        Task AddFeederAsync(FeederDto feeder);
+        Task AddSectionAsync(SectionDto section);
     }
 }

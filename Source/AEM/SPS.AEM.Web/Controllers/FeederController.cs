@@ -20,7 +20,7 @@ namespace SPS.AEM.Web.Controllers
         [Microsoft.AspNetCore.Mvc.Route("{sectionId}")]
         public async Task<IActionResult> Get(int sectionId)
         {
-            return this.Ok(await feederRepository.GetFeeders(sectionId));
+            return this.Ok(await feederRepository.GetFeedersAsync(sectionId));
         }
 
         [HttpPost]
@@ -31,7 +31,7 @@ namespace SPS.AEM.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            await feederRepository.AddFeeder(feeder);
+            await feederRepository.AddFeederAsync(feeder);
             return Created("contextapi/feeder", feeder);
         }
     }

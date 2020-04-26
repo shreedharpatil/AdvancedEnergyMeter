@@ -32,6 +32,8 @@ namespace SPS.AEM.Web
             services.AddDbContext<AemDatabaseContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:Aem"], b => b.MigrationsAssembly("SPS.AEM.Web")));
             services.AddControllers();
 
+            services.AddTransient<IStationRepository, StationRepository>();
+            services.AddTransient<ISectionRepository, SectionRepository>();
             services.AddTransient<IFeederRepository, FeederRepository>();
             services.AddTransient<ITransformerRepository, TransformerRepository>();
         }

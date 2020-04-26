@@ -20,7 +20,7 @@ namespace SPS.AEM.Web.Controllers
         [Microsoft.AspNetCore.Mvc.Route("{feederId}")]
         public async Task<IActionResult> Get(int feederId)
         {
-            return this.Ok(await transformerRepository.GetTransformers(feederId));
+            return this.Ok(await transformerRepository.GetTransformersAsync(feederId));
         }
 
         [HttpPost]
@@ -31,7 +31,7 @@ namespace SPS.AEM.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            await transformerRepository.AddTransformer(transformer);
+            await transformerRepository.AddTransformerAsync(transformer);
             return Created("contextapi/transformer", transformer);
         }
     }
