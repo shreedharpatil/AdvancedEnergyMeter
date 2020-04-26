@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPS.AEM.Web", "SPS.AEM.Web\SPS.AEM.Web.csproj", "{BEB7D69D-D7BD-4298-A8E5-3687EA93959A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPS.AEM.Database", "SPS.AEM.Database\SPS.AEM.Database.csproj", "{9C52AD26-C9C1-49CF-91FE-2360417C55B1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BEB7D69D-D7BD-4298-A8E5-3687EA93959A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEB7D69D-D7BD-4298-A8E5-3687EA93959A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEB7D69D-D7BD-4298-A8E5-3687EA93959A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEB7D69D-D7BD-4298-A8E5-3687EA93959A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C52AD26-C9C1-49CF-91FE-2360417C55B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C52AD26-C9C1-49CF-91FE-2360417C55B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C52AD26-C9C1-49CF-91FE-2360417C55B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C52AD26-C9C1-49CF-91FE-2360417C55B1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7D019CDA-CAF8-434F-B885-802FA6FBD7B4}
+	EndGlobalSection
+EndGlobal
