@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SPS.AEM.Database\SPS.AEM.Database.csproj" />
+    <ProjectReference Include="..\SPS.AEM.Repository\SPS.AEM.Repository.csproj" />
   </ItemGroup>
 
 
