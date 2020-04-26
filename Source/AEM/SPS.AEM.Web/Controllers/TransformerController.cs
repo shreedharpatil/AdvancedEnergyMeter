@@ -6,7 +6,7 @@ using SPS.AEM.Repository.Models;
 namespace SPS.AEM.Web.Controllers
 {
     [ApiController]
-    [Microsoft.AspNetCore.Components.Route("contextapi/transformer")]
+    [Route("contextapi/transformer")]
     public class TransformerController : ControllerBase
     {
         private readonly ITransformerRepository transformerRepository;

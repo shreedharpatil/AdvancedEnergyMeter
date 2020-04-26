@@ -6,7 +6,7 @@ using SPS.AEM.Repository.Models;
 namespace SPS.AEM.Web.Controllers
 {
     [ApiController]
-    [Microsoft.AspNetCore.Components.Route("contextapi/station")]
+    [Route("contextapi/station")]
     public class StationController : ControllerBase
     {
         private readonly IStationRepository stationRepository;

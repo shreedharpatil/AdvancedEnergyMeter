@@ -6,7 +6,7 @@ using SPS.AEM.Repository.Models;
 namespace SPS.AEM.Web.Controllers
 {
     [ApiController]
-    [Microsoft.AspNetCore.Components.Route("contextapi/feeder")]
+    [Route("contextapi/feeder")]
     public class FeederController : ControllerBase
     {
         private readonly IFeederRepository feederRepository;
