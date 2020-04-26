@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SPS.AEM.Database.Contexts;
+using SPS.AEM.Repository.Implementations;
+using SPS.AEM.Repository.Interfaces;
 
 namespace SPS.AEM.Web
 {
@@ -29,6 +31,9 @@ namespace SPS.AEM.Web
         {
             services.AddDbContext<AemDatabaseContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:Aem"], b => b.MigrationsAssembly("SPS.AEM.Web")));
             services.AddControllers();
+
+            services.AddTransient<IFeederRepository, FeederRepository>();
+            services.AddTransient<ITransformerRepository, TransformerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
