@@ -8,6 +8,8 @@ namespace SPS.AEM.Database.Entities
 
         public string Type { get; set; }
 
+        public string Description { get; set; }
+
         public virtual ICollection<Customer> Customers { get; set; }
     }
 }

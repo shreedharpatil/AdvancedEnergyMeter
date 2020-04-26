@@ -104,6 +104,13 @@ namespace SPS.AEM.Database.Contexts
             });
 
             modelBuilder.Entity<Role>().HasData(new Role {Id = 1, Name = "Admin", Description = "Admin"}, new Role { Id = 2, Name = "LineClerk", Description = "Line Clerk"});
+            modelBuilder.Entity<LoadType>().HasData(new List<LoadType>
+            {
+                new LoadType{ Id = 1, Type = "LT1", Description = "Load test 1"},
+                new LoadType{ Id = 2, Type = "LT2", Description = "Load test 2"},
+                new LoadType{ Id = 3, Type = "LT3", Description = "Load test 3"},
+                new LoadType{ Id = 4, Type = "LT4", Description = "Load test 4"}
+            });
         }
     }
 }
