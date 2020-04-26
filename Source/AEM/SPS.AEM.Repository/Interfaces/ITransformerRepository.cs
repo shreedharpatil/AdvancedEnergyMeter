@@ -8,8 +8,8 @@ namespace SPS.AEM.Repository.Interfaces
 {
     public interface ITransformerRepository
     {
-        Task<IEnumerable<TransformerDto>> GetTransformers(int feederId);
+        Task<IEnumerable<TransformerDto>> GetTransformersAsync(int feederId);
 
-        Task AddTransformer(TransformerDto trnTransformer);
+        Task AddTransformerAsync(TransformerDto trnTransformer);
     }
 }

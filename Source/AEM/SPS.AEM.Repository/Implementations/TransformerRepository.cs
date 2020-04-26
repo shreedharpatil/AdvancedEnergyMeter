@@ -20,14 +20,14 @@ namespace SPS.AEM.Repository.Implementations
             this.context = context;
         }
 
-        public async Task<IEnumerable<TransformerDto>> GetTransformers(int feederId)
+        public async Task<IEnumerable<TransformerDto>> GetTransformersAsync(int feederId)
         {
             return await context.Transformers.Where(p => p.FeederId == feederId)
                 .Select(p => new TransformerDto{ Id = p.Id, Name = p.Name, FeederId = p.FeederId})
                 .ToListAsync();
         }
 
-        public async Task AddTransformer(TransformerDto transformer)
+        public async Task AddTransformerAsync(TransformerDto transformer)
         {
             context.Transformers.Add(new Transformer{ Name = transformer.Name, FeederId = transformer.FeederId });
             await context.SaveChangesAsync();
