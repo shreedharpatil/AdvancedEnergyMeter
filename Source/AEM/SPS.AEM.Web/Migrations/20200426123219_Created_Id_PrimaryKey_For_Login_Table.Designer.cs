@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPS.AEM.Database.Contexts;
 
 namespace SPS.AEM.Web.Migrations
 {
     [DbContext(typeof(AemDatabaseContext))]
-    partial class AemDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200426123219_Created_Id_PrimaryKey_For_Login_Table")]
+    partial class Created_Id_PrimaryKey_For_Login_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
