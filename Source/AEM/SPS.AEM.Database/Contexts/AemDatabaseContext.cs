@@ -56,7 +56,7 @@ namespace SPS.AEM.Database.Contexts
 
             modelBuilder.Entity<District>().ToTable(nameof(District)).HasKey(p => p.Id);
             modelBuilder.Entity<District>().Property(p => p.Id).UseIdentityColumn();
-            
+
             modelBuilder.Entity<Taluka>().ToTable(nameof(Taluka)).HasKey(p => p.Id);
             modelBuilder.Entity<Taluka>().HasOne(p => p.District).WithMany(p => p.Talukas);
             modelBuilder.Entity<Taluka>().Property(p => p.Id).UseIdentityColumn();
@@ -75,7 +75,7 @@ namespace SPS.AEM.Database.Contexts
             modelBuilder.Entity<Station>().Property(p => p.Id).UseIdentityColumn();
 
             modelBuilder.Entity<Section>().ToTable(nameof(Section)).HasKey(p => p.Id);
-            modelBuilder.Entity<Section>().HasOne(p => p.Station).WithMany(p =>p.Sections)
+            modelBuilder.Entity<Section>().HasOne(p => p.Station).WithMany(p => p.Sections)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             modelBuilder.Entity<Section>().Property(p => p.Id).UseIdentityColumn();
 
@@ -88,6 +88,20 @@ namespace SPS.AEM.Database.Contexts
             modelBuilder.Entity<Transformer>().HasOne(p => p.Feeder).WithMany(p => p.Transformers)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             modelBuilder.Entity<Transformer>().Property(p => p.Id).UseIdentityColumn();
+
+
+            modelBuilder.Entity<District>().HasData(new District { Id = 1, Name = "Bagalkot",});
+            modelBuilder.Entity<Taluka>().HasData(new List<Taluka>
+            {
+                new Taluka {Id = 1, DistrictId = 1, Name = "Bagalkot"},
+                new Taluka {Id = 2, DistrictId = 1, Name = "Badami"},
+                new Taluka {Id = 3, DistrictId = 1, Name = "Mudhol"},
+                new Taluka {Id = 4, DistrictId = 1, Name = "Jamakhandi"},
+                new Taluka {Id = 5, DistrictId = 1, Name = "Hunagunda"},
+                new Taluka {Id = 6, DistrictId = 1, Name = "Bilgi"},
+                new Taluka {Id = 7, DistrictId = 1, Name = "Guledgudda"},
+                new Taluka {Id = 8, DistrictId = 1, Name = "RabakaviBanahatti"}
+            });
         }
     }
 }
