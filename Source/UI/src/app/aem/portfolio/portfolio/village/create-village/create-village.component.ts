@@ -40,7 +40,7 @@ export class CreateVillageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
   }
-  
+
   get formControls() {
     return this.createVillageForm.controls;
   }

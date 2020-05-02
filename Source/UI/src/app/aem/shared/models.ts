@@ -108,3 +108,7 @@ export class SaveVillage {
     talukaId: number;
     villages: Village[];
 }
+
+export class SaveStation {
+    constructor(public villageId: number, public stations: Station[]) {}
+}
