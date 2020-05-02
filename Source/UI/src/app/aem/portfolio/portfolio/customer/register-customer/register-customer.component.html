@@ -1,0 +1,97 @@
+<section class="no-padding-top">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="block">
+                    <div class="title"><strong class="d-block">Register Customer</strong></div>
+                    <div class="block-body">
+                        <form class="form-horizontal">
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">RR Number</label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Load Type</label>
+                                <div class="col-sm-9">
+                                  <select name="account" class="form-control mb-3 mb-3">
+                                    <option *ngFor="let lt of loadTypes" [ngValue]="lt">{{lt.name}}</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">District</label>
+                                <div class="col-sm-9">
+                                  <select name="district" class="form-control mb-3 mb-3" (change)='getTalukasByDistrictId($event)'>
+                                    <option *ngFor="let d of districts" [value]="d.id">{{d.name}}</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Taluka</label>
+                                <div class="col-sm-9">
+                                  <select name="account" class="form-control mb-3 mb-3" (change)='getVillagesByTalukaId($event)'>
+                                    <option *ngFor="let d of talukas" [value]="d.id">{{d.name}}</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Village/Area</label>
+                                <div class="col-sm-9">
+                                  <select name="account" class="form-control mb-3 mb-3">
+                                    <option *ngFor="let d of villages" [value]="d.id">{{d.name}}</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Station</label>
+                                <div class="col-sm-9">
+                                  <select name="account" class="form-control mb-3 mb-3">
+                                    <option>option 1</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Section</label>
+                                <div class="col-sm-9">
+                                  <select name="account" class="form-control mb-3 mb-3">
+                                    <option>option 1</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Feeder</label>
+                                <div class="col-sm-9">
+                                  <select name="account" class="form-control mb-3 mb-3">
+                                    <option>option 1</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Transformer</label>
+                                <div class="col-sm-9">
+                                  <select name="account" class="form-control mb-3 mb-3">
+                                    <option>option 1</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Mobile Number</label>
+                                <div class="col-sm-9">
+                                  <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-9 ml-auto">
+                                  <button type="submit" class="btn btn-secondary">Reset</button>
+                                  <button type="submit" class="btn btn-primary">Save customer</button>
+                                </div>
+                              </div>
+                        </form>                        
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+</section>

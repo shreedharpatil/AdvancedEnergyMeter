@@ -7,26 +7,36 @@ import { LoginComponent } from './aem/login/login/login.component';
 import { Routes, RouterModule } from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
-
-const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'login'},
-  { path: 'login', component: LoginComponent }
-];
+import { PortfolioComponent } from './aem/portfolio/portfolio/portfolio.component';
+import { HeaderComponent } from './aem/portfolio/header/header.component';
+import { FooterComponent } from './aem/portfolio/footer/footer.component';
+import { MenusComponent } from './aem/portfolio/menus/menus.component';
+import { RegisterCustomerComponent } from './aem/portfolio/portfolio/customer/register-customer/register-customer.component';
+import {PortfolioRoutingModule} from '../app/aem/portfolio/portfolio/portfolio.routing.module';
+import { SharedDataService } from './aem/shared/shared-data.service';
+import { StoreModule } from '@ngrx/store';
+import { PortfolioReducer } from './aem/portfolio/portfolio/portfolio.reducer';
+import { CreateVillageComponent } from './aem/portfolio/portfolio/village/create-village/create-village.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    PortfolioComponent,
+    HeaderComponent,
+    FooterComponent,
+    MenusComponent
   ],
   imports: [
     BrowserModule,
+    StoreModule.forRoot({portfolio : PortfolioReducer}),
     AppRoutingModule,
+    PortfolioRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule,
-    RouterModule.forRoot(routes)
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [SharedDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
