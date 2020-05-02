@@ -7,25 +7,25 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  isUserLoggedIn:boolean = false;
+  isUserLoggedIn = false;
 
   constructor(private http: HttpClient) { }
 
-  public login(user:User, callback:any){
-    var header = {'content-type' : 'application/json', 'Access-Control-Allow-Origin' : "*"};
-    this.http.post(environment.apiBaseUrl + "contextapi/user/validatecredentials", user, {headers : header})
-    .subscribe(res => { 
+  public login(user: User, callback: any){
+    const header = {'content-type' : 'application/json', 'Access-Control-Allow-Origin' : '*'};
+    this.http.post(environment.apiBaseUrl + 'contextapi/user/validatecredentials', user, {headers : header})
+    .subscribe(res => {
       console.log(res);
-      this.isUserLoggedIn = res;
+      this.isUserLoggedIn = res as boolean;
       callback(res);
     });
   }
 
-  public isLoggedIn(){
+  public isLoggedIn() {
     return this.isUserLoggedIn;
   }
 
-  public logout(){
+  public logout() {
     this.isUserLoggedIn = false;
   }
 }

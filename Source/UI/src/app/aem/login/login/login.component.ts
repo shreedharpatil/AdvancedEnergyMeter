@@ -10,10 +10,10 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  isSubmitted:boolean = false;
-  credentialsValid:boolean = false;
+  isSubmitted = false;
+  credentialsValid = false;
 
-  constructor(private authService:AuthService, private router:Router, private formBuilder:FormBuilder) { }
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -22,18 +22,19 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  get formControls(){
+  get formControls() {
     return this.loginForm.controls;
   }
 
-  login(){
+  login() {
     this.isSubmitted = true;
-    if(this.loginForm.invalid){
+    if (this.loginForm.invalid) {
       return;
     }
-    let self = this;
-    this.authService.login(this.loginForm.value, function(res){
+    const self = this;
+    this.authService.login(this.loginForm.value, (res: boolean) => {
         self.credentialsValid = res;
+        self.router.navigate(['home']);
     });
     //this.credentialsValid = this.authService.isLoggedIn();
   }
