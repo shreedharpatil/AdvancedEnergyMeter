@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { District, LoadType, Taluka, SaveTaluka, SaveVillage } from '../../shared/models';
+import { District, LoadType, Taluka, SaveTaluka, SaveVillage, SaveStation } from '../../shared/models';
 import { PortfolioActionType } from './portfolio-action-type';
 
 export class SaveDistrictsAction implements Action {
@@ -22,4 +22,8 @@ export class SaveVillagesAction implements Action {
     constructor(public payload: SaveVillage) {}
 }
 
-export type PortfolioAction = SaveTaulkasAction | SaveVillagesAction | SaveDistrictsAction | SaveLoadTypesAction;
+export class SaveStationsAction implements Action {
+    type = PortfolioActionType.SaveStations;
+    constructor(public payload: SaveStation) {}
+}
+export type PortfolioAction = SaveTaulkasAction | SaveVillagesAction | SaveDistrictsAction | SaveLoadTypesAction | SaveStationsAction;
