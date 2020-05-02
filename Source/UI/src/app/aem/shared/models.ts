@@ -112,3 +112,15 @@ export class SaveVillage {
 export class SaveStation {
     constructor(public villageId: number, public stations: Station[]) {}
 }
+
+export class SaveSection {
+    constructor(public stationId: number, public sections: Section[]) {}
+}
+
+export class SaveFeeder {
+    constructor(public sectionId: number, public feeders: Feeder[]) {}
+}
+
+export class SaveTransformer {
+    constructor(public feederId: number, public transformers: Section[]) {}
+}

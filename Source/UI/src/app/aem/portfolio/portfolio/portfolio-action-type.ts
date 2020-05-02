@@ -3,5 +3,8 @@ export enum PortfolioActionType{
     SaveLoadTypes = 'SAVE_LOAD_TYPES',
     SaveTalukas = 'SAVE_TALUKAS',
     SaveVillages = 'SAVE_VILLAGES',
-    SaveStations = 'SAVE_STATIONS'
+    SaveStations = 'SAVE_STATIONS',
+    SaveSections = 'SAVE_SECTIONS',
+    SaveFeeders = 'SAVE_FEEDERS',
+    SaveTransformers = 'SAVE_TRANSFORMERS'
 }

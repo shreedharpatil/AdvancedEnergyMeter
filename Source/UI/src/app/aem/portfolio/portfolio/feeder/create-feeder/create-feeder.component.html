@@ -3,13 +3,13 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="block">
-                    <div class="title"><strong class="d-block">Create Section</strong></div>
+                    <div class="title"><strong class="d-block">Create Feeder</strong></div>
                     <div class="block-body">
-                        <form class="form-horizontal" name="createvillage" [formGroup]='createSectionForm'>                            
+                        <form class="form-horizontal" name="createvillage" [formGroup]='createFeederForm'>                            
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">District</label>
                                 <div class="col-sm-9">
-                                  <select name="district" formControlName='district' [(ngModel)]='section.districtId' class="form-control mb-3 mb-3" (change)='getTalukasByDistrictId($event)'>
+                                  <select name="district" formControlName='district' [(ngModel)]='feeder.districtId' class="form-control mb-3 mb-3" (change)='getTalukasByDistrictId($event)'>
                                     <option *ngFor="let d of districts" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="isSubmitted && formControls.district.errors">
@@ -22,7 +22,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Taluka</label>
                                 <div class="col-sm-9">
-                                  <select name="taluka" formControlName='taluka' [(ngModel)]='section.talukaId' class="form-control mb-3 mb-3" (change)='getVillagesByTalukaId($event)'>
+                                  <select name="taluka" formControlName='taluka' [(ngModel)]='feeder.talukaId' class="form-control mb-3 mb-3" (change)='getVillagesByTalukaId($event)'>
                                     <option *ngFor="let d of talukas" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="isSubmitted && formControls.taluka.errors">
@@ -35,7 +35,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Village/Area</label>
                                 <div class="col-sm-9">
-                                  <select name="account" formControlName='village' [(ngModel)]='section.villageId' class="form-control mb-3 mb-3" (change)='getStationsByVillageId($event)'>
+                                  <select name="account" formControlName='village' [(ngModel)]='feeder.villageId' class="form-control mb-3 mb-3" (change)='getStationsByVillageId($event)'>
                                     <option *ngFor="let d of villages" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="isSubmitted && formControls.village.errors">
@@ -48,7 +48,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Station</label>
                                 <div class="col-sm-9">
-                                  <select name="account" formControlName='station' [(ngModel)]='section.stationId' class="form-control mb-3 mb-3">
+                                  <select name="account" formControlName='station' [(ngModel)]='feeder.stationId' class="form-control mb-3 mb-3" (change)='getSectionsByStationId($event)'>
                                     <option *ngFor="let d of stations" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="isSubmitted && formControls.station.errors">
@@ -59,12 +59,25 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 form-control-label">Section name</label>
+                                <label class="col-sm-3 form-control-label">Section</label>
+                                <div class="col-sm-9">
+                                  <select name="account" formControlName='section' [(ngModel)]='feeder.sectionId' class="form-control mb-3 mb-3">
+                                    <option *ngFor="let d of sections" [value]="d.id">{{d.name}}</option>
+                                  </select>
+                                  <div *ngIf="isSubmitted && formControls.section.errors">
+                                    <div *ngIf="formControls.section.errors.pattern" class="validation-error-message">
+                                        Select section
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Feeder name</label>
                                 <div class="col-sm-9" >
-                                  <input type="text" class="form-control" formControlName='sectionName' name="sectionname" [(ngModel)]='section.name'>
-                                  <div *ngIf="isSubmitted && formControls.sectionName.errors">
-                                    <div *ngIf="formControls.sectionName.errors.required" class="validation-error-message">
-                                        Enter section name
+                                  <input type="text" class="form-control" formControlName='feederName' name="feedername" [(ngModel)]='feeder.name'>
+                                  <div *ngIf="isSubmitted && formControls.feederName.errors">
+                                    <div *ngIf="formControls.feederName.errors.required" class="validation-error-message">
+                                        Enter feeder name
                                     </div>
                                 </div>
                                 </div>
@@ -73,7 +86,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-9 ml-auto">
                                   <button type="button" class="btn btn-secondary">Reset</button>
-                                  <button type="button" class="btn btn-primary" (click)='createStation()'>Create Station</button>
+                                  <button type="button" class="btn btn-primary" (click)='createFeeder()'>Create Feeder</button>
                                 </div>
                               </div>
                         </form>                        
