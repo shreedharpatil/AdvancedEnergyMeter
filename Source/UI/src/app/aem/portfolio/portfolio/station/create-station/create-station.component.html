@@ -1,0 +1,72 @@
+<section class="no-padding-top">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="block">
+                    <div class="title"><strong class="d-block">Create Station</strong></div>
+                    <div class="block-body">
+                        <form class="form-horizontal" name="createvillage" [formGroup]='createStationForm'>                            
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">District</label>
+                                <div class="col-sm-9">
+                                  <select name="district" formControlName='district' [(ngModel)]='station.districtId' class="form-control mb-3 mb-3" (change)='getTalukasByDistrictId($event)'>
+                                    <option *ngFor="let d of districts" [value]="d.id">{{d.name}}</option>
+                                  </select>
+                                  <div *ngIf="isSubmitted && formControls.district.errors">
+                                    <div *ngIf="formControls.district.errors.pattern">
+                                        Select district
+                                    </div>
+                                </div>
+                                </div>                                
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Taluka</label>
+                                <div class="col-sm-9">
+                                  <select name="taluka" formControlName='taluka' [(ngModel)]='station.talukaId' class="form-control mb-3 mb-3" (change)='getVillagesByTalukaId($event)'>
+                                    <option *ngFor="let d of talukas" [value]="d.id">{{d.name}}</option>
+                                  </select>
+                                  <div *ngIf="isSubmitted && formControls.taluka.errors">
+                                    <div *ngIf="formControls.taluka.errors.pattern" class="validation-error-message">
+                                        Select taluka
+                                    </div>
+                                </div>
+                                </div>                                
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Village/Area</label>
+                                <div class="col-sm-9">
+                                  <select name="account" formControlName='village' [(ngModel)]='station.villageId' class="form-control mb-3 mb-3">
+                                    <option *ngFor="let d of villages" [value]="d.id">{{d.name}}</option>
+                                  </select>
+                                  <div *ngIf="isSubmitted && formControls.village.errors">
+                                    <div *ngIf="formControls.village.errors.pattern" class="validation-error-message">
+                                        Select village
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 form-control-label">Station name</label>
+                                <div class="col-sm-9" >
+                                  <input type="text" class="form-control" formControlName='stationName' name="stationname" [(ngModel)]='station.name'>
+                                  <div *ngIf="isSubmitted && formControls.stationName.errors">
+                                    <div *ngIf="formControls.stationName.errors.required" class="validation-error-message">
+                                        Enter station name
+                                    </div>
+                                </div>
+                                </div>
+                                
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-9 ml-auto">
+                                  <button type="button" class="btn btn-secondary">Reset</button>
+                                  <button type="button" class="btn btn-primary" (click)='createStation()'>Create Section</button>
+                                </div>
+                              </div>
+                        </form>                        
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+</section>

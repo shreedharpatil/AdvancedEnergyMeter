@@ -1,9 +1,9 @@
 import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Store, select } from '@ngrx/store';
-import { AppRoot, District, LoadType, Taluka, SaveTaluka, Village, SaveVillage } from './models';
+import { AppRoot, District, LoadType, Taluka, SaveTaluka, Village, SaveVillage, Station, SaveStation } from './models';
 import { environment } from 'src/environments/environment';
-import { SaveDistrictsAction, SaveLoadTypesAction, SaveTaulkasAction, SaveVillagesAction } from '../portfolio/portfolio/portfolio.actions';
+import { SaveDistrictsAction, SaveLoadTypesAction, SaveTaulkasAction, SaveVillagesAction, SaveStationsAction } from '../portfolio/portfolio/portfolio.actions';
 import { Observable, Subscription } from 'rxjs';
 
 @Injectable({
@@ -11,11 +11,13 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class SharedDataService implements OnDestroy {
 appRoot: Observable<AppRoot>;
+private pleaseSelect = '-----Please Select-----';
 appData: AppRoot;
-defaultDistrict = new District(0, '-----Please Select-----');
-defaultTaluka = new Taluka(0, '-----Please Select-----');
-defaultVillage = new Village(0, '-----Please Select-----');
-defaultLoadType = new LoadType(0, '-----Please Select-----');
+defaultDistrict = new District(0, this.pleaseSelect);
+defaultTaluka = new Taluka(0, this.pleaseSelect);
+defaultVillage = new Village(0, this.pleaseSelect);
+defaultLoadType = new LoadType(0, this.pleaseSelect);
+defaultstation = new Station(0, this.pleaseSelect);
 baseUrl = environment.apiBaseUrl;
 getDistrictsAndLoadTypesObservable: Observable<{districts: District[], loadTypes: LoadType[]}>;
 getDistrictsAndLoadTypesSubscription: Subscription;
@@ -115,6 +117,25 @@ getDistrictsAndLoadTypesSubscription: Subscription;
     });
   }
 
+  getStationsByVillageId(villageId: any): Observable<Station[]> {
+    return Observable.create(observer => {
+      const vid = parseInt(villageId.toString());
+      if (vid <= 0) {
+        return observer.next([this.defaultstation]);
+      }
+
+      if (this.appData.stations.has(villageId)) {
+          const stations = [this.defaultstation, this.appData.stations.get(villageId)];
+          return observer.next(stations);
+      } else {
+        this.http.get<Station[]>(this.baseUrl + 'contextapi/station/' + villageId)
+        .subscribe(p => {
+          this.store.dispatch(new SaveStationsAction(new SaveStation(villageId, p)));
+          observer.next([this.defaultstation, ...p]);
+        });
+      }
+    });
+  }
   private getAllDistricts() {
     this.http.get(this.baseUrl + 'contextapi/district')
     .subscribe(res =>
