@@ -8,6 +8,8 @@ import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { CreateStationComponent } from './station/create-station/create-station.component';
 import { CreateSectionComponent } from './section/create-section/create-section.component';
+import { CreateFeederComponent } from './feeder/create-feeder/create-feeder.component';
+import { CreateTransformerComponent } from './transformer/create-transformer/create-transformer.component';
 
 const routes: Routes = [
     { path: 'home', component: PortfolioComponent,
@@ -16,7 +18,9 @@ const routes: Routes = [
             { path: 'view-customer', component: ViewCustomerComponent },
             { path: 'create-village', component: CreateVillageComponent },
             { path: 'create-station', component: CreateStationComponent },
-            { path: 'create-section', component: CreateSectionComponent }
+            { path: 'create-section', component: CreateSectionComponent },
+            { path: 'create-feeder', component: CreateFeederComponent },
+            { path: 'create-transformer', component: CreateTransformerComponent }
       ]
     }
 ];
@@ -33,7 +37,9 @@ const routes: Routes = [
       CreateVillageComponent,
       RegisterCustomerComponent,
       CreateStationComponent,
-      CreateSectionComponent]
+      CreateSectionComponent,
+      CreateFeederComponent,
+      CreateTransformerComponent]
 })
 
 export class PortfolioRoutingModule { }
