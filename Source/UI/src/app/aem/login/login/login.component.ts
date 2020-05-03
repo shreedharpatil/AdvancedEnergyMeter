@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     const self = this;
     this.authService.login(this.loginForm.value, (res: boolean) => {
         self.credentialsValid = res;
-        self.router.navigate(['home']);
+        self.router.navigate(['home/home-landing']);
     });
     //this.credentialsValid = this.authService.isLoggedIn();
   }
