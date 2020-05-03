@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
+import { NotificationService } from 'src/app/aem/shared/notification.service';
 
 @Component({
   selector: 'app-create-village',
@@ -22,7 +23,8 @@ export class CreateVillageComponent implements OnInit, OnDestroy {
   getVillagesByTalukaIdSubscription: Subscription;
   getDistrictsAndLoadTypesSubscription: Subscription;
 
-  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder) { }
+  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder,
+              private notification: NotificationService) { }
 
   ngOnInit(): void {
     this.createVillageForm = this.formBuilder.group({
@@ -53,6 +55,11 @@ export class CreateVillageComponent implements OnInit, OnDestroy {
     });
   }
 
+  clearForm() {
+    this.village = { name: '', districtId: 0, talukaId: 0 };
+    this.isSubmitted = false;
+  }
+
   createVillage() {
     this.isSubmitted = true;
     if (this.createVillageForm.invalid) {
@@ -62,9 +69,9 @@ export class CreateVillageComponent implements OnInit, OnDestroy {
     this.village.talukaId = parseInt(this.village.talukaId);
     this.http.post(environment.apiBaseUrl + 'contextapi/village', this.village)
     .subscribe(p => {
-      console.log(p);
-      alert('Village created successfully');
+      this.notification.showSuccess('Village created successfully', 'Create Village');
+      this.clearForm();
     },
-    error => alert(error.error));
+    error => this.notification.showError(error.error, 'Create Village'));
   }
 }

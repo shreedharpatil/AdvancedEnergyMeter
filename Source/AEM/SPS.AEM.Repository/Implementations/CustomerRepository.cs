@@ -23,7 +23,10 @@ namespace SPS.AEM.Repository.Implementations
         public async Task<IEnumerable<CustomerDto>> GetAllCustomersAsync()
         {
             return await this.context.Customers
-                .Select(p => new CustomerDto
+                .Include(p => p.LoadType)
+                .Include(p => p.Transformer)
+                .Include(p => p.Village)
+                .Select(p => new CustomerInfoDto
                 {
                     Id = p.Id,
                     FirstName = p.FirstName,
@@ -32,7 +35,10 @@ namespace SPS.AEM.Repository.Implementations
                     LoadTypeId = p.LoadTypeId,
                     MobileNumber = p.MobileNumber,
                     RRNumber = p.RRNumber,
-                    TransformerId = p.TransformerId
+                    TransformerId = p.TransformerId,
+                    LoadType = p.LoadType.Type,
+                    Village = p.Village.Name,
+                    Transformer = p.Transformer.Name
                 })
                 .ToListAsync();
         }

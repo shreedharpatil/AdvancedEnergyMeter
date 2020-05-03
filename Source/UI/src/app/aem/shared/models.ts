@@ -96,8 +96,6 @@ export class SaveTaluka {
         this.districtId = districtId;
         this.talukas = talukas;
     }
-    // public districtId: number;
-    // public talukas: Taluka[];
 }
 
 export class SaveVillage {
@@ -123,4 +121,34 @@ export class SaveFeeder {
 
 export class SaveTransformer {
     constructor(public feederId: number, public transformers: Section[]) {}
+}
+
+export class Customer {
+    constructor() {
+        this.rrNumber = '';
+        this.firstName = '';
+        this.lastName = '';
+        this.loadTypeId = 0;
+        this.districtId = 0;
+        this.talukaId = 0;
+        this.villageId = 0;
+        this.stationId = 0;
+        this.sectionId = 0;
+        this.feederId = 0;
+        this.transformerId = 0;
+        this.mobileNumber = '';
+    }
+
+    rrNumber: string;
+    firstName: string;
+    lastName: string;
+    loadTypeId: number;
+    districtId: number;
+    talukaId: number;
+    villageId: number;
+    stationId: number;
+    sectionId: number;
+    feederId: number;
+    transformerId: number;
+    mobileNumber: string;
 }

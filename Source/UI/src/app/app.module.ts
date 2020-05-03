@@ -17,6 +17,8 @@ import { SharedDataService } from './aem/shared/shared-data.service';
 import { StoreModule } from '@ngrx/store';
 import { PortfolioReducer } from './aem/portfolio/portfolio/portfolio.reducer';
 import { CreateVillageComponent } from './aem/portfolio/portfolio/village/create-village/create-village.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { CreateVillageComponent } from './aem/portfolio/portfolio/village/create
     PortfolioRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [SharedDataService],
   bootstrap: [AppComponent]
