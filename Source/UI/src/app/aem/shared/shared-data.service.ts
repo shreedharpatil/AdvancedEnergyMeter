@@ -188,7 +188,7 @@ getDistrictsAndLoadTypesSubscription: Subscription;
     });
   }
 
-  getTransformersByFeederId(feederId: any): Observable<Feeder[]> {
+  getTransformersByFeederId(feederId: any): Observable<Transformer[]> {
     return Observable.create(observer => {
       const sid = parseInt(feederId.toString());
       if (sid <= 0) {
