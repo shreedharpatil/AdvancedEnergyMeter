@@ -6,6 +6,7 @@ import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { NotificationService } from 'src/app/aem/shared/notification.service';
 
 @Component({
   selector: 'app-create-transformer',
@@ -30,7 +31,8 @@ export class CreateTransformerComponent implements OnInit, OnDestroy {
   getSectionsByStationIdSubscription: Subscription;
   getFeedersBySectionIdSubscription: Subscription;
 
-  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder) { }
+  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder,
+              private notification: NotificationService) { }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
@@ -98,6 +100,11 @@ export class CreateTransformerComponent implements OnInit, OnDestroy {
     });
   }
 
+  clerForm() {
+    this.transformer = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0, sectionId: 0, feederId: 0 };
+    this.isSubmitted = false;
+  }
+
   createTransformer() {
     this.isSubmitted = true;
     if (this.createTransformerForm.invalid) {
@@ -107,9 +114,10 @@ export class CreateTransformerComponent implements OnInit, OnDestroy {
     this.transformer.feederId = parseInt(this.transformer.feederId);
     this.http.post(environment.apiBaseUrl + 'contextapi/transformer', this.transformer)
     .subscribe(p => {
-      alert('Transformer created successfully');
+      this.notification.showSuccess('Transformer created successfully', 'Create Transformer');
+      this.clerForm();
     },
-    error => alert(error.error));
+    error => this.notification.showError(error.error, 'Create Transformer'));
   }
 
 }

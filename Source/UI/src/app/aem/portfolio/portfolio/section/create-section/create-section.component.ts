@@ -6,13 +6,14 @@ import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { NotificationService } from 'src/app/aem/shared/notification.service';
 
 @Component({
   selector: 'app-create-section',
   templateUrl: './create-section.component.html',
   styleUrls: ['./create-section.component.css']
 })
-export class CreateSectionComponent implements OnInit {
+export class CreateSectionComponent implements OnInit, OnDestroy {
   section: any = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0 };
   talukas: Taluka[];
   districts: District[];
@@ -25,7 +26,8 @@ export class CreateSectionComponent implements OnInit {
   getDistrictsAndLoadTypesSubscription: Subscription;
   getStationsByVillageIdSubscription: Subscription;
 
-  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder) { }
+  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder,
+              private notification: NotificationService) { }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
@@ -75,6 +77,11 @@ export class CreateSectionComponent implements OnInit {
     });
   }
 
+  clearForm() {
+    this.section = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0 };
+    this.isSubmitted = false;
+  }
+
   createStation() {
     this.isSubmitted = true;
     if (this.createSectionForm.invalid) {
@@ -84,9 +91,10 @@ export class CreateSectionComponent implements OnInit {
     this.section.stationId = parseInt(this.section.stationId);
     this.http.post(environment.apiBaseUrl + 'contextapi/section', this.section)
     .subscribe(p => {
+      this.notification.showSuccess('Section created successfully', 'Create Section');
       console.log(p);
-      alert('Section created successfully');
+      this.clearForm();
     },
-    error => alert(error.error));
+    error => this.notification.showError(error.error, 'Create Feeder'));
   }
 }

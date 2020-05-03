@@ -13,11 +13,11 @@
                                     <option *ngFor="let d of districts" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="isSubmitted && formControls.district.errors">
-                                    <div *ngIf="formControls.district.errors.pattern">
+                                    <div *ngIf="formControls.district.errors.pattern" class="text-danger">
                                         Select district
                                     </div>
                                 </div>
-                                </div>                                
+                                </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Taluka</label>
@@ -77,8 +77,8 @@
                                   <select name="account" formControlName='feeder' [(ngModel)]='transformer.feederId' class="form-control mb-3 mb-3">
                                     <option *ngFor="let d of feeders" [value]="d.id">{{d.name}}</option>
                                   </select>
-                                  <div *ngIf="isSubmitted && formControls.feeders.errors">
-                                    <div *ngIf="formControls.feeders.errors.pattern" class="validation-error-message">
+                                  <div *ngIf="isSubmitted && formControls.feeder.errors">
+                                    <div *ngIf="formControls.feeder.errors.pattern" class="validation-error-message">
                                         Select feeder
                                     </div>
                                 </div>
@@ -98,7 +98,7 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-9 ml-auto">
-                                  <button type="button" class="btn btn-secondary">Reset</button>
+                                  <button type="button" class="btn btn-secondary" (clcik)='clerForm()'>Reset</button>
                                   <button type="button" class="btn btn-primary" (click)='createTransformer()'>Create Transformer</button>
                                 </div>
                               </div>

@@ -6,6 +6,7 @@ import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { NotificationService } from 'src/app/aem/shared/notification.service';
 
 @Component({
   selector: 'app-create-station',
@@ -24,7 +25,8 @@ export class CreateStationComponent implements OnInit, OnDestroy {
   getVillagesByTalukaIdSubscription: Subscription;
   getDistrictsAndLoadTypesSubscription: Subscription;
 
-  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder) { }
+  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder,
+              private notification: NotificationService) { }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
@@ -64,6 +66,11 @@ export class CreateStationComponent implements OnInit, OnDestroy {
     });
   }
 
+  clearForm() {
+    this.station = { name: '', districtId: 0, talukaId: 0, villageId: 0 };
+    this.isSubmitted = false;
+  }
+
   createStation() {
     this.isSubmitted = true;
     if (this.createStationForm.invalid) {
@@ -76,9 +83,9 @@ export class CreateStationComponent implements OnInit, OnDestroy {
 
     this.http.post(environment.apiBaseUrl + 'contextapi/station', this.station)
     .subscribe(p => {
-      console.log(p);
-      alert('Station created successfully');
+      this.notification.showSuccess('Station created successfully', 'Create Station');
+      this.clearForm();
     },
-    error => alert(error.error));
+    error => this.notification.showError(error.error, 'Create Station'));
   }
 }

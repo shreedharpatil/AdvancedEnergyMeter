@@ -6,6 +6,7 @@ import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { NotificationService } from 'src/app/aem/shared/notification.service';
 
 @Component({
   selector: 'app-create-feeder',
@@ -28,7 +29,8 @@ export class CreateFeederComponent implements OnInit, OnDestroy{
   getStationsByVillageIdSubscription: Subscription;
   getSectionsByStationIdSubscription: Subscription;
 
-  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder) { }
+  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder,
+              private notification: NotificationService) { }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
@@ -87,6 +89,11 @@ export class CreateFeederComponent implements OnInit, OnDestroy{
     });
   }
 
+  clearForm() {
+    this.feeder = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0, sectionId: 0 };
+    this.isSubmitted = false;
+  }
+
   createFeeder() {
     this.isSubmitted = true;
     if (this.createFeederForm.invalid) {
@@ -96,9 +103,10 @@ export class CreateFeederComponent implements OnInit, OnDestroy{
     this.feeder.sectionId = parseInt(this.feeder.sectionId);
     this.http.post(environment.apiBaseUrl + 'contextapi/feeder', this.feeder)
     .subscribe(p => {
-      alert('Feeder created successfully');
+      this.notification.showSuccess('Feeder created successfully', 'Create Feeder');
+      this.clearForm();
     },
-    error => alert(error.error));
+    error => this.notification.showError(error.error, 'Create Feeder'));
   }
 
 }

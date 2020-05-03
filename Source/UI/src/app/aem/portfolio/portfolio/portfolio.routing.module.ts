@@ -10,6 +10,8 @@ import { CreateStationComponent } from './station/create-station/create-station.
 import { CreateSectionComponent } from './section/create-section/create-section.component';
 import { CreateFeederComponent } from './feeder/create-feeder/create-feeder.component';
 import { CreateTransformerComponent } from './transformer/create-transformer/create-transformer.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
     { path: 'home', component: PortfolioComponent,
@@ -30,7 +32,9 @@ const routes: Routes = [
       BrowserModule,
       FormsModule,
       ReactiveFormsModule,
-      RouterModule.forRoot(routes)],
+      RouterModule.forRoot(routes),
+      ToastrModule.forRoot(),
+      ],
     exports: [ RouterModule ],
     declarations: [
       ViewCustomerComponent,
