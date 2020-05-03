@@ -19,6 +19,7 @@ import { PortfolioReducer } from './aem/portfolio/portfolio/portfolio.reducer';
 import { CreateVillageComponent } from './aem/portfolio/portfolio/village/create-village/create-village.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserReducer } from './aem/shared/user/user.reducer';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot({portfolio : PortfolioReducer}),
+    StoreModule.forRoot({portfolio : PortfolioReducer, user: UserReducer}),
     AppRoutingModule,
     PortfolioRoutingModule,
     HttpClientModule,

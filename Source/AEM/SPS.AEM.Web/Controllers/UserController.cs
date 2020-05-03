@@ -18,6 +18,13 @@ namespace SPS.AEM.Web.Controllers
             this.userRepository = userRepository;
         }
 
+        [HttpGet]
+        [Route("{username}")]
+        public async Task<IActionResult> Get(string username)
+        {
+            return Ok(await userRepository.GetUser(username));
+        }
+
         [HttpPost]
         [Route("validatecredentials")]
         public async Task<IActionResult> ValidateUserCredentials([FromBody] UserCredentialsDto user)

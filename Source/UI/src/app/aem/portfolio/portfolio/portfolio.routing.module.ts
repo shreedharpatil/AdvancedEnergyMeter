@@ -12,10 +12,12 @@ import { CreateFeederComponent } from './feeder/create-feeder/create-feeder.comp
 import { CreateTransformerComponent } from './transformer/create-transformer/create-transformer.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthGuard } from '../../login/authentication/auth.guard';
 
 const routes: Routes = [
-    { path: 'home', component: PortfolioComponent,
+    { path: 'home', component: PortfolioComponent, canActivate: [AuthGuard],
       children: [
+            { path: 'home-landing', component: ViewCustomerComponent },
             { path: 'register-customer', component: RegisterCustomerComponent },
             { path: 'view-customer', component: ViewCustomerComponent },
             { path: 'create-village', component: CreateVillageComponent },
