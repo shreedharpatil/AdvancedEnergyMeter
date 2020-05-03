@@ -49,5 +49,21 @@ namespace SPS.AEM.Repository.Implementations
 
             user.Id = userToCreated.Id;
         }
+
+        public Task<UserInfoDto> GetUser(string username)
+        {
+            var user = context.Logins
+                .Include(p => p.User)
+                    .ThenInclude(p => p.Role)
+                .Where(p => p.Username == username)
+                .Select(p => new UserInfoDto
+                {
+                    FirstName = p.User.FirstName,
+                    LastName = p.User.LastName,
+                    Role = p.User.Role.Name
+                })
+                .FirstOrDefault();
+            return Task.FromResult(user);
+        }
     }
 }

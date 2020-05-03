@@ -7,8 +7,7 @@ import { RegisterCustomerComponent } from './aem/portfolio/portfolio/customer/re
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login'},
-  { path: 'login', component: LoginComponent },
-  // { path: 'home', component: PortfolioComponent }
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({
