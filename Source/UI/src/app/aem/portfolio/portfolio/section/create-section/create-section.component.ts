@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs';
-import { District, AppRoot, LoadType, Taluka, Village, Station } from 'src/app/aem/shared/models';
-import { Store, select } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { District, AppRoot, Taluka, Village, Station } from 'src/app/aem/shared/models';
+import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { environment } from 'src/environments/environment';
-import { NotificationService } from 'src/app/aem/shared/notification.service';
+import { CreateSectionAction } from '../../portfolio.actions';
 
 @Component({
   selector: 'app-create-section',
@@ -26,8 +24,9 @@ export class CreateSectionComponent implements OnInit, OnDestroy {
   getDistrictsAndLoadTypesSubscription: Subscription;
   getStationsByVillageIdSubscription: Subscription;
 
-  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder,
-              private notification: NotificationService) { }
+  constructor(private service: SharedDataService,
+              private formBuilder: FormBuilder,
+              private store: Store<AppRoot>) { }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
@@ -35,7 +34,7 @@ export class CreateSectionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createSectionForm = this.formBuilder.group({
-      sectionName : ['', Validators.required],
+      sectionName: ['', Validators.required],
       district: ['', Validators.pattern('^[1-9]\d*$')],
       taluka: ['', Validators.pattern('^[1-9]\d*$')],
       village: ['', Validators.pattern('^[1-9]\d*$')],
@@ -43,9 +42,9 @@ export class CreateSectionComponent implements OnInit, OnDestroy {
     });
 
     this.getDistrictsAndLoadTypesSubscription = this.service.getDistrictsAndLoadTypes()
-    .subscribe(p => {
-      this.districts = p.districts;
-    });
+      .subscribe(p => {
+        this.districts = p.districts;
+      });
   }
 
   get formControls() {
@@ -54,27 +53,26 @@ export class CreateSectionComponent implements OnInit, OnDestroy {
 
   getTalukasByDistrictId(event) {
     this.getTalukasByDistrictIdSubscription = this.service.getTalukasByDistrictId(event.target.value)
-    .subscribe(p => {
-      this.talukas = p;
-      this.getTalukasByDistrictIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.talukas = p;
+        this.getTalukasByDistrictIdSubscription.unsubscribe();
+      });
   }
 
   getVillagesByTalukaId(event) {
     this.getVillagesByTalukaIdSubscription = this.service.getVillagesByTalukaId(event.target.value)
-    .subscribe(p => {
-      this.villages = p;
-      this.getVillagesByTalukaIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.villages = p;
+        this.getVillagesByTalukaIdSubscription.unsubscribe();
+      });
   }
 
   getStationsByVillageId(event) {
     this.getStationsByVillageIdSubscription = this.service.getStationsByVillageId(event.target.value)
-    .subscribe(p => {
-      this.stations = p;
-      console.log(p);
-      this.getStationsByVillageIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.stations = p;
+        this.getStationsByVillageIdSubscription.unsubscribe();
+      });
   }
 
   clearForm() {
@@ -89,12 +87,6 @@ export class CreateSectionComponent implements OnInit, OnDestroy {
     }
 
     this.section.stationId = parseInt(this.section.stationId);
-    this.http.post(environment.apiBaseUrl + 'contextapi/section', this.section)
-    .subscribe(p => {
-      this.notification.showSuccess('Section created successfully', 'Create Section');
-      console.log(p);
-      this.clearForm();
-    },
-    error => this.notification.showError(error.error, 'Create Feeder'));
+    this.store.dispatch(new CreateSectionAction(this.section));
   }
 }

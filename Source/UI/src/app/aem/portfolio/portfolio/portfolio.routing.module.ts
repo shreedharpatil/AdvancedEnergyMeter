@@ -11,8 +11,10 @@ import { CreateSectionComponent } from './section/create-section/create-section.
 import { CreateFeederComponent } from './feeder/create-feeder/create-feeder.component';
 import { CreateTransformerComponent } from './transformer/create-transformer/create-transformer.component';
 import { ToastrModule } from 'ngx-toastr';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthGuard } from '../../login/authentication/auth.guard';
+import { EffectsModule } from '@ngrx/effects';
+import { PortfolioEffects } from './portfolio.effects';
+import { SharedDataEffects } from '../../shared/shared.data.effects';
 
 const routes: Routes = [
     { path: 'home', component: PortfolioComponent, canActivate: [AuthGuard],
@@ -36,6 +38,7 @@ const routes: Routes = [
       ReactiveFormsModule,
       RouterModule.forRoot(routes),
       ToastrModule.forRoot(),
+      EffectsModule.forRoot([PortfolioEffects, SharedDataEffects])
       ],
     exports: [ RouterModule ],
     declarations: [
