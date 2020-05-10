@@ -19,7 +19,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor='let c of customers'>
+                            <tr *ngFor='let c of customers$ | async'>
                             <th scope="row">{{c.id}}</th>
                             <td>{{c.rrNumber}}</td>
                             <td>{{c.firstName}}</td>

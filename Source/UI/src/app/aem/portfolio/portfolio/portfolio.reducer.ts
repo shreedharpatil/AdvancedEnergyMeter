@@ -1,4 +1,4 @@
-import {AppRoot, Feeder, SaveTaluka, SaveVillage, SaveStation, SaveSection, SaveFeeder, SaveTransformer} from 'src/app/aem/shared/models';
+import {AppRoot, SaveTaluka, SaveVillage, SaveStation, SaveSection, SaveFeeder, SaveTransformer} from 'src/app/aem/shared/models';
 import { PortfolioAction } from './portfolio.actions';
 import { PortfolioActionType } from './portfolio-action-type';
 
@@ -14,7 +14,7 @@ export function PortfolioReducer(state: AppRoot = appState, action: PortfolioAct
             break;
         case PortfolioActionType.SaveTalukas:
             const t = action.payload as SaveTaluka;
-            return { ...state, taluks: state.talukas.set(t.districtId, t.talukas)};
+            return { ...state, talukas: state.talukas.set(t.districtId, t.talukas)};
             break;
         case PortfolioActionType.SaveVillages:
             const p = action.payload as SaveVillage;

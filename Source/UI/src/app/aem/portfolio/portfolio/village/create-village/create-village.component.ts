@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { District, Taluka } from 'src/app/aem/shared/models';
+import { District, Taluka, AppRoot } from 'src/app/aem/shared/models';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
-import { NotificationService } from 'src/app/aem/shared/notification.service';
+import { Store } from '@ngrx/store';
+import { CreateVillageAction } from '../../portfolio.actions';
 
 @Component({
   selector: 'app-create-village',
@@ -23,8 +22,9 @@ export class CreateVillageComponent implements OnInit, OnDestroy {
   getVillagesByTalukaIdSubscription: Subscription;
   getDistrictsAndLoadTypesSubscription: Subscription;
 
-  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder,
-              private notification: NotificationService) { }
+  constructor(private service: SharedDataService,
+              private formBuilder: FormBuilder,
+              private store: Store<AppRoot>) { }
 
   ngOnInit(): void {
     this.createVillageForm = this.formBuilder.group({
@@ -67,11 +67,6 @@ export class CreateVillageComponent implements OnInit, OnDestroy {
     }
 
     this.village.talukaId = parseInt(this.village.talukaId);
-    this.http.post(environment.apiBaseUrl + 'contextapi/village', this.village)
-    .subscribe(p => {
-      this.notification.showSuccess('Village created successfully', 'Create Village');
-      this.clearForm();
-    },
-    error => this.notification.showError(error.error, 'Create Village'));
+    this.store.dispatch(new CreateVillageAction(this.village));
   }
 }

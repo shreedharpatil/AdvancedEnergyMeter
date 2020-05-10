@@ -139,16 +139,16 @@ export class Customer {
         this.mobileNumber = '';
     }
 
-    rrNumber: string;
-    firstName: string;
-    lastName: string;
-    loadTypeId: number;
-    districtId: number;
-    talukaId: number;
-    villageId: number;
-    stationId: number;
-    sectionId: number;
-    feederId: number;
-    transformerId: number;
-    mobileNumber: string;
+    public rrNumber: string;
+    public firstName: string;
+    public lastName: string;
+    public loadTypeId: number;
+    public districtId: number;
+    public talukaId: number;
+    public villageId: number;
+    public stationId: number;
+    public sectionId: number;
+    public feederId: number;
+    public transformerId: number;
+    public mobileNumber: string;
 }

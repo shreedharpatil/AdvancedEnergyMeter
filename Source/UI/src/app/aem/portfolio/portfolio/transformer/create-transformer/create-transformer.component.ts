@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs';
-import { District, AppRoot, LoadType, Taluka, Village, Station, Section, SaveStation, Feeder } from 'src/app/aem/shared/models';
-import { Store, select } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { District, AppRoot, Taluka, Village, Station, Section, Feeder } from 'src/app/aem/shared/models';
+import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { environment } from 'src/environments/environment';
-import { NotificationService } from 'src/app/aem/shared/notification.service';
+import { CreateTransformerAction } from '../../portfolio.actions';
 
 @Component({
   selector: 'app-create-transformer',
@@ -31,8 +29,9 @@ export class CreateTransformerComponent implements OnInit, OnDestroy {
   getSectionsByStationIdSubscription: Subscription;
   getFeedersBySectionIdSubscription: Subscription;
 
-  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder,
-              private notification: NotificationService) { }
+  constructor(private service: SharedDataService,
+              private formBuilder: FormBuilder,
+              private store: Store<AppRoot>) { }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
@@ -40,7 +39,7 @@ export class CreateTransformerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createTransformerForm = this.formBuilder.group({
-      transformerName : ['', Validators.required],
+      transformerName: ['', Validators.required],
       district: ['', Validators.pattern('^[1-9]\d*$')],
       taluka: ['', Validators.pattern('^[1-9]\d*$')],
       village: ['', Validators.pattern('^[1-9]\d*$')],
@@ -50,9 +49,9 @@ export class CreateTransformerComponent implements OnInit, OnDestroy {
     });
 
     this.getDistrictsAndLoadTypesSubscription = this.service.getDistrictsAndLoadTypes()
-    .subscribe(p => {
-      this.districts = p.districts;
-    });
+      .subscribe(p => {
+        this.districts = p.districts;
+      });
   }
 
   get formControls() {
@@ -61,43 +60,42 @@ export class CreateTransformerComponent implements OnInit, OnDestroy {
 
   getTalukasByDistrictId(event) {
     this.getTalukasByDistrictIdSubscription = this.service.getTalukasByDistrictId(event.target.value)
-    .subscribe(p => {
-      this.talukas = p;
-      this.getTalukasByDistrictIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.talukas = p;
+        this.getTalukasByDistrictIdSubscription.unsubscribe();
+      });
   }
 
   getVillagesByTalukaId(event) {
     this.getVillagesByTalukaIdSubscription = this.service.getVillagesByTalukaId(event.target.value)
-    .subscribe(p => {
-      this.villages = p;
-      this.getVillagesByTalukaIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.villages = p;
+        this.getVillagesByTalukaIdSubscription.unsubscribe();
+      });
   }
 
   getStationsByVillageId(event) {
     this.getStationsByVillageIdSubscription = this.service.getStationsByVillageId(event.target.value)
-    .subscribe(p => {
-      this.stations = p;
-      console.log(p);
-      this.getStationsByVillageIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.stations = p;
+        this.getStationsByVillageIdSubscription.unsubscribe();
+      });
   }
 
   getSectionsByStationId(event) {
     this.getSectionsByStationIdSubscription = this.service.getSectionsByStationId(event.target.value)
-    .subscribe(p => {
-      this.sections = p;
-      this.getSectionsByStationIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.sections = p;
+        this.getSectionsByStationIdSubscription.unsubscribe();
+      });
   }
 
   getFeedersBySectionId(event) {
     this.getFeedersBySectionIdSubscription = this.service.getFeedersBySectionId(event.target.value)
-    .subscribe(p => {
-      this.feeders = p;
-      this.getFeedersBySectionIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.feeders = p;
+        this.getFeedersBySectionIdSubscription.unsubscribe();
+      });
   }
 
   clerForm() {
@@ -112,12 +110,6 @@ export class CreateTransformerComponent implements OnInit, OnDestroy {
     }
 
     this.transformer.feederId = parseInt(this.transformer.feederId);
-    this.http.post(environment.apiBaseUrl + 'contextapi/transformer', this.transformer)
-    .subscribe(p => {
-      this.notification.showSuccess('Transformer created successfully', 'Create Transformer');
-      this.clerForm();
-    },
-    error => this.notification.showError(error.error, 'Create Transformer'));
+    this.store.dispatch(new CreateTransformerAction(this.transformer));
   }
-
 }

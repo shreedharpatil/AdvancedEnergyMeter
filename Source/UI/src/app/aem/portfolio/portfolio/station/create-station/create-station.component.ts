@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs';
-import { District, AppRoot, LoadType, Taluka, Village } from 'src/app/aem/shared/models';
-import { Store, select } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { District, AppRoot, Taluka, Village } from 'src/app/aem/shared/models';
+import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { environment } from 'src/environments/environment';
-import { NotificationService } from 'src/app/aem/shared/notification.service';
+import { CreateStationAction } from '../../portfolio.actions';
 
 @Component({
   selector: 'app-create-station',
@@ -25,8 +23,9 @@ export class CreateStationComponent implements OnInit, OnDestroy {
   getVillagesByTalukaIdSubscription: Subscription;
   getDistrictsAndLoadTypesSubscription: Subscription;
 
-  constructor(private service: SharedDataService, private http: HttpClient, private formBuilder: FormBuilder,
-              private notification: NotificationService) { }
+  constructor(private service: SharedDataService,
+              private formBuilder: FormBuilder,
+              private store: Store<AppRoot>) { }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
@@ -80,12 +79,6 @@ export class CreateStationComponent implements OnInit, OnDestroy {
     this.station.districtId = parseInt(this.station.districtId);
     this.station.talukaId = parseInt(this.station.talukaId);
     this.station.villageId = parseInt(this.station.villageId);
-
-    this.http.post(environment.apiBaseUrl + 'contextapi/station', this.station)
-    .subscribe(p => {
-      this.notification.showSuccess('Station created successfully', 'Create Station');
-      this.clearForm();
-    },
-    error => this.notification.showError(error.error, 'Create Station'));
+    this.store.dispatch(new CreateStationAction(this.station));
   }
 }
