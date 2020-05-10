@@ -1,5 +1,12 @@
 import { Action } from '@ngrx/store';
-import { District, LoadType, Taluka, SaveTaluka, SaveVillage, SaveStation, SaveSection, SaveFeeder, SaveTransformer } from '../../shared/models';
+import { District,
+         LoadType,
+         SaveTaluka,
+         SaveVillage,
+         SaveStation,
+         SaveSection,
+         SaveFeeder,
+         SaveTransformer } from '../../shared/models';
 import { PortfolioActionType } from './portfolio-action-type';
 
 export class SaveDistrictsAction implements Action {
@@ -41,6 +48,40 @@ export class SaveTransformersAction implements Action {
     type = PortfolioActionType.SaveTransformers;
     constructor(public payload: SaveTransformer) {}
 }
+
+export class CreateVillageAction implements Action {
+    static readonly TYPE = 'CREATE_VILLAGE';
+    type = CreateVillageAction.TYPE;
+    constructor(public payload: any) {}
+}
+
+export class CreateStationAction implements Action {
+    static readonly TYPE = 'CREATE_STATION';
+    type = CreateStationAction.TYPE;
+
+    constructor(public payload: any) {}
+}
+
+export class CreateSectionAction implements Action {
+    static readonly TYPE = 'CREATE_SECTION';
+    type = CreateSectionAction.TYPE;
+
+    constructor(public payload: any) {}
+}
+
+export class CreateFeederAction implements Action {
+    static readonly TYPE = 'CREATE_FEEDER';
+    type = CreateFeederAction.TYPE;
+
+    constructor(public payload: any) {}
+}
+
+export class CreateTransformerAction implements Action {
+    static readonly TYPE = 'CREATE_TRANSFORMER';
+    type = CreateTransformerAction.TYPE;
+
+    constructor(public payload: any) {}
+}
 export type PortfolioAction = SaveTaulkasAction |
                               SaveVillagesAction |
                               SaveDistrictsAction |
@@ -48,4 +89,9 @@ export type PortfolioAction = SaveTaulkasAction |
                               SaveStationsAction |
                               SaveSectionsAction |
                               SaveFeedersAction |
-                              SaveTransformersAction;
+                              SaveTransformersAction |
+                              CreateVillageAction |
+                              CreateStationAction |
+                              CreateSectionAction |
+                              CreateFeederAction |
+                              CreateTransformerAction ;

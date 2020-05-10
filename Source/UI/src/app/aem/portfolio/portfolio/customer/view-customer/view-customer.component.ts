@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Customer } from 'src/app/aem/shared/models';
-import { environment } from 'src/environments/environment';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-view-customer',
@@ -10,16 +11,10 @@ import { environment } from 'src/environments/environment';
 })
 export class ViewCustomerComponent implements OnInit {
 
-  customers: Customer[];
-  constructor(private http: HttpClient) { }
+  customers$: Observable<Customer[]>;
+  constructor(private http: HttpClient, private store: Store<{ customer: { customers: Customer[]}}>) { }
 
   ngOnInit(): void {
-    this.loadAllCustomers();
-  }
-
-  loadAllCustomers() {
-    this.http.get<Customer[]>(environment.apiBaseUrl + 'contextapi/customer').subscribe(p => {
-      this.customers = p;
-    });
+    this.customers$ = this.store.select(p => p.customer.customers);
   }
 }

@@ -22,8 +22,10 @@ namespace SPS.AEM.Repository.Implementations
 
         public async Task AddVillageAsync(VillageDto village)
         {
-            context.Villages.Add(new Village { Name = village.Name, TalukaId = village.TalukaId });
+            var villageToBeSaved = new Village {Name = village.Name, TalukaId = village.TalukaId};
+            context.Villages.Add(villageToBeSaved);
             await context.SaveChangesAsync();
+            village.Id = villageToBeSaved.Id;
         }
 
         public async Task<IEnumerable<VillageDto>> GetVillagesAsync(int talukaId)

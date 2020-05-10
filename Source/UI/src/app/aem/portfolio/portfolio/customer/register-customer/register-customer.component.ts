@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs';
-import { District, AppRoot, LoadType, Taluka, Village, Station, Section, Feeder, Transformer, Customer } from 'src/app/aem/shared/models';
-import { Store, select } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { District, AppRoot, LoadType, Taluka, Village, Station, Section, Feeder, Transformer } from 'src/app/aem/shared/models';
+import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { NotificationService } from 'src/app/aem/shared/notification.service';
+import { AddCustomerAction } from '../customer.actions';
 
 @Component({
   selector: 'app-register-customer',
@@ -15,7 +13,22 @@ import { NotificationService } from 'src/app/aem/shared/notification.service';
 })
 export class RegisterCustomerComponent implements OnInit, OnDestroy {
 
-  customer: Customer = new Customer();
+  customerSubscription: Subscription;
+  customer = {
+    rrNumber : '',
+    firstName : '',
+    lastName : '',
+    loadTypeId : 0,
+    districtId : 0,
+    talukaId : 0,
+    villageId : 0,
+    stationId : 0,
+    sectionId : 0,
+    feederId : 0,
+    transformerId : 0,
+    mobileNumber : '',
+  };
+
   talukas: Taluka[];
   districts: District[];
   loadTypes: LoadType[];
@@ -34,10 +47,9 @@ export class RegisterCustomerComponent implements OnInit, OnDestroy {
   getFeedersBySectionIdSubscription: Subscription;
   getTransformerByFeederIdSubscription: Subscription;
 
-  constructor(private service: SharedDataService, 
+  constructor(private service: SharedDataService,
               private formBuilder: FormBuilder,
-              private http: HttpClient,
-              private notification: NotificationService) { }
+              private store: Store<AppRoot>) { }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
@@ -45,9 +57,9 @@ export class RegisterCustomerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.registerCustomerForm = this.formBuilder.group({
-      firstName : ['', Validators.required],
-      lastName : ['', Validators.required],
-      rrNumber : ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      rrNumber: ['', Validators.required],
       loadType: ['', [Validators.required, Validators.pattern('^[1-9]\d*$')]],
       district: ['', [Validators.required, Validators.pattern('^[1-9]\d*$')]],
       taluka: ['', [Validators.required, Validators.pattern('^[1-9]\d*$')]],
@@ -60,10 +72,10 @@ export class RegisterCustomerComponent implements OnInit, OnDestroy {
     });
 
     this.getDistrictsAndLoadTypesSubscription = this.service.getDistrictsAndLoadTypes()
-    .subscribe(p => {
-      this.districts = p.districts;
-      this.loadTypes = p.loadTypes;
-    });
+      .subscribe(p => {
+        this.districts = p.districts;
+        this.loadTypes = p.loadTypes;
+      });
   }
 
   get formControls() {
@@ -72,67 +84,66 @@ export class RegisterCustomerComponent implements OnInit, OnDestroy {
 
   getTalukasByDistrictId(event) {
     this.getTalukasByDistrictIdSubscription = this.service.getTalukasByDistrictId(event.target.value)
-    .subscribe(p => {
-      this.talukas = p;
-      this.getTalukasByDistrictIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.talukas = p;
+        this.getTalukasByDistrictIdSubscription.unsubscribe();
+      });
   }
 
   getVillagesByTalukaId(event) {
     this.getVillagesByTalukaIdSubscription = this.service.getVillagesByTalukaId(event.target.value)
-    .subscribe(p => {
-      this.villages = p;
-      this.getVillagesByTalukaIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.villages = p;
+        this.getVillagesByTalukaIdSubscription.unsubscribe();
+      });
   }
 
   getStationsByVillageId(event) {
     this.getStationsByVillageIdSubscription = this.service.getStationsByVillageId(event.target.value)
-    .subscribe(p => {
-      this.stations = p;
-      console.log(p);
-      this.getStationsByVillageIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.stations = p;
+        this.getStationsByVillageIdSubscription.unsubscribe();
+      });
   }
 
   getSectionsByStationId(event) {
     this.getSectionsByStationIdSubscription = this.service.getSectionsByStationId(event.target.value)
-    .subscribe(p => {
-      this.sections = p;
-      this.getSectionsByStationIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.sections = p;
+        this.getSectionsByStationIdSubscription.unsubscribe();
+      });
   }
 
   getFeedersBySectionId(event) {
     this.getFeedersBySectionIdSubscription = this.service.getFeedersBySectionId(event.target.value)
-    .subscribe(p => {
-      this.feeders = p;
-      this.getFeedersBySectionIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.feeders = p;
+        this.getFeedersBySectionIdSubscription.unsubscribe();
+      });
   }
 
   getTransformersByFeederId(event) {
     this.getTransformerByFeederIdSubscription = this.service.getTransformersByFeederId(event.target.value)
-    .subscribe(p => {
-      this.transformers = p as Transformer[];
-      this.getTransformerByFeederIdSubscription.unsubscribe();
-    });
+      .subscribe(p => {
+        this.transformers = p as Transformer[];
+        this.getTransformerByFeederIdSubscription.unsubscribe();
+      });
   }
 
   clearForm() {
-        this.customer.rrNumber = '';
-        this.customer.firstName = '';
-        this.customer.lastName = '';
-        this.customer.loadTypeId = 0;
-        this.customer.districtId = 0;
-        this.customer.talukaId = 0;
-        this.customer.villageId = 0;
-        this.customer.stationId = 0;
-        this.customer.sectionId = 0;
-        this.customer.feederId = 0;
-        this.customer.transformerId = 0;
-        this.customer.mobileNumber = '';
-        this.isSubmitted = false;
+    this.customer.rrNumber = '';
+    this.customer.firstName = '';
+    this.customer.lastName = '';
+    this.customer.loadTypeId = 0;
+    this.customer.districtId = 0;
+    this.customer.talukaId = 0;
+    this.customer.villageId = 0;
+    this.customer.stationId = 0;
+    this.customer.sectionId = 0;
+    this.customer.feederId = 0;
+    this.customer.transformerId = 0;
+    this.customer.mobileNumber = '';
+    this.isSubmitted = false;
   }
 
   registerCustomer() {
@@ -141,15 +152,13 @@ export class RegisterCustomerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.customer.loadTypeId = parseInt(this.customer.loadTypeId.toString());
-    this.customer.transformerId = parseInt(this.customer.transformerId.toString());
-    this.customer.villageId = parseInt(this.customer.villageId.toString());
+    this.customer = {
+      ...this.customer,
+      loadTypeId: parseInt(this.customer.loadTypeId.toString()),
+      transformerId: parseInt(this.customer.transformerId.toString()),
+      villageId: parseInt(this.customer.villageId.toString())
+    };
 
-    this.http.post(environment.apiBaseUrl + 'contextapi/customer', this.customer)
-    .subscribe(p => {
-      this.notification.showSuccess('Customer created successfully', 'Register Customer');
-      this.clearForm();
-    },
-    error => this.notification.showSuccess(error.error, 'Register Customer'));
+    this.store.dispatch(new AddCustomerAction(this.customer, this.clearForm));
   }
 }
