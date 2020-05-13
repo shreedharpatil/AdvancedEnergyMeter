@@ -18,24 +18,14 @@ steps:
 
 - script: |
     cd Source/UI
-
-- task: Npm@1
-  inputs:
-    command: 'custom'
-    customCommand: 'install -g @angular/cli'
-  displayName: 'Install Angular CLI'
-
-- task: Npm@1
-  inputs:
-      command: 'install'
-  displayName: 'Npm install'
-
-- script: |
-    cd Source/UI
+    npm install -g @angular/cli
+    npm install    
     ng build --prod
 
+  displayName: 'npm install and build'
 - task: PublishBuildArtifacts@1
   inputs:
-     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-     ArtifactName: 'drop'
-     publishLocation: 'Container'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish Artifact'
