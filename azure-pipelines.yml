@@ -16,16 +16,18 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-- script: |
-    cd Source/UI
-    npm install -g @angular/cli
-    npm install    
-    ng build --prod
-    
+- task: Npm@1
+  inputs:
+      command: 'install'
+  displayName: 'Npm install'
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'ng build --prod'
+  displayName: 'Build'
+
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-  
-  displayName: 'npm install and build'
+     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+     ArtifactName: 'drop'
+     publishLocation: 'Container'
