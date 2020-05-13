@@ -16,11 +16,8 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-- task: Npm@1
-  inputs:
-    command: 'custom'
-    customCommand: 'cd Source/UI'
-  displayName: 'Move to folder'
+- script: |
+    cd Source/UI
 
 - task: Npm@1
   inputs:
