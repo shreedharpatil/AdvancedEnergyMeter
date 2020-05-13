@@ -31,6 +31,7 @@ steps:
   displayName: 'Npm install'
 
 - script: |
+    cd Source/UI
     ng build --prod
 
 - task: PublishBuildArtifacts@1
