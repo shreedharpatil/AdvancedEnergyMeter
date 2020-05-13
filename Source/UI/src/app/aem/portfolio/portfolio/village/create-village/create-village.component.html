@@ -23,7 +23,7 @@
                                 <label class="col-sm-3 form-control-label">Taluka</label>
                                 <div class="col-sm-9">
                                   <select name="taluka" formControlName='taluka' [(ngModel)]='village.talukaId' class="form-control mb-3 mb-3">
-                                    <option *ngFor="let d of talukas" [value]="d.id">{{d.name}}</option>
+                                    <option *ngFor="let d of talukas$ | async" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="isSubmitted && formControls.taluka.errors">
                                     <div *ngIf="formControls.taluka.errors.pattern" class="validation-error-message">
