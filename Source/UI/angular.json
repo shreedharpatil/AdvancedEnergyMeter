@@ -22,7 +22,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/web.config"
+              "src/web.config",
+              "src/sps-aem.PublishSettings"
             ],
             "styles": [
               "node_modules/ngx-toastr/toastr.css",
