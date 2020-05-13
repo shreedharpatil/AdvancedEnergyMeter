@@ -20,4 +20,10 @@ steps:
     npm install -g @angular/cli
     npm install    
     ng build --prod
+    
+- task: CopyFiles@2
+  inputs:
+    Contents: 'dist/**' # Pull the build directory (React)
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  
   displayName: 'npm install and build'
