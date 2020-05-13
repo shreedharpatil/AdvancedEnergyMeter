@@ -33,8 +33,16 @@ steps:
     workingDir: 'Source/UI'
     customCommand: 'run build-prod'
 
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'Source/UI/dist/UI'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'Source/UI/dist/UI'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     ArtifactName: 'drop'
     publishLocation: 'Container'
