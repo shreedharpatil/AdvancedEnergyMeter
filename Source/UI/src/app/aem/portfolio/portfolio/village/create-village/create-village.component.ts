@@ -3,7 +3,7 @@ import { District, Taluka, AppRoot } from 'src/app/aem/shared/models';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { CreateVillageAction } from '../../portfolio.actions';
 
@@ -14,6 +14,7 @@ import { CreateVillageAction } from '../../portfolio.actions';
 })
 export class CreateVillageComponent implements OnInit, OnDestroy {
   village: any = { name: '', districtId: 0, talukaId: 0 };
+  talukas$: Observable<Taluka[]>;
   districts: District[];
   talukas: Taluka[];
   createVillageForm: FormGroup;
@@ -40,7 +41,7 @@ export class CreateVillageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.getDistrictsAndLoadTypesSubscription.unsubscribe();
+    // this.getDistrictsAndLoadTypesSubscription.unsubscribe();
   }
 
   get formControls() {
@@ -48,11 +49,12 @@ export class CreateVillageComponent implements OnInit, OnDestroy {
   }
 
   getTalukasByDistrictId(event) {
-    this.getTalukasByDistrictIdSubscription = this.service.getTalukasByDistrictId(event.target.value)
-    .subscribe(p => {
-      this.talukas = p;
-      this.getTalukasByDistrictIdSubscription.unsubscribe();
-    });
+    this.talukas$ = this.service.getTalukasByDistrictId(event.target.value);
+    // this.getTalukasByDistrictIdSubscription = this.service.getTalukasByDistrictId(event.target.value)
+    // .subscribe(p => {
+    //   this.talukas = p;
+    //   this.getTalukasByDistrictIdSubscription.unsubscribe();
+    // });
   }
 
   clearForm() {

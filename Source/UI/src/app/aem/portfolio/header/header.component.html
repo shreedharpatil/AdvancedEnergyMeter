@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg">      
       <div class="container-fluid d-flex align-items-center justify-content-between">
         <div class="navbar-header">
-          <!-- Navbar Header--><a href="index.html" class="navbar-brand">
+          <!-- Navbar Header--><a routerLink="home-landing" class="navbar-brand">
             <div class="brand-text brand-big visible text-uppercase"><strong class="text-primary"></strong><strong>AEMS</strong></div>
             <div class="brand-text brand-sm"><strong class="text-primary">AEMS</strong></div></a>
           <!-- Sidebar Toggle Btn-->
@@ -11,7 +11,7 @@
         <div class="right-menu list-inline no-margin-bottom">    
           <!-- Log out               -->
           <div class="list-inline-item logout">                   
-              <a id="logout" (click)='authService.logout()' class="nav-link">Logout <i class="icon-logout"></i></a>
+              <a id="logout" (click)='logout()' class="nav-link" style="cursor: pointer;">Logout <i class="icon-logout"></i></a>
           </div>
         </div>
       </div>

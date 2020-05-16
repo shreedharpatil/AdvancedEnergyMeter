@@ -1,9 +1,10 @@
 <section class="no-padding-top">
     <div class="container-fluid">
         <div class="row">
+            <ngx-spinner size = "medium" [fullScreen]="false" type="timer" ></ngx-spinner>
             <div class="col-lg-12">
                 <div class="block">
-                    <div class="title"><strong class="d-block">Create Village/Area</strong></div>
+                    <div class="title"><strong class="d-block">Create Village/Area</strong></div>                    
                     <div class="block-body">
                         <form class="form-horizontal" name="createvillage" [formGroup]='createVillageForm'>                            
                             <div class="form-group row">
@@ -23,7 +24,7 @@
                                 <label class="col-sm-3 form-control-label">Taluka</label>
                                 <div class="col-sm-9">
                                   <select name="taluka" formControlName='taluka' [(ngModel)]='village.talukaId' class="form-control mb-3 mb-3">
-                                    <option *ngFor="let d of talukas" [value]="d.id">{{d.name}}</option>
+                                    <option *ngFor="let d of talukas$ | async" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="isSubmitted && formControls.taluka.errors">
                                     <div *ngIf="formControls.taluka.errors.pattern" class="validation-error-message">

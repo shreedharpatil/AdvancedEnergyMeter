@@ -21,7 +21,10 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/web.config",
+              "src/sps-aem.PublishSettings",
+              "src/sps-aem - Web Deploy.pubxml"
             ],
             "styles": [
               "node_modules/ngx-toastr/toastr.css",
