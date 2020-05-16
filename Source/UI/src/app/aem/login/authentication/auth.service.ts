@@ -15,7 +15,6 @@ export class AuthService {
     const header = {'content-type' : 'application/json', 'Access-Control-Allow-Origin' : '*'};
     this.http.post(environment.apiBaseUrl + 'contextapi/user/validatecredentials', user, {headers : header})
     .subscribe(res => {
-      console.log(res);
       this.isUserLoggedIn = res as boolean;
       this.username = user.username;
       callback(res);

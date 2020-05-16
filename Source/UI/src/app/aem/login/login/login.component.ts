@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {AuthService} from '../authentication/auth.service';
 import {Router} from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,10 @@ export class LoginComponent implements OnInit {
   isSubmitted = false;
   credentialsValid = false;
 
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private authService: AuthService,
+              private router: Router,
+              private formBuilder: FormBuilder,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -32,8 +36,10 @@ export class LoginComponent implements OnInit {
       return;
     }
     const self = this;
+    this.spinner.show();
     this.authService.login(this.loginForm.value, (res: boolean) => {
         self.credentialsValid = res;
+        this.spinner.hide();
         self.router.navigate(['home/home-landing']);
     });
     //this.credentialsValid = this.authService.isLoggedIn();

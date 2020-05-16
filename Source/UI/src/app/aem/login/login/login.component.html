@@ -15,6 +15,7 @@
           </div>
           <!-- Form Panel    -->
           <div class="col-lg-6 bg-white">
+            <ngx-spinner size = "medium" [fullScreen]="false" type="timer" ></ngx-spinner>
             <div class="form d-flex align-items-center">
               <div class="content">
                 <form class="form-validate" [formGroup]='loginForm' (ngSubmit)='login()'>

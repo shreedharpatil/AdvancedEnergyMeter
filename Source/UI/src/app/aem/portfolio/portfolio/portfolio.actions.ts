@@ -82,6 +82,7 @@ export class CreateTransformerAction implements Action {
 
     constructor(public payload: any) {}
 }
+
 export type PortfolioAction = SaveTaulkasAction |
                               SaveVillagesAction |
                               SaveDistrictsAction |
@@ -94,4 +95,5 @@ export type PortfolioAction = SaveTaulkasAction |
                               CreateStationAction |
                               CreateSectionAction |
                               CreateFeederAction |
-                              CreateTransformerAction ;
+                              CreateTransformerAction
+                             ;

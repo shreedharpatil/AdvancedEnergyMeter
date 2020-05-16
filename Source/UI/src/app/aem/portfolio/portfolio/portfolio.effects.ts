@@ -1,32 +1,40 @@
 import { HttpClient } from '@angular/common/http';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { map, flatMap, switchMap, tap, switchMapTo, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { map, flatMap, switchMap, delay, concatMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { NotificationService } from '../../shared/notification.service';
-import { Observable, of } from 'rxjs';
-import { Action, Store } from '@ngrx/store';
+import { Observable, EMPTY } from 'rxjs';
+import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { Customer, SaveVillage, SaveStation, SaveSection, SaveFeeder, SaveTransformer } from '../../shared/models';
-import { LoadCustomersAction,
-        AddCustomerAction,
-        LoadCustomersSucessAction,
-        ResetRegisterCustomerFormAction } from './customer/customer.actions';
-import { CreateVillageAction,
-         CreateStationAction,
-         CreateSectionAction,
-         CreateFeederAction,
-         CreateTransformerAction } from './portfolio.actions';
-import { LoadVillagesByTalukaIdAction,
-         LoadStationsByVillageIdAction,
-         LoadSectiosByStationIdAction,
-         LoadFeedersBySectionIdAction,
-         LoadTransformersByFeederIdAction } from '../../shared/shared.data.actions';
+import { Customer } from '../../shared/models';
+import {
+    LoadCustomersAction,
+    AddCustomerAction,
+    LoadCustomersSucessAction} from './customer/customer.actions';
+import {
+    CreateVillageAction,
+    CreateStationAction,
+    CreateSectionAction,
+    CreateFeederAction,
+    CreateTransformerAction
+} from './portfolio.actions';
+import {
+    LoadVillagesByTalukaIdAction,
+    LoadStationsByVillageIdAction,
+    LoadSectiosByStationIdAction,
+    LoadFeedersBySectionIdAction,
+    LoadTransformersByFeederIdAction
+} from '../../shared/shared.data.actions';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { post } from '../../shared/http/http-helper';
+import { HandleApiErrorAction } from '../../shared/http/http-helper-actions';
+import { HideLoaderAction } from '../../shared/spinner/spinner-actions';
 
 @Injectable()
 export class PortfolioEffects {
     constructor(private http: HttpClient,
                 private actions$: Actions,
-                private notification: NotificationService) {}
+                private notification: NotificationService) { }
 
 
     @Effect()
@@ -34,9 +42,9 @@ export class PortfolioEffects {
         ofType<LoadCustomersAction>(LoadCustomersAction.TYPE),
         flatMap(() => {
             return this.http.get<Customer[]>(environment.apiBaseUrl + 'contextapi/customer')
-            .pipe(
-                switchMap((p) => [new LoadCustomersSucessAction(p)])
-            );
+                .pipe(
+                    switchMap((p) => [new LoadCustomersSucessAction(p)])
+                );
         })
     );
 
@@ -45,35 +53,30 @@ export class PortfolioEffects {
         ofType<AddCustomerAction>(AddCustomerAction.TYPE),
         map(p => p.payload),
         flatMap((payload) => {
-            return this.http.post(environment.apiBaseUrl + 'contextapi/customer', payload.customer)
-            .pipe(
-                map(p => {
+            return post(this.http,
+                'contextapi/customer',
+                payload.customer,
+                () => {
                     this.notification.showSuccess('Customer created successfully', 'Register Customer');
-                    // payload.callback();
+                    return [new HideLoaderAction(), new LoadCustomersAction()];
                 },
-                error => this.notification.showSuccess(error.error, 'Register Customer')),
-                switchMap(p => [new ResetRegisterCustomerFormAction(), new LoadCustomersAction()])
-                );
-            })
+                'Register Customer');
+        })
     );
 
     @Effect()
     addVillage$: Observable<Action> = this.actions$.pipe(
         ofType<CreateVillageAction>(CreateVillageAction.TYPE),
         map(p => p.payload),
-        flatMap((village) => {
-            return this.http.post(environment.apiBaseUrl + 'contextapi/village', village)
-            .pipe(map(
-                p => {
+        flatMap(village => {
+            return post(this.http,
+                'contextapi/village',
+                village,
+                () => {
                     this.notification.showSuccess('Village created successfully', 'Create Village');
-                    return new LoadVillagesByTalukaIdAction(village.talukaId);
-                    // this.clearForm();
-                    },
-                    error => {
-                                this.notification.showError(error.error, 'Create Village');
-                                flatMap(() => []);
-                    }
-            ));
+                    return [new HideLoaderAction(), new LoadVillagesByTalukaIdAction(village.talukaId)];
+                },
+                'Create Village');
         })
     );
 
@@ -82,15 +85,14 @@ export class PortfolioEffects {
         ofType<CreateStationAction>(CreateStationAction.TYPE),
         map(p => p.payload),
         flatMap((station) => {
-            return this.http.post(environment.apiBaseUrl + 'contextapi/station', station)
-            .pipe(
-                map(p => {
+            return post(this.http,
+                'contextapi/station',
+                station,
+                () => {
                     this.notification.showSuccess('Station created successfully', 'Create Station');
-                    return new LoadStationsByVillageIdAction(station.villageId);
-                    // this.clearForm();
+                    return [new HideLoaderAction(), new LoadStationsByVillageIdAction(station.villageId)];
                 },
-                error => this.notification.showError(error.error, 'Create Station'))
-            );
+                'Create Station');
         })
     );
 
@@ -99,15 +101,14 @@ export class PortfolioEffects {
         ofType<CreateSectionAction>(CreateSectionAction.TYPE),
         map(p => p.payload),
         flatMap((section) => {
-            return this.http.post(environment.apiBaseUrl + 'contextapi/section', section)
-            .pipe(
-                map(p => {
+            return post(this.http,
+                'contextapi/section',
+                section,
+                () => {
                     this.notification.showSuccess('Section created successfully', 'Create Section');
-                    return new LoadSectiosByStationIdAction(section.stationId);
+                    return [new HideLoaderAction(), new LoadSectiosByStationIdAction(section.stationId)];
                 },
-                error => this.notification.showError(error.error, 'Create Feeder')
-                )
-            );
+                'Create Section');
         })
     );
 
@@ -116,15 +117,14 @@ export class PortfolioEffects {
         ofType<CreateFeederAction>(CreateFeederAction.TYPE),
         map(p => p.payload),
         flatMap((feeder) => {
-            return this.http.post(environment.apiBaseUrl + 'contextapi/feeder', feeder)
-            .pipe(
-                map(p => {
+            return post(this.http,
+                'contextapi/feeder',
+                feeder,
+                () => {
                     this.notification.showSuccess('Feeder created successfully', 'Create Feeder');
-                    return new LoadFeedersBySectionIdAction(feeder.sectionId);
+                    return [new HideLoaderAction(), new LoadFeedersBySectionIdAction(feeder.sectionId)];
                 },
-                error => this.notification.showError(error.error, 'Create Feeder')
-                )
-            );
+                'Create Feeder');
         })
     );
 
@@ -133,15 +133,14 @@ export class PortfolioEffects {
         ofType<CreateTransformerAction>(CreateTransformerAction.TYPE),
         map(p => p.payload),
         flatMap((transformer) => {
-            return this.http.post(environment.apiBaseUrl + 'contextapi/transformer', transformer)
-            .pipe(
-                map(p => {
+            return post(this.http,
+                'contextapi/transformer',
+                transformer,
+                () => {
                     this.notification.showSuccess('Transformer created successfully', 'Create Transformer');
-                    return new LoadTransformersByFeederIdAction(transformer.feederId);
+                    return [new HideLoaderAction(), new LoadTransformersByFeederIdAction(transformer.feederId)];
                 },
-                error => this.notification.showError(error.error, 'Create Transformer')
-                )
-            );
+                'Create Transformer');
         })
     );
 }
