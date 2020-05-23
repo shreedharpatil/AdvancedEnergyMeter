@@ -5,3 +5,53 @@
     font-size: 80%;
     color: #dc3545;
 }
+
+.validation-error-message{
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+div.form-group.row > div > button {
+    margin-right: 5px;
+}
+
+.table {
+    color: #a5a7ab;
+}
+
+nav#sidebar a[data-toggle="collapse"]::after{
+    content: '\e035';
+    display: inline-block;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-family: 'Icons';
+    position: absolute;
+    top: 50%;
+    right: 20px;
+}
+
+nav#sidebar a[aria-expanded="true"]::after{
+    content: '\e034';
+    font-family: 'Icons';
+}
+
+nav#sidebar.shrinked a[data-toggle="collapse"]::after {
+    content: '\e034';
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    position: absolute;
+    font-family: 'Icons';
+    top: 88%;
+    left: 50%;
+  }
+  
+  nav#sidebar.shrinked a[aria-expanded="true"]::after {
+    content: '\e037';
+    font-family: 'Icons';
+  }
+
+  nav#sidebar.shrinked ul.list-unstyled.collapse > li > a > i::before {
+      display: none;
+  }

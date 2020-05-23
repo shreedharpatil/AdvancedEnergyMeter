@@ -15,28 +15,29 @@
           </div>
           <!-- Form Panel    -->
           <div class="col-lg-6 bg-white">
-            <ngx-spinner size = "medium" [fullScreen]="false" type="timer" ></ngx-spinner>
+            <ngx-spinner size = "medium" [fullScreen]="false" type="timer" ></ngx-spinner>            
             <div class="form d-flex align-items-center">
               <div class="content">
-                <form class="form-validate" [formGroup]='loginForm' (ngSubmit)='login()'>
-                <div *ngIf="isSubmitted && !credentialsValid" class="input-material">
-                    Username or password is invalid
-                </div>
+                <form class="form-validate" [formGroup]='loginForm' (ngSubmit)='login()'>   
+                  <div *ngIf="isSubmitted && !credentialsValid" class="validation-error-message" style="margin-bottom: 10px;font-size: 15px;">
+                    {{messageText}}
+                  </div>             
                   <div class="form-group">
-                    <input id="login-username" type="text" name="username" formControlName='username' required data-msg="Please enter your username" class="input-material">
+                    <input id="login-username" type="text" name="username" formControlName='username' class="input-material">
                     <label for="login-username" class="label-material">User Name</label>
-                  </div>
-                  <div *ngIf="isSubmitted && formControls.username.errors">
-                      <div *ngIf="formControls.username.errors.required">
-                          Username required
+                    <div *ngIf="isSubmitted && formControls.username.errors">
+                      <div *ngIf="formControls.username.errors.required" class="validation-error-message">
+                        Please enter your username
                       </div>
                   </div>
+                  </div>
+                  
                   <div class="form-group">
-                    <input id="login-password" type="password" name="loginPassword" formControlName='password' required data-msg="Please enter your password" class="input-material">
+                    <input id="login-password" type="password" name="loginPassword" formControlName='password' class="input-material">
                     <label for="login-password" class="label-material">Password</label>
                     <div *ngIf="isSubmitted && formControls.password.errors">
-                        <div *ngIf="formControls.password.errors.required">
-                            Password is required
+                        <div *ngIf="formControls.password.errors.required"  class="validation-error-message">
+                          Please enter your password
                         </div>
                     </div>
                   </div><button id="login" (onClick)="login()" class="btn btn-primary">Login</button>
@@ -48,6 +49,6 @@
       </div>
     </div>
     <div class="copyrights text-center">
-       <p>2020 &copy; SPS AEMS. </p>
+       <p>{{year}} &copy; SPS AEMS. </p>
     </div>
   </div>
