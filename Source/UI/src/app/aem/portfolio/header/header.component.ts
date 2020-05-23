@@ -31,11 +31,11 @@ export class HeaderComponent implements OnInit {
     if ($('.sidebar-toggle').hasClass('active')) {
             $('.navbar-brand .brand-sm').addClass('visible');
             $('.navbar-brand .brand-big').removeClass('visible');
-            $('.sidebar-toggle').find('i').attr('class', 'fa fa-long-arrow-right');
+            $('.sidebar-toggle').find('i').attr('class', 'oi oi-arrow-thick-right');
         } else {
             $('.navbar-brand .brand-sm').removeClass('visible');
             $('.navbar-brand .brand-big').addClass('visible');
-            $('.sidebar-toggle').find('i').attr('class', 'fa fa-long-arrow-left');
+            $('.sidebar-toggle').find('i').attr('class', 'oi oi-arrow-thick-left');
         }
   }
 }

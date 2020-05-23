@@ -13,6 +13,8 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isSubmitted = false;
   credentialsValid = false;
+  year: number;
+  messageText = '';
 
   constructor(private authService: AuthService,
               private router: Router,
@@ -20,6 +22,7 @@ export class LoginComponent implements OnInit {
               private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this.year = new Date().getFullYear();
     this.loginForm = this.formBuilder.group({
       username : ['', Validators.required],
       password: ['', Validators.required]
@@ -36,12 +39,21 @@ export class LoginComponent implements OnInit {
       return;
     }
     const self = this;
-    this.spinner.show();
     this.authService.login(this.loginForm.value, (res: boolean) => {
         self.credentialsValid = res;
-        this.spinner.hide();
+        self.spinner.hide();
+        if (!res) {
+          self.messageText = 'Username or password is invalid';
+          return;
+        }
+
         self.router.navigate(['home/home-landing']);
+    },
+    () => {
+      self.messageText = 'An error occured. Try again later.';
+      self.spinner.hide();
     });
+    this.spinner.show();
     //this.credentialsValid = this.authService.isLoggedIn();
   }
 
