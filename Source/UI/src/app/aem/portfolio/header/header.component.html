@@ -8,7 +8,12 @@
           <!-- Sidebar Toggle Btn-->
           <button class="sidebar-toggle" (click)='toggle()'><i class="oi oi-arrow-thick-left"></i></button>
         </div>
-        <div class="right-menu list-inline no-margin-bottom">    
+        <div class="right-menu list-inline no-margin-bottom">
+          <select class="list-inline-item form-control" (change)="sendCommand($event)">
+            <option>Reading</option>
+            <option>BlockDevice</option>
+            <option>UnblockDevice</option>
+          </select>  
           <!-- Log out               -->
           <div class="list-inline-item logout">                   
               <a id="logout" (click)='logout()' class="nav-link" style="cursor: pointer;">Logout <i class="oi oi-power-standby"></i></a>
