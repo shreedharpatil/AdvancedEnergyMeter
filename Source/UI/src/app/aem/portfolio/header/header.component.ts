@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../login/authentication/auth.service';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +13,8 @@ import * as $ from 'jquery';
 export class HeaderComponent implements OnInit {
 
   constructor(public authService: AuthService,
-              private router: Router) { }
+              private router: Router,
+              private http: HttpClient) { }
 
   ngOnInit(): void {
   }
@@ -19,6 +22,11 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['login']);
+  }
+
+  sendCommand(event) {
+    this.http.post(environment.apiBaseUrl + 'contextapi/sendcommand', { command: event.target.value})
+    .subscribe(p => console.log(p));
   }
 
   toggle() {

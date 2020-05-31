@@ -29,5 +29,6 @@ msbuild.err
 msbuild.wrn
 packages/
 
+
 # Visual Studio 2019
 .vs/

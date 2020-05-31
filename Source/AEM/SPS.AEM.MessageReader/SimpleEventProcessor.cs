@@ -54,6 +54,7 @@ namespace SPS.AEM.MessageReader
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e);
                 }
             }
 
