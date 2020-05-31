@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { User } from '../../shared/user/user';
 import { SaveUserDetailsAction } from '../../shared/user/user.actions';
 import { LoadCustomersAction } from './customer/customer.actions';
+import * as signalR from '@aspnet/signalr';
+import { NotificationService } from '../../shared/notification.service';
 
 @Component({
   selector: 'app-portfolio',
@@ -13,10 +15,12 @@ import { LoadCustomersAction } from './customer/customer.actions';
   styleUrls: ['./portfolio.component.css']
 })
 export class PortfolioComponent implements OnInit {
+  private hubConnection: signalR.HubConnection;
 
   constructor(private http: HttpClient,
               private store: Store<{user: User}>,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private notification: NotificationService) { }
 
   ngOnInit(): void {
     this.http.get<User>(environment.apiBaseUrl + 'contextapi/user/' + this.authService.getUsername)
@@ -25,6 +29,19 @@ export class PortfolioComponent implements OnInit {
     });
 
     this.store.dispatch(new LoadCustomersAction());
+    this.hubConnection = new signalR.HubConnectionBuilder()
+                            .withUrl(environment.apiBaseUrl + 'aem')
+                            .build();
+
+    this.hubConnection
+      .start()
+      .then(() => console.log('Connection started'))
+      .catch(err => console.log('Error while starting connection: ' + err));
+
+    this.hubConnection.on('eventReceived', (data) => {
+      console.log(data);
+      this.notification.showInfo(`${data.payload}`, 'Event Received');
+    });
   }
 
 }
