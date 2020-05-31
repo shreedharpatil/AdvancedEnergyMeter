@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SPS.AEM.Web.Hub
 {
-    public class AemHub: Microsoft.AspNetCore.SignalR.Hub
+    public class AemHub : Microsoft.AspNetCore.SignalR.Hub
     {
     }
 }
