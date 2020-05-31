@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using SPS.AEM.Database.Contexts;
 using SPS.AEM.Repository.Implementations;
 using SPS.AEM.Repository.Interfaces;
+using SPS.AEM.Web.Hub;
 
 namespace SPS.AEM.Web
 {
@@ -31,11 +32,13 @@ namespace SPS.AEM.Web
         {
             services.AddDbContext<AemDatabaseContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:Aem"], b => b.MigrationsAssembly("SPS.AEM.Web")));
             services.AddControllers();
+            var allowedOrigins = Configuration["Settings:AllowedOrigins"].Split(',');
             services.AddCors(c =>
             {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyHeader().AllowAnyMethod().WithOrigins(allowedOrigins).AllowCredentials());
             });
 
+            services.AddSignalR();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<ILoadTypeRepository, LoadTypeRepository>();
@@ -61,9 +64,11 @@ namespace SPS.AEM.Web
             app.UseRouting();
 
             //app.UseAuthorization();
-            app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseCors("AllowOrigin");
+            
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<AemHub>("/aem");
                 endpoints.MapControllers();
             });
         }
