@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.Text;
 using Microsoft.Azure.Devices.Client;
 using Newtonsoft.Json;
@@ -13,8 +14,7 @@ namespace SPS.AEM.DeviceToCloudSender
         private static string deviceId = "MyFirstIoTHubDevice";
         static void Main(string[] args)
         {
-            var connectionString =
-                "HostName=SPS-AEM-DEV-EVENTHUB.azure-devices.net;DeviceId=MyFirstIoTHubDevice;SharedAccessKey=/xmy6+NNjqGg/Qn5iLQFMaQ9/M+YOCjWbDLnpAGYchM=";
+            var connectionString = ConfigurationManager.AppSettings["EventHubConnectionString"]; ;
             deviceClient = DeviceClient.CreateFromConnectionString(connectionString);
             var backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += ReceiveMessageFromCloud;

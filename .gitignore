@@ -32,3 +32,6 @@ packages/
 
 # Visual Studio 2019
 .vs/
+
+App - Copy.config
+appsettings - Copy.json
