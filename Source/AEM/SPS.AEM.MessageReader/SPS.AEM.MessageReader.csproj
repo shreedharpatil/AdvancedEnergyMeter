@@ -101,6 +101,7 @@
     <Compile Include="SimpleEventProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App - Copy.config" />
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\webjob-publish-settings.json" />

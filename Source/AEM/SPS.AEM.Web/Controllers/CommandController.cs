@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Devices;
+using Microsoft.Extensions.Configuration;
 using SPS.AEM.Web.Models.Dto;
 
 namespace SPS.AEM.Web.Controllers
@@ -12,6 +13,13 @@ namespace SPS.AEM.Web.Controllers
     [Route("contextapi/sendcommand")]
     public class CommandController : Controller
     {
+        private readonly IConfiguration configuration;
+
+        public CommandController(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         public async Task<IActionResult> Post([FromBody] CommandDto command)
         {
             if (!ModelState.IsValid)
@@ -19,7 +27,7 @@ namespace SPS.AEM.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            string connectionString = "HostName=SPS-AEM-DEV-EVENTHUB.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=X0elD7P0XElDZrw827wgaLSeSW1ej/gy4khjrHVrpSc=";
+            string connectionString = this.configuration["ConnectionStrings:EventHub"];
             string deviceId = "MyFirstIoTHubDevice";
             using (var serviceClient = ServiceClient.CreateFromConnectionString(connectionString))
             {
