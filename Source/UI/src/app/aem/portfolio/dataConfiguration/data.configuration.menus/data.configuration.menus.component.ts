@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { User } from '../../shared/user/user';
 import { Subscription } from 'rxjs';
+import { User } from 'src/app/aem/shared/user/user';
 
 @Component({
-  selector: 'app-menus',
-  templateUrl: './menus.component.html',
-  styleUrls: ['./menus.component.css']
+  selector: 'app-data-configuration-menus',
+  templateUrl: './data.configuration.menus.component.html',
+  styleUrls: ['./data.configuration.menus.component.css']
 })
-export class MenusComponent implements OnInit, OnDestroy {
+export class DataConfigurationMenusComponent implements OnInit, OnDestroy {
 
   user: User = new User();
   getUserSubscription: Subscription;
