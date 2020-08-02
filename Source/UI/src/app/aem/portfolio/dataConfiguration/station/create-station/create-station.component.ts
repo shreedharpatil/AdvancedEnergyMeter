@@ -4,7 +4,7 @@ import { District, AppRoot, Taluka, Village } from 'src/app/aem/shared/models';
 import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateStationAction } from '../../portfolio.actions';
+import { CreateStationAction } from '../../../portfolio/portfolio.actions';
 
 @Component({
   selector: 'app-create-station',

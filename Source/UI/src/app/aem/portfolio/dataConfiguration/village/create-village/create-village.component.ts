@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { CreateVillageAction } from '../../portfolio.actions';
+import { CreateVillageAction } from '../../../portfolio/portfolio.actions';
 
 @Component({
   selector: 'app-create-village',

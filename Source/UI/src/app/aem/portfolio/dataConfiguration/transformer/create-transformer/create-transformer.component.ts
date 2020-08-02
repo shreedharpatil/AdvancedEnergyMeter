@@ -1,28 +1,33 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { District, AppRoot, Taluka, Village, Station } from 'src/app/aem/shared/models';
+import { District, AppRoot, Taluka, Village, Station, Section, Feeder } from 'src/app/aem/shared/models';
 import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateSectionAction } from '../../portfolio.actions';
+import { CreateTransformerAction } from '../../../portfolio/portfolio.actions';
 
 @Component({
-  selector: 'app-create-section',
-  templateUrl: './create-section.component.html',
-  styleUrls: ['./create-section.component.css']
+  selector: 'app-create-transformer',
+  templateUrl: './create-transformer.component.html',
+  styleUrls: ['./create-transformer.component.css']
 })
-export class CreateSectionComponent implements OnInit, OnDestroy {
-  section: any = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0 };
+export class CreateTransformerComponent implements OnInit, OnDestroy {
+
+  transformer: any = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0, sectionId: 0, feederId: 0 };
   talukas: Taluka[];
   districts: District[];
   villages: Village[];
   stations: Station[];
-  createSectionForm: FormGroup;
+  sections: Section[];
+  feeders: Feeder[];
+  createTransformerForm: FormGroup;
   isSubmitted = false;
   getTalukasByDistrictIdSubscription: Subscription;
   getVillagesByTalukaIdSubscription: Subscription;
   getDistrictsAndLoadTypesSubscription: Subscription;
   getStationsByVillageIdSubscription: Subscription;
+  getSectionsByStationIdSubscription: Subscription;
+  getFeedersBySectionIdSubscription: Subscription;
 
   constructor(private service: SharedDataService,
               private formBuilder: FormBuilder,
@@ -33,12 +38,14 @@ export class CreateSectionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.createSectionForm = this.formBuilder.group({
-      sectionName: ['', Validators.required],
+    this.createTransformerForm = this.formBuilder.group({
+      transformerName: ['', Validators.required],
       district: ['', Validators.pattern('^[1-9]\d*$')],
       taluka: ['', Validators.pattern('^[1-9]\d*$')],
       village: ['', Validators.pattern('^[1-9]\d*$')],
-      station: ['', Validators.pattern('^[1-9]\d*$')]
+      station: ['', Validators.pattern('^[1-9]\d*$')],
+      section: ['', Validators.pattern('^[1-9]\d*$')],
+      feeder: ['', Validators.pattern('^[1-9]\d*$')]
     });
 
     this.getDistrictsAndLoadTypesSubscription = this.service.getDistrictsAndLoadTypes()
@@ -48,7 +55,7 @@ export class CreateSectionComponent implements OnInit, OnDestroy {
   }
 
   get formControls() {
-    return this.createSectionForm.controls;
+    return this.createTransformerForm.controls;
   }
 
   getTalukasByDistrictId(event) {
@@ -75,18 +82,34 @@ export class CreateSectionComponent implements OnInit, OnDestroy {
       });
   }
 
-  clearForm() {
-    this.section = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0 };
+  getSectionsByStationId(event) {
+    this.getSectionsByStationIdSubscription = this.service.getSectionsByStationId(event.target.value)
+      .subscribe(p => {
+        this.sections = p;
+        this.getSectionsByStationIdSubscription.unsubscribe();
+      });
+  }
+
+  getFeedersBySectionId(event) {
+    this.getFeedersBySectionIdSubscription = this.service.getFeedersBySectionId(event.target.value)
+      .subscribe(p => {
+        this.feeders = p;
+        this.getFeedersBySectionIdSubscription.unsubscribe();
+      });
+  }
+
+  clerForm() {
+    this.transformer = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0, sectionId: 0, feederId: 0 };
     this.isSubmitted = false;
   }
 
-  createStation() {
+  createTransformer() {
     this.isSubmitted = true;
-    if (this.createSectionForm.invalid) {
+    if (this.createTransformerForm.invalid) {
       return;
     }
 
-    this.section.stationId = parseInt(this.section.stationId);
-    this.store.dispatch(new CreateSectionAction(this.section));
+    this.transformer.feederId = parseInt(this.transformer.feederId);
+    this.store.dispatch(new CreateTransformerAction(this.transformer));
   }
 }
