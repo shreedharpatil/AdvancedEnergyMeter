@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../login/authentication/auth.service';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/aem/login/authentication/auth.service';
 
 @Component({
   selector: 'app-header',

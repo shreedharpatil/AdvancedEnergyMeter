@@ -1,16 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { map, flatMap, switchMap, delay, concatMap } from 'rxjs/operators';
+import { map, flatMap, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { NotificationService } from '../../shared/notification.service';
-import { Observable, EMPTY } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Customer } from '../../shared/models';
-import {
-    LoadCustomersAction,
-    AddCustomerAction,
-    LoadCustomersSucessAction} from './customer/customer.actions';
 import {
     CreateVillageAction,
     CreateStationAction,
@@ -25,10 +21,9 @@ import {
     LoadFeedersBySectionIdAction,
     LoadTransformersByFeederIdAction
 } from '../../shared/shared.data.actions';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { post } from '../../shared/http/http-helper';
-import { HandleApiErrorAction } from '../../shared/http/http-helper-actions';
 import { HideLoaderAction } from '../../shared/spinner/spinner-actions';
+import { LoadCustomersAction, LoadCustomersSucessAction, AddCustomerAction } from '../dataConfiguration/customer/customer.actions';
 
 @Injectable()
 export class PortfolioEffects {

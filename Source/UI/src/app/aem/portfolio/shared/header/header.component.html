@@ -8,12 +8,21 @@
           <!-- Sidebar Toggle Btn-->
           <button class="sidebar-toggle" (click)='toggle()'><i class="oi oi-arrow-thick-left"></i></button>
         </div>
+        
         <div class="right-menu list-inline no-margin-bottom">
-          <select class="list-inline-item form-control" (change)="sendCommand($event)">
-            <option>Reading</option>
-            <option>BlockDevice</option>
-            <option>UnblockDevice</option>
-          </select>  
+          <div class="list-inline-item dropdown"><a id="menus" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><span class="d-none d-sm-inline-block">Menus</span></a>
+            <div aria-labelledby="menus" class="dropdown-menu">
+              <a rel="nofollow" [routerLink]="['/portfolio', 'block-user']" class="dropdown-item"> <span>Portfolio  </span></a>
+              <a rel="nofollow" [routerLink]="['/configureData','home-landing']"  class="dropdown-item"> <span>Configure Data</span></a>
+            </div>
+          </div>
+          <div class="list-inline-item">
+            <select class="list-inline-item form-control" (change)="sendCommand($event)">
+              <option>Reading</option>
+              <option>BlockDevice</option>
+              <option>UnblockDevice</option>
+            </select>  
+          </div>
           <!-- Log out               -->
           <div class="list-inline-item logout">                   
               <a id="logout" (click)='logout()' class="nav-link" style="cursor: pointer;">Logout <i class="oi oi-power-standby"></i></a>
