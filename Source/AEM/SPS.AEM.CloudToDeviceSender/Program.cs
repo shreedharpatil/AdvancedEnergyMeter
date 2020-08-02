@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SPS.AEM.Shared;
+using System.Configuration;
 
 namespace SPS.AEM.CloudToDeviceSender
 {
@@ -18,7 +19,7 @@ namespace SPS.AEM.CloudToDeviceSender
                 { "B", EventType.BlockDevice.ToString() },
                 { "U", EventType.UnblockDevice.ToString()}
             };
-            string connectionString = "HostName=SPS-AEM-DEV-EVENTHUB.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=X0elD7P0XElDZrw827wgaLSeSW1ej/gy4khjrHVrpSc=";
+            string connectionString = ConfigurationManager.AppSettings["EventHubConnectionString"];
             string deviceId = "MyFirstIoTHubDevice";
             var serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
             try
