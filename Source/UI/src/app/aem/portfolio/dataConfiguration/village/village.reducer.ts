@@ -1,7 +1,7 @@
 import { updateGroup, setValue, validate, formGroupReducer } from 'ngrx-forms';
 import { required, pattern, greaterThan } from 'ngrx-forms/validation';
 import { VillageAction, ResetVillageFormAction } from './village.actions';
-import { VillageFormState, VillageState, InitialVillageState } from './village.state';
+import { VillageFormState, VillageState, INITIAL_VILLAGE_STATE } from './village.state';
 
 const resetVillageForm = updateGroup<VillageFormState>({
     districtId: setValue(0),
@@ -17,7 +17,7 @@ const updateFormGroup = updateGroup<VillageFormState>(
     }
 );
 
-export function VillageReducer(state: VillageState = InitialVillageState, action: VillageAction) {
+export function VillageReducer(state: VillageState = INITIAL_VILLAGE_STATE, action: VillageAction) {
     const formState = updateFormGroup(formGroupReducer(state.formState, action));
     if (state.formState !== formState) {
         state = {...state, formState};

@@ -4,9 +4,10 @@ import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
 
 import { Subscription, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { VillageFormState, VillageState } from '../village.state';
+import { VillageFormState } from '../village.state';
 import { FormGroupState } from 'ngrx-forms';
 import { CreateVillageAction, ResetVillageFormAction } from '../village.actions';
+import { DataConfigurationRootState } from '../../data.configuration.reducer';
 
 @Component({
   selector: 'app-create-village',
@@ -22,8 +23,8 @@ export class CreateVillageComponent implements OnInit, OnDestroy {
   getDistrictsAndLoadTypesSubscription: Subscription;
   formState$: Observable<FormGroupState<VillageFormState>>;
   constructor(private service: SharedDataService,
-              private store: Store<{ village: VillageState}>) {
-                this.formState$ = store.select(p => p.village.formState);
+              private store: Store<DataConfigurationRootState>) {
+                this.formState$ = store.select(p => p.dataConfiguration.village.formState);
                }
 
   ngOnDestroy(): void {

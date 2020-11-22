@@ -7,7 +7,6 @@ export function UserReducer(state: User = user, action: UserAction) {
     switch (action.type) {
         case UserActionTypes.SaveUserDetails:
             return action.payload;
-            break;
         default:
             return state;
     }

@@ -9,14 +9,15 @@ import { post } from 'src/app/aem/shared/http/http-helper';
 import { NotificationService } from 'src/app/aem/shared/notification.service';
 import { LoadVillagesByTalukaIdAction } from 'src/app/aem/shared/shared.data.actions';
 import { HideLoaderAction } from 'src/app/aem/shared/spinner/spinner-actions';
+import { DataConfigurationRootState } from '../data.configuration.reducer';
 import { CreateVillageAction, ResetVillageFormAction } from './village.actions';
-import { VillageFormState, VillageState } from './village.state';
+import { VillageFormState } from './village.state';
 
 
 @Injectable()
 export class VillageEffects {
 
-    constructor(private store: Store<{village: VillageState}>,
+    constructor(private store: Store<DataConfigurationRootState>,
                 private http: HttpClient,
                 private actions$: Actions,
                 private notification: NotificationService) {}
@@ -24,7 +25,7 @@ export class VillageEffects {
     @Effect()
     addVillage$: Observable<Action> = this.actions$.pipe(
         ofType<CreateVillageAction>(CreateVillageAction.TYPE),
-        withLatestFrom(this.store.select(p => p.village.formState)),
+        withLatestFrom(this.store.select(p => p.dataConfiguration.village.formState)),
         filter(([, fs]) => fs.isValid),
         map(([_, fs]) => this.mapVillage(fs)),
         flatMap((village => {

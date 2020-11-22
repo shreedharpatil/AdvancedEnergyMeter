@@ -9,12 +9,13 @@ import { post } from 'src/app/aem/shared/http/http-helper';
 import { NotificationService } from 'src/app/aem/shared/notification.service';
 import { LoadFeedersBySectionIdAction } from 'src/app/aem/shared/shared.data.actions';
 import { HideLoaderAction } from 'src/app/aem/shared/spinner/spinner-actions';
+import { DataConfigurationRootState } from '../data.configuration.reducer';
 import { CreateFeederAction, ResetFeederFormAction } from './feeder.actions';
-import { FeederState, FeederFormValue } from './feeder.state';
+import { FeederFormValue } from './feeder.state';
 
 @Injectable()
 export class FeederEffects {
-    constructor(private store: Store<{feeder: FeederState}>,
+    constructor(private store: Store<DataConfigurationRootState>,
                 private http: HttpClient,
                 private actions$: Actions,
                 private notification: NotificationService) {}
@@ -22,7 +23,7 @@ export class FeederEffects {
     @Effect()
     addFeeder$: Observable<Action> = this.actions$.pipe(
         ofType<CreateFeederAction>(CreateFeederAction.TYPE),
-        withLatestFrom(this.store.select(p => p.feeder.formState)),
+        withLatestFrom(this.store.select(p => p.dataConfiguration.feeder.formState)),
         filter(([_, fs]) => fs.isValid),
         map(([, fs]) => this.mapToFeeder(fs)),
         flatMap((feeder) => {

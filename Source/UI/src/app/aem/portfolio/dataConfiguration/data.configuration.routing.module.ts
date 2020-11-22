@@ -22,6 +22,8 @@ import { FeederEffects } from './feeder/feeder.effects';
 import { SectionEffects } from './section/section.effects';
 import { StationEffects } from './station/station.effects';
 import { TransformerEffects } from './transformer/transformer.effects';
+import { StoreModule } from '@ngrx/store';
+import { DATA_CONFIGURATION_FEATURE_NAME, DataConfigurationReducer } from './data.configuration.reducer';
 
 const routes: Routes = [
     // { path: '', redirectTo: 'home-landing'},
@@ -45,6 +47,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     ToastrModule.forRoot(),
+    StoreModule.forFeature(DATA_CONFIGURATION_FEATURE_NAME, DataConfigurationReducer),
     EffectsModule.forFeature([
       VillageEffects,
       StationEffects,

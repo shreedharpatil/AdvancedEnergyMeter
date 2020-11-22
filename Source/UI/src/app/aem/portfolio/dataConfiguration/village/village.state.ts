@@ -16,6 +16,6 @@ const InitialVillageForm = createFormGroupState<VillageFormState>('VillageFormGr
     villageName: '',
 });
 
-export const InitialVillageState: VillageState = {
+export const INITIAL_VILLAGE_STATE: VillageState = {
 formState: InitialVillageForm,
 };
