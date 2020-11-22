@@ -9,12 +9,13 @@ import { post } from 'src/app/aem/shared/http/http-helper';
 import { NotificationService } from 'src/app/aem/shared/notification.service';
 import { LoadTransformersByFeederIdAction } from 'src/app/aem/shared/shared.data.actions';
 import { HideLoaderAction } from 'src/app/aem/shared/spinner/spinner-actions';
+import { DataConfigurationRootState } from '../data.configuration.reducer';
 import { CreateTransformerAction, ResetTransformerFormAction } from './transformer.actions';
-import { TransformerFormValue, TransformerState } from './transformer.state';
+import { TransformerFormValue } from './transformer.state';
 
 @Injectable()
 export class TransformerEffects {
-    constructor(private store: Store<{transformer: TransformerState}>,
+    constructor(private store: Store<DataConfigurationRootState>,
                 private http: HttpClient,
                 private actions$: Actions,
                 private notification: NotificationService) {}
@@ -22,7 +23,7 @@ export class TransformerEffects {
     @Effect()
     addTransformer$: Observable<Action> = this.actions$.pipe(
         ofType<CreateTransformerAction>(CreateTransformerAction.TYPE),
-        withLatestFrom(this.store.select(p => p.transformer.formState)),
+        withLatestFrom(this.store.select(p => p.dataConfiguration.transformer.formState)),
         filter(([_, fs]) => fs.isValid),
         map(([, fs]) => this.mapToTransformer(fs)),
         flatMap((transformer) => {

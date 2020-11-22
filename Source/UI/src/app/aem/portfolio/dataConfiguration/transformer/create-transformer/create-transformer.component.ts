@@ -3,9 +3,10 @@ import { Observable, Subscription } from 'rxjs';
 import { District, Taluka, Village, Station, Section, Feeder } from 'src/app/aem/shared/models';
 import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { TransformerFormValue, TransformerState } from '../transformer.state';
+import { TransformerFormValue } from '../transformer.state';
 import { FormGroupState } from 'ngrx-forms';
 import { CreateTransformerAction, ResetTransformerFormAction } from '../transformer.actions';
+import { DataConfigurationRootState } from '../../data.configuration.reducer';
 
 @Component({
   selector: 'app-create-transformer',
@@ -28,8 +29,8 @@ export class CreateTransformerComponent implements OnInit, OnDestroy {
   formState$: Observable<FormGroupState<TransformerFormValue>>;
 
   constructor(private service: SharedDataService,
-              private store: Store<{transformer: TransformerState}>) {
-                this.formState$ = store.select(p => p.transformer.formState);
+              private store: Store<DataConfigurationRootState>) {
+                this.formState$ = store.select(p => p.dataConfiguration.transformer.formState);
               }
 
   ngOnDestroy(): void {

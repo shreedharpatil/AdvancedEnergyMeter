@@ -4,8 +4,9 @@ import { FormGroupState } from 'ngrx-forms';
 import { Subscription, Observable } from 'rxjs';
 import { Taluka, District, Village } from 'src/app/aem/shared/models';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
+import { DataConfigurationRootState } from '../../data.configuration.reducer';
 import { ResetStationFormAction, CreateStationAction } from '../station.actions';
-import { StationFormValue, StationState } from '../station.state';
+import { StationFormValue } from '../station.state';
 
 @Component({
   selector: 'app-create-station',
@@ -23,8 +24,8 @@ export class CreateStationComponent implements OnInit, OnDestroy {
   formState$: Observable<FormGroupState<StationFormValue>>;
 
   constructor(private service: SharedDataService,
-              private store: Store<{ station: StationState}>) {
-                this.formState$ = store.select(p => p.station.formState);
+              private store: Store<DataConfigurationRootState>) {
+                this.formState$ = store.select(p => p.dataConfiguration.station.formState);
                }
 
   ngOnDestroy(): void {

@@ -1,16 +1,19 @@
-import {AppRoot, SaveTaluka, SaveVillage, SaveStation, SaveSection, SaveFeeder, SaveTransformer} from 'src/app/aem/shared/models';
+import {AppRoot, SaveTaluka,
+    SaveVillage, SaveStation,
+    SaveSection, SaveFeeder, SaveTransformer,
+    District, LoadType} from 'src/app/aem/shared/models';
 import { PortfolioAction } from './portfolio.actions';
 import { PortfolioActionType } from './portfolio-action-type';
 
 const appState: AppRoot = new AppRoot();
 
-export function PortfolioReducer(state: AppRoot = appState, action: PortfolioAction) {
+export function PortfolioReducer(state: AppRoot = appState, action: PortfolioAction): AppRoot {
     switch (action.type) {
         case PortfolioActionType.SaveDistrict:
-            return { ...state, districts : action.payload };
+            return { ...state, districts : action.payload as District[] };
             break;
         case PortfolioActionType.SaveLoadTypes:
-            return { ...state, loadTypes : action.payload };
+            return { ...state, loadTypes : action.payload as LoadType[] };
             break;
         case PortfolioActionType.SaveTalukas:
             const t = action.payload as SaveTaluka;
