@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { District, AppRoot, LoadType, Taluka, Village, Station, Section } from 'src/app/aem/shared/models';
+import { Observable, Subscription } from 'rxjs';
+import { District, Taluka, Village, Station, Section } from 'src/app/aem/shared/models';
 import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateFeederAction } from '../../../portfolio/portfolio.actions';
+import { FeederFormValue, FeederState } from '../feeder.state';
+import { FormGroupState } from 'ngrx-forms';
+import { CreateFeederAction, ResetFeederFormAction } from '../feeder.actions';
 
 @Component({
   selector: 'app-create-feeder',
@@ -12,47 +13,32 @@ import { CreateFeederAction } from '../../../portfolio/portfolio.actions';
   styleUrls: ['./create-feeder.component.css']
 })
 export class CreateFeederComponent implements OnInit, OnDestroy {
-
-  feeder: any = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0, sectionId: 0 };
   talukas: Taluka[];
   districts: District[];
   villages: Village[];
   stations: Station[];
   sections: Section[];
-  createFeederForm: FormGroup;
-  isSubmitted = false;
   getTalukasByDistrictIdSubscription: Subscription;
   getVillagesByTalukaIdSubscription: Subscription;
   getDistrictsAndLoadTypesSubscription: Subscription;
   getStationsByVillageIdSubscription: Subscription;
   getSectionsByStationIdSubscription: Subscription;
+  formState$: Observable<FormGroupState<FeederFormValue>>;
 
   constructor(private service: SharedDataService,
-              private formBuilder: FormBuilder,
-              private store: Store<AppRoot>) { }
+              private store: Store<{ feeder: FeederState }>) {
+                this.formState$ = store.select(p => p.feeder.formState);
+               }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.createFeederForm = this.formBuilder.group({
-      feederName: ['', Validators.required],
-      district: ['', Validators.pattern('^[1-9]\d*$')],
-      taluka: ['', Validators.pattern('^[1-9]\d*$')],
-      village: ['', Validators.pattern('^[1-9]\d*$')],
-      station: ['', Validators.pattern('^[1-9]\d*$')],
-      section: ['', Validators.pattern('^[1-9]\d*$')]
-    });
-
     this.getDistrictsAndLoadTypesSubscription = this.service.getDistrictsAndLoadTypes()
       .subscribe(p => {
         this.districts = p.districts;
       });
-  }
-
-  get formControls() {
-    return this.createFeederForm.controls;
   }
 
   getTalukasByDistrictId(event) {
@@ -88,17 +74,10 @@ export class CreateFeederComponent implements OnInit, OnDestroy {
   }
 
   clearForm() {
-    this.feeder = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0, sectionId: 0 };
-    this.isSubmitted = false;
+    this.store.dispatch(new ResetFeederFormAction());
   }
 
   createFeeder() {
-    this.isSubmitted = true;
-    if (this.createFeederForm.invalid) {
-      return;
-    }
-
-    this.feeder.sectionId = parseInt(this.feeder.sectionId);
-    this.store.dispatch(new CreateFeederAction(this.feeder));
+    this.store.dispatch(new CreateFeederAction());
   }
 }

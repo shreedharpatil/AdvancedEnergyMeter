@@ -21,6 +21,18 @@ import { PortfolioEffects } from './aem/portfolio/portfolio/portfolio.effects';
 import { SharedDataEffects } from './aem/shared/shared.data.effects';
 import { HttpHelperEffects } from './aem/shared/http/http-helper-effects';
 import { SpinnerEffects } from './aem/shared/spinner/spinner-effects';
+import { NgrxFormsModule } from 'ngrx-forms';
+import { VillageEffects } from './aem/portfolio/dataConfiguration/village/village.effects';
+import { VillageReducer } from './aem/portfolio/dataConfiguration/village/village.reducer';
+import { StationReducer } from './aem/portfolio/dataConfiguration/station/station.reducer';
+import { StationEffects } from './aem/portfolio/dataConfiguration/station/station.effects';
+import { SectionEffects } from './aem/portfolio/dataConfiguration/section/section.effects';
+import { SectionReducer } from './aem/portfolio/dataConfiguration/section/section.reducer';
+import { FeederEffects } from './aem/portfolio/dataConfiguration/feeder/feeder.effects';
+import { FeederReducer } from './aem/portfolio/dataConfiguration/feeder/feeder.reducer';
+import { TransformerReducer } from './aem/portfolio/dataConfiguration/transformer/transformer.reducer';
+import { TransformerEffects } from './aem/portfolio/dataConfiguration/transformer/transformer.effects';
+import { CustomerEffects } from './aem/portfolio/dataConfiguration/customer/customer.effects';
 
 @NgModule({
   declarations: [
@@ -29,8 +41,27 @@ import { SpinnerEffects } from './aem/shared/spinner/spinner-effects';
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot({ portfolio: PortfolioReducer, user: UserReducer, customer: CustomerReducer }),
-    EffectsModule.forRoot([PortfolioEffects, SharedDataEffects, HttpHelperEffects, SpinnerEffects]),
+    StoreModule.forRoot({ portfolio: PortfolioReducer,
+      user: UserReducer,
+      customer: CustomerReducer,
+      village: VillageReducer,
+      station: StationReducer,
+      section: SectionReducer,
+      feeder: FeederReducer,
+      transformer: TransformerReducer,
+    }),
+    NgrxFormsModule,
+    EffectsModule.forRoot([PortfolioEffects,
+      SharedDataEffects,
+      HttpHelperEffects,
+      SpinnerEffects,
+      VillageEffects,
+      StationEffects,
+      SectionEffects,
+      FeederEffects,
+      TransformerEffects,
+      CustomerEffects,
+    ]),
     DataConfigurationRoutingModule,
     PortfolioRoutingModule,
     AppRoutingModule,

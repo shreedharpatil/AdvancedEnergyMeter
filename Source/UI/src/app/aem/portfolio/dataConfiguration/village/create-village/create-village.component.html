@@ -1,20 +1,20 @@
 <section class="no-padding-top">
-    <div class="container-fluid">
+    <div class="container-fluid" *ngIf="formState$ | async as formState">
         <div class="row">
             <ngx-spinner size = "medium" [fullScreen]="false" type="timer" ></ngx-spinner>
             <div class="col-lg-12">
                 <div class="block">
                     <div class="title"><strong class="d-block">Create Village/Area</strong></div>                    
                     <div class="block-body">
-                        <form class="form-horizontal" name="createvillage" [formGroup]='createVillageForm'>                            
+                            <form class="form-horizontal" name="createvillage" [ngrxFormState]="formState">
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">District</label>
                                 <div class="col-sm-9">
-                                  <select name="district" formControlName='district' [(ngModel)]='village.districtId' class="form-control mb-3 mb-3" (change)='getTalukasByDistrictId($event)'>
+                                <select name="district" [ngrxFormControlState]="formState.controls.districtId" class="form-control mb-3 mb-3" (change)='getTalukasByDistrictId($event)'>
                                     <option *ngFor="let d of districts" [value]="d.id">{{d.name}}</option>
                                   </select>
-                                  <div *ngIf="isSubmitted && formControls.district.errors">
-                                    <div *ngIf="formControls.district.errors.pattern">
+                                  <div *ngIf="formState.controls.districtId.isDirty && formState.controls.districtId.errors['greaterThan']">
+                                    <div *ngIf="formState.controls.districtId.errors['greaterThan']">
                                         Select district
                                     </div>
                                 </div>
@@ -23,11 +23,11 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Taluka</label>
                                 <div class="col-sm-9">
-                                  <select name="taluka" formControlName='taluka' [(ngModel)]='village.talukaId' class="form-control mb-3 mb-3">
+                                <select name="taluka" class="form-control mb-3 mb-3" [ngrxFormControlState]="formState.controls.talukaId">
                                     <option *ngFor="let d of talukas$ | async" [value]="d.id">{{d.name}}</option>
                                   </select>
-                                  <div *ngIf="isSubmitted && formControls.taluka.errors">
-                                    <div *ngIf="formControls.taluka.errors.pattern" class="validation-error-message">
+                                  <div *ngIf="formState.controls.talukaId.isDirty && formState.controls.talukaId.errors['greaterThan']">
+                                    <div *ngIf="formState.controls.talukaId.errors['greaterThan']" class="validation-error-message">
                                         Select taluka
                                     </div>
                                 </div>
@@ -36,9 +36,9 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Village/Area name</label>
                                 <div class="col-sm-9" >
-                                  <input type="text" class="form-control" formControlName='villageName' name="villagename" [(ngModel)]='village.name'>
-                                  <div *ngIf="isSubmitted && formControls.villageName.errors">
-                                    <div *ngIf="formControls.villageName.errors.required" class="validation-error-message">
+                                  <input type="text" class="form-control" [ngrxFormControlState]="formState.controls.villageName">
+                                  <div *ngIf="formState.controls.villageName.isDirty && formState.controls.villageName.errors['required']">
+                                    <div *ngIf="formState.controls.villageName.errors['required']" class="validation-error-message">
                                         Enter village name
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-9 ml-auto">
                                   <button type="button" class="btn btn-secondary" (click)='clearForm()'>Reset</button>
-                                  <button type="button" class="btn btn-primary" (click)='createVillage()'>Create Village</button>
+                                  <button type="button" class="btn btn-primary" (click)='createVillage()' [disabled]="formState.isInvalid" >Create Village</button>
                                 </div>
                               </div>
                         </form>                        
