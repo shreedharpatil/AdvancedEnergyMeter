@@ -9,33 +9,24 @@ export class LoadCustomersAction implements Action {
 }
 
 export class LoadCustomersSucessAction implements Action {
-    static readonly TYPE = 'LOAD_ALL_CUSTOMERS_SUCCESS';
+    static readonly TYPE = 'customer/LOAD_ALL_CUSTOMERS_SUCCESS';
     type = LoadCustomersSucessAction.TYPE;
-
     constructor(public payload: Customer[]) { }
 }
 
 export class AddCustomerAction implements Action {
-    static readonly TYPE = 'ADD_CUSTOMER';
+    static readonly TYPE = 'customer/ADD_CUSTOMER';
     type = AddCustomerAction.TYPE;
-
-    readonly payload: {
-        customer: Customer;
-        callback: any;
-    };
-    constructor(customer: Customer, callback: any) {
-        this.payload = { customer, callback };
-    }
+    readonly payload = undefined;
 }
 
 export class ResetRegisterCustomerFormAction implements Action {
-    static readonly TYPE = 'RESET_CUSTOMER_FORM';
+    static readonly TYPE = 'customer/RESET_CUSTOMER_FORM';
     type = ResetRegisterCustomerFormAction.TYPE;
-    public payload = null;
-    constructor() { }
+    public payload = undefined;
 }
 
-export type PortfolioEffectActions = AddCustomerAction
+export type CustomerAction = AddCustomerAction
     | LoadCustomersAction
     | LoadCustomersSucessAction
     | ResetRegisterCustomerFormAction;

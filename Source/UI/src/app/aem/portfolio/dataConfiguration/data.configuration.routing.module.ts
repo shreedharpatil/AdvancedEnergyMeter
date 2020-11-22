@@ -21,6 +21,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PortfolioEffects } from '../portfolio/portfolio.effects';
 import { DataConfigurationMenusComponent } from './data.configuration.menus/data.configuration.menus.component';
 import { SharedModule } from '../shared/shared.module';
+import { NgrxFormsModule } from 'ngrx-forms';
+import { VillageEffects } from './village/village.effects';
 
 const routes: Routes = [
     // { path: '', redirectTo: 'home-landing'},
@@ -46,8 +48,9 @@ const routes: Routes = [
     BrowserAnimationsModule,
     RouterModule.forChild(routes),
     ToastrModule.forRoot(),
-    EffectsModule.forRoot([PortfolioEffects, SharedDataEffects, HttpHelperEffects, SpinnerEffects]),
+    EffectsModule.forFeature([PortfolioEffects, SharedDataEffects, HttpHelperEffects, SpinnerEffects, VillageEffects]),
     NgxSpinnerModule,
+    NgrxFormsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [

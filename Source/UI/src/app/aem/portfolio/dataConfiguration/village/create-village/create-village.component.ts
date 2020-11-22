@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { District, Taluka, AppRoot } from 'src/app/aem/shared/models';
+import { District, Taluka } from 'src/app/aem/shared/models';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { CreateVillageAction } from '../../../portfolio/portfolio.actions';
+import { VillageFormState, VillageState } from '../village.state';
+import { FormGroupState } from 'ngrx-forms';
+import { CreateVillageAction, ResetVillageFormAction } from '../village.actions';
 
 @Component({
   selector: 'app-create-village',
@@ -13,62 +14,38 @@ import { CreateVillageAction } from '../../../portfolio/portfolio.actions';
   styleUrls: ['./create-village.component.css']
 })
 export class CreateVillageComponent implements OnInit, OnDestroy {
-  village: any = { name: '', districtId: 0, talukaId: 0 };
   talukas$: Observable<Taluka[]>;
   districts: District[];
   talukas: Taluka[];
-  createVillageForm: FormGroup;
-  isSubmitted = false;
   getTalukasByDistrictIdSubscription: Subscription;
   getVillagesByTalukaIdSubscription: Subscription;
   getDistrictsAndLoadTypesSubscription: Subscription;
-
+  formState$: Observable<FormGroupState<VillageFormState>>;
   constructor(private service: SharedDataService,
-              private formBuilder: FormBuilder,
-              private store: Store<AppRoot>) { }
+              private store: Store<{ village: VillageState}>) {
+                this.formState$ = store.select(p => p.village.formState);
+               }
+
+  ngOnDestroy(): void {
+    this.getDistrictsAndLoadTypesSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
-    this.createVillageForm = this.formBuilder.group({
-      villageName : ['', Validators.required],
-      district: ['', Validators.pattern('^[1-9]\d*$')],
-      taluka: ['', Validators.pattern('^[1-9]\d*$')]
-    });
-
     this.getDistrictsAndLoadTypesSubscription = this.service.getDistrictsAndLoadTypes()
     .subscribe(p => {
       this.districts = p.districts;
     });
   }
 
-  ngOnDestroy(): void {
-    // this.getDistrictsAndLoadTypesSubscription.unsubscribe();
-  }
-
-  get formControls() {
-    return this.createVillageForm.controls;
-  }
-
   getTalukasByDistrictId(event) {
     this.talukas$ = this.service.getTalukasByDistrictId(event.target.value);
-    // this.getTalukasByDistrictIdSubscription = this.service.getTalukasByDistrictId(event.target.value)
-    // .subscribe(p => {
-    //   this.talukas = p;
-    //   this.getTalukasByDistrictIdSubscription.unsubscribe();
-    // });
   }
 
   clearForm() {
-    this.village = { name: '', districtId: 0, talukaId: 0 };
-    this.isSubmitted = false;
+    this.store.dispatch(new ResetVillageFormAction());
   }
 
   createVillage() {
-    this.isSubmitted = true;
-    if (this.createVillageForm.invalid) {
-      return;
-    }
-
-    this.village.talukaId = parseInt(this.village.talukaId);
-    this.store.dispatch(new CreateVillageAction(this.village));
+    this.store.dispatch(new CreateVillageAction());
   }
 }
