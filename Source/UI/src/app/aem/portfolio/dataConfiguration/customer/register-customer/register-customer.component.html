@@ -1,18 +1,18 @@
 <section class="no-padding-top">
-    <div class="container-fluid">
+    <div class="container-fluid" *ngIf="formState$ | async as formState">
         <div class="row">
           <ngx-spinner size = "medium" [fullScreen]="false" type="timer" ></ngx-spinner>
             <div class="col-lg-12">
                 <div class="block">
                     <div class="title"><strong class="d-block">Register Customer</strong></div>
                     <div class="block-body">
-                        <form class="form-horizontal" name="registerCustomer" [formGroup]='registerCustomerForm'>
+                        <form class="form-horizontal" name="registerCustomer" [ngrxFormState]='formState'>
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">RR Number</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control" formControlName='rrNumber' [(ngModel)]='customer.rrNumber'>
-                                  <div *ngIf="isSubmitted && formControls.rrNumber.errors">
-                                    <div *ngIf="formControls.rrNumber.errors.required">
+                                  <input type="text" class="form-control" [ngrxFormControlState]="formState.controls.rrNumber">
+                                  <div *ngIf="formState.controls.rrNumber.isDirty && formState.controls.rrNumber.errors['required']">
+                                    <div *ngIf="formState.controls.rrNumber.errors['required']">
                                         Enter RR Number
                                     </div>
                                 </div>
@@ -21,17 +21,17 @@
                             <div class="form-group row">
                               <label class="col-sm-3 form-control-label">Name</label>
                               <div class="col-sm-5">
-                                <input type="text" placeholder="First Name" class="form-control" formControlName='firstName' [(ngModel)]='customer.firstName'>
-                                <div *ngIf="isSubmitted && formControls.firstName.errors">
-                                  <div *ngIf="formControls.firstName.errors.required">
+                                <input type="text" placeholder="First Name" class="form-control" [ngrxFormControlState]="formState.controls.firstName">
+                                <div *ngIf="formState.controls.firstName.isDirty && formState.controls.firstName.errors['required']">
+                                  <div *ngIf="formState.controls.firstName.errors['required']">
                                       Enter First name
                                   </div>
                                 </div>
                               </div>
                               <div class="col-sm-4">
-                                <input type="text" placeholder="Last Name" class="form-control" formControlName='lastName' [(ngModel)]='customer.lastName'>
-                                <div *ngIf="isSubmitted && formControls.lastName.errors">
-                                  <div *ngIf="formControls.lastName.errors.required">
+                                <input type="text" placeholder="Last Name" class="form-control" [ngrxFormControlState]="formState.controls.lastName">
+                                <div *ngIf="formState.controls.lastName.isDirty && formState.controls.lastName.errors['required']">
+                                  <div *ngIf="formState.controls.lastName.errors['required']">
                                       Enter Last name
                                   </div>
                                 </div>
@@ -40,11 +40,11 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Load Type</label>
                                 <div class="col-sm-9">
-                                  <select name="account" class="form-control mb-3 mb-3" formControlName='loadType' [(ngModel)]='customer.loadTypeId'>
+                                  <select name="account" class="form-control mb-3 mb-3" [ngrxFormControlState]="formState.controls.loadTypeId">
                                     <option *ngFor="let lt of loadTypes" [value]="lt.id">{{lt.name}}</option>
                                   </select>
-                                  <div *ngIf="isSubmitted && formControls.loadType.errors">
-                                    <div *ngIf="formControls.loadType.errors.pattern || formControls.loadType.errors.required">
+                                  <div *ngIf="formState.controls.loadTypeId.isDirty && formState.controls.loadTypeId.errors['greaterThan']">
+                                    <div *ngIf="formState.controls.loadTypeId.errors['greaterThan']">
                                         Select load type
                                     </div>
                                 </div>
@@ -53,11 +53,11 @@
                             <div class="form-group row">
                               <label class="col-sm-3 form-control-label">District</label>
                               <div class="col-sm-9">
-                                <select name="district" formControlName='district' [(ngModel)]='customer.districtId' class="form-control mb-3 mb-3" (change)='getTalukasByDistrictId($event)'>
+                                <select name="district" [ngrxFormControlState]="formState.controls.districtId" class="form-control mb-3 mb-3" (change)='getTalukasByDistrictId($event)'>
                                   <option *ngFor="let d of districts" [value]="d.id">{{d.name}}</option>
                                 </select>
-                                <div *ngIf="isSubmitted && formControls.district.errors">
-                                  <div *ngIf="formControls.district.errors.pattern || formControls.district.errors.required">
+                                <div *ngIf="formState.controls.districtId.isDirty && formState.controls.districtId.errors['greaterThan']">
+                                  <div *ngIf="formState.controls.districtId.errors['greaterThan']">
                                       Select district
                                   </div>
                               </div>
@@ -66,11 +66,11 @@
                             <div class="form-group row">
                               <label class="col-sm-3 form-control-label">Taluka</label>
                               <div class="col-sm-9">
-                                <select name="taluka" formControlName='taluka' [(ngModel)]='customer.talukaId' class="form-control mb-3 mb-3" (change)='getVillagesByTalukaId($event)'>
+                                <select name="taluka" [ngrxFormControlState]="formState.controls.talukaId" class="form-control mb-3 mb-3" (change)='getVillagesByTalukaId($event)'>
                                   <option *ngFor="let d of talukas" [value]="d.id">{{d.name}}</option>
                                 </select>
-                                <div *ngIf="isSubmitted && formControls.taluka.errors">
-                                  <div *ngIf="formControls.taluka.errors.pattern || formControls.taluka.errors.required" class="validation-error-message">
+                                <div *ngIf="formState.controls.talukaId.isDirty && formState.controls.talukaId.errors['greaterThan']">
+                                  <div *ngIf="formState.controls.talukaId.errors['greaterThan']" class="validation-error-message">
                                       Select taluka
                                   </div>
                               </div>
@@ -79,11 +79,11 @@
                             <div class="form-group row">
                               <label class="col-sm-3 form-control-label">Village/Area</label>
                               <div class="col-sm-9">
-                                <select name="account" formControlName='village' [(ngModel)]='customer.villageId' class="form-control mb-3 mb-3" (change)='getStationsByVillageId($event)'>
+                                <select name="account" [ngrxFormControlState]="formState.controls.villageId" class="form-control mb-3 mb-3" (change)='getStationsByVillageId($event)'>
                                   <option *ngFor="let d of villages" [value]="d.id">{{d.name}}</option>
                                 </select>
-                                <div *ngIf="isSubmitted && formControls.village.errors">
-                                  <div *ngIf="formControls.village.errors.pattern || formControls.village.errors.required" class="validation-error-message">
+                                <div *ngIf="formState.controls.villageId.isDirty && formState.controls.villageId.errors['greaterThan']">
+                                  <div *ngIf="formState.controls.talukaId.errors['greaterThan']" class="validation-error-message">
                                       Select village
                                   </div>
                               </div>
@@ -92,11 +92,11 @@
                             <div class="form-group row">
                               <label class="col-sm-3 form-control-label">Station</label>
                               <div class="col-sm-9">
-                                <select name="account" formControlName='station' [(ngModel)]='customer.stationId' class="form-control mb-3 mb-3" (change)='getSectionsByStationId($event)'>
+                                <select name="account" [ngrxFormControlState]="formState.controls.stationId" class="form-control mb-3 mb-3" (change)='getSectionsByStationId($event)'>
                                   <option *ngFor="let d of stations" [value]="d.id">{{d.name}}</option>
                                 </select>
-                                <div *ngIf="isSubmitted && formControls.station.errors">
-                                  <div *ngIf="formControls.station.errors.pattern || formControls.station.errors.required" class="validation-error-message">
+                                <div *ngIf="formState.controls.stationId.isDirty && formState.controls.talukaId.errors['greaterThan']">
+                                  <div *ngIf="formState.controls.talukaId.errors['greaterThan']" class="validation-error-message">
                                       Select station
                                   </div>
                               </div>
@@ -105,11 +105,11 @@
                             <div class="form-group row">
                               <label class="col-sm-3 form-control-label">Section</label>
                               <div class="col-sm-9">
-                                <select name="account" formControlName='section' [(ngModel)]='customer.sectionId' class="form-control mb-3 mb-3" (change)='getFeedersBySectionId($event)'>
+                                <select name="account" [ngrxFormControlState]="formState.controls.sectionId" class="form-control mb-3 mb-3" (change)='getFeedersBySectionId($event)'>
                                   <option *ngFor="let d of sections" [value]="d.id">{{d.name}}</option>
                                 </select>
-                                <div *ngIf="isSubmitted && formControls.section.errors">
-                                  <div *ngIf="formControls.section.errors.pattern || formControls.section.errors.required" class="validation-error-message">
+                                <div *ngIf="formState.controls.sectionId.isDirty && formState.controls.sectionId.errors['greaterThan']">
+                                  <div *ngIf="formState.controls.sectionId.errors['greaterThan']" class="validation-error-message">
                                       Select section
                                   </div>
                               </div>
@@ -118,11 +118,11 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Feeder</label>
                                 <div class="col-sm-9">
-                                  <select name="account" formControlName='feeder' class="form-control mb-3 mb-3" [(ngModel)]='customer.feederId' (change)='getTransformersByFeederId($event)'>
+                                  <select name="account" class="form-control mb-3 mb-3" [ngrxFormControlState]="formState.controls.feederId" (change)='getTransformersByFeederId($event)'>
                                     <option *ngFor="let d of feeders" [value]="d.id">{{d.name}}</option>
                                   </select>
-                                  <div *ngIf="isSubmitted && formControls.feeder.errors">
-                                    <div *ngIf="formControls.feeder.errors.pattern || formControls.feeder.errors.required" class="validation-error-message">
+                                  <div *ngIf="formState.controls.feederId.isDirty && formState.controls.feederId.errors['greaterThan']">
+                                    <div *ngIf="formState.controls.feederId.errors['greaterThan']" class="validation-error-message">
                                         Select feeder
                                     </div>
                                 </div>
@@ -131,11 +131,11 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Transformer</label>
                                 <div class="col-sm-9">
-                                  <select name="account" formControlName='transformer' class="form-control mb-3 mb-3" [(ngModel)]='customer.transformerId'>
+                                  <select name="account" class="form-control mb-3 mb-3" [ngrxFormControlState]="formState.controls.transformerId">
                                     <option *ngFor="let d of transformers" [value]="d.id">{{d.name}}</option>
                                   </select>
-                                  <div *ngIf="isSubmitted && formControls.transformer.errors">
-                                    <div *ngIf="formControls.transformer.errors.pattern || formControls.transformer.errors.required" class="validation-error-message">
+                                  <div *ngIf="formState.controls.transformerId.isDirty && formState.controls.transformerId.errors['greaterThan']">
+                                    <div *ngIf="formState.controls.transformerId.errors['greaterThan']" class="validation-error-message">
                                         Select transformer
                                     </div>
                                 </div>
@@ -144,12 +144,12 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 form-control-label">Mobile Number</label>
                                 <div class="col-sm-9">
-                                  <input type="text" class="form-control" [(ngModel)]='customer.mobileNumber' formControlName='mobileNumber'>
-                                  <div *ngIf="isSubmitted && formControls.mobileNumber.errors">
-                                    <div *ngIf="formControls.mobileNumber.errors.required" class="validation-error-message">
+                                  <input type="text" class="form-control" [ngrxFormControlState]="formState.controls.mobileNumber">
+                                  <div *ngIf="formState.controls.mobileNumber.isDirty && formState.controls.mobileNumber.errors">
+                                    <div *ngIf="formState.controls.mobileNumber.errors['required']" class="validation-error-message">
                                         Enter mobile number
                                     </div>
-                                    <div *ngIf="formControls.mobileNumber.errors.pattern" class="validation-error-message">
+                                    <div *ngIf="formState.controls.mobileNumber.errors['pattern']" class="validation-error-message">
                                       Mobile number should be 10 number digits
                                   </div>
                                 </div>
@@ -158,7 +158,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-9 ml-auto">
                                   <button type="button" class="btn btn-secondary" (click)='clearForm()'>Reset</button>
-                                  <button type="button" class="btn btn-primary" (click)='registerCustomer()'>Register customer</button>
+                                  <button type="button" class="btn btn-primary" (click)='registerCustomer()' [disabled]="formState.isInvalid">Register customer</button>
                                 </div>
                               </div>
                         </form>                        

@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { District, AppRoot, Taluka, Village } from 'src/app/aem/shared/models';
 import { Store } from '@ngrx/store';
+import { FormGroupState } from 'ngrx-forms';
+import { Subscription, Observable } from 'rxjs';
+import { Taluka, District, Village } from 'src/app/aem/shared/models';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateStationAction } from '../../../portfolio/portfolio.actions';
+import { ResetStationFormAction, CreateStationAction } from '../station.actions';
+import { StationFormValue, StationState } from '../station.state';
 
 @Component({
   selector: 'app-create-station',
@@ -13,40 +14,28 @@ import { CreateStationAction } from '../../../portfolio/portfolio.actions';
 })
 export class CreateStationComponent implements OnInit, OnDestroy {
 
-  station: any = { name: '', districtId: 0, talukaId: 0, villageId: 0 };
   talukas: Taluka[];
   districts: District[];
   villages: Village[];
-  createStationForm: FormGroup;
-  isSubmitted = false;
   getTalukasByDistrictIdSubscription: Subscription;
   getVillagesByTalukaIdSubscription: Subscription;
   getDistrictsAndLoadTypesSubscription: Subscription;
+  formState$: Observable<FormGroupState<StationFormValue>>;
 
   constructor(private service: SharedDataService,
-              private formBuilder: FormBuilder,
-              private store: Store<AppRoot>) { }
+              private store: Store<{ station: StationState}>) {
+                this.formState$ = store.select(p => p.station.formState);
+               }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.createStationForm = this.formBuilder.group({
-      stationName : ['', Validators.required],
-      district: ['', Validators.pattern('^[1-9]\d*$')],
-      taluka: ['', Validators.pattern('^[1-9]\d*$')],
-      village: ['', Validators.pattern('^[1-9]\d*$')]
-    });
-
     this.getDistrictsAndLoadTypesSubscription = this.service.getDistrictsAndLoadTypes()
     .subscribe(p => {
       this.districts = p.districts;
     });
-  }
-
-  get formControls() {
-    return this.createStationForm.controls;
   }
 
   getTalukasByDistrictId(event) {
@@ -66,19 +55,10 @@ export class CreateStationComponent implements OnInit, OnDestroy {
   }
 
   clearForm() {
-    this.station = { name: '', districtId: 0, talukaId: 0, villageId: 0 };
-    this.isSubmitted = false;
+    this.store.dispatch(new ResetStationFormAction());
   }
 
   createStation() {
-    this.isSubmitted = true;
-    if (this.createStationForm.invalid) {
-      return;
-    }
-
-    this.station.districtId = parseInt(this.station.districtId);
-    this.station.talukaId = parseInt(this.station.talukaId);
-    this.station.villageId = parseInt(this.station.villageId);
-    this.store.dispatch(new CreateStationAction(this.station));
+    this.store.dispatch(new CreateStationAction());
   }
 }

@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { District, AppRoot, Taluka, Village, Station, Section, Feeder } from 'src/app/aem/shared/models';
+import { Observable, Subscription } from 'rxjs';
+import { District, Taluka, Village, Station, Section, Feeder } from 'src/app/aem/shared/models';
 import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateTransformerAction } from '../../../portfolio/portfolio.actions';
+import { TransformerFormValue, TransformerState } from '../transformer.state';
+import { FormGroupState } from 'ngrx-forms';
+import { CreateTransformerAction, ResetTransformerFormAction } from '../transformer.actions';
 
 @Component({
   selector: 'app-create-transformer',
@@ -12,50 +13,34 @@ import { CreateTransformerAction } from '../../../portfolio/portfolio.actions';
   styleUrls: ['./create-transformer.component.css']
 })
 export class CreateTransformerComponent implements OnInit, OnDestroy {
-
-  transformer: any = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0, sectionId: 0, feederId: 0 };
   talukas: Taluka[];
   districts: District[];
   villages: Village[];
   stations: Station[];
   sections: Section[];
   feeders: Feeder[];
-  createTransformerForm: FormGroup;
-  isSubmitted = false;
   getTalukasByDistrictIdSubscription: Subscription;
   getVillagesByTalukaIdSubscription: Subscription;
   getDistrictsAndLoadTypesSubscription: Subscription;
   getStationsByVillageIdSubscription: Subscription;
   getSectionsByStationIdSubscription: Subscription;
   getFeedersBySectionIdSubscription: Subscription;
+  formState$: Observable<FormGroupState<TransformerFormValue>>;
 
   constructor(private service: SharedDataService,
-              private formBuilder: FormBuilder,
-              private store: Store<AppRoot>) { }
+              private store: Store<{transformer: TransformerState}>) {
+                this.formState$ = store.select(p => p.transformer.formState);
+              }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.createTransformerForm = this.formBuilder.group({
-      transformerName: ['', Validators.required],
-      district: ['', Validators.pattern('^[1-9]\d*$')],
-      taluka: ['', Validators.pattern('^[1-9]\d*$')],
-      village: ['', Validators.pattern('^[1-9]\d*$')],
-      station: ['', Validators.pattern('^[1-9]\d*$')],
-      section: ['', Validators.pattern('^[1-9]\d*$')],
-      feeder: ['', Validators.pattern('^[1-9]\d*$')]
-    });
-
     this.getDistrictsAndLoadTypesSubscription = this.service.getDistrictsAndLoadTypes()
       .subscribe(p => {
         this.districts = p.districts;
       });
-  }
-
-  get formControls() {
-    return this.createTransformerForm.controls;
   }
 
   getTalukasByDistrictId(event) {
@@ -99,17 +84,10 @@ export class CreateTransformerComponent implements OnInit, OnDestroy {
   }
 
   clerForm() {
-    this.transformer = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0, sectionId: 0, feederId: 0 };
-    this.isSubmitted = false;
+    this.store.dispatch(new ResetTransformerFormAction());
   }
 
   createTransformer() {
-    this.isSubmitted = true;
-    if (this.createTransformerForm.invalid) {
-      return;
-    }
-
-    this.transformer.feederId = parseInt(this.transformer.feederId);
-    this.store.dispatch(new CreateTransformerAction(this.transformer));
+    this.store.dispatch(new CreateTransformerAction());
   }
 }

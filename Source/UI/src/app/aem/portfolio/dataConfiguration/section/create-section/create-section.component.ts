@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { District, AppRoot, Taluka, Village, Station } from 'src/app/aem/shared/models';
 import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateSectionAction } from '../../../portfolio/portfolio.actions';
+import { SectionFormValue, SectionState } from '../section.state';
+import { CreateSectionAction, ResetSectionFormAction } from '../section.actions';
+import { FormGroupState } from 'ngrx-forms';
 
 @Component({
   selector: 'app-create-section',
@@ -12,43 +13,30 @@ import { CreateSectionAction } from '../../../portfolio/portfolio.actions';
   styleUrls: ['./create-section.component.css']
 })
 export class CreateSectionComponent implements OnInit, OnDestroy {
-  section: any = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0 };
   talukas: Taluka[];
   districts: District[];
   villages: Village[];
   stations: Station[];
-  createSectionForm: FormGroup;
-  isSubmitted = false;
   getTalukasByDistrictIdSubscription: Subscription;
   getVillagesByTalukaIdSubscription: Subscription;
   getDistrictsAndLoadTypesSubscription: Subscription;
   getStationsByVillageIdSubscription: Subscription;
+  formState$: Observable<FormGroupState<SectionFormValue>>;
 
   constructor(private service: SharedDataService,
-              private formBuilder: FormBuilder,
-              private store: Store<AppRoot>) { }
+              private store: Store<{ section: SectionState }>) {
+                this.formState$ = store.select(p => p.section.formState);
+              }
 
   ngOnDestroy(): void {
     this.getDistrictsAndLoadTypesSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.createSectionForm = this.formBuilder.group({
-      sectionName: ['', Validators.required],
-      district: ['', Validators.pattern('^[1-9]\d*$')],
-      taluka: ['', Validators.pattern('^[1-9]\d*$')],
-      village: ['', Validators.pattern('^[1-9]\d*$')],
-      station: ['', Validators.pattern('^[1-9]\d*$')]
-    });
-
     this.getDistrictsAndLoadTypesSubscription = this.service.getDistrictsAndLoadTypes()
       .subscribe(p => {
         this.districts = p.districts;
       });
-  }
-
-  get formControls() {
-    return this.createSectionForm.controls;
   }
 
   getTalukasByDistrictId(event) {
@@ -76,17 +64,10 @@ export class CreateSectionComponent implements OnInit, OnDestroy {
   }
 
   clearForm() {
-    this.section = { name: '', districtId: 0, talukaId: 0, villageId: 0, stationId: 0 };
-    this.isSubmitted = false;
+    this.store.dispatch(new ResetSectionFormAction());
   }
 
   createStation() {
-    this.isSubmitted = true;
-    if (this.createSectionForm.invalid) {
-      return;
-    }
-
-    this.section.stationId = parseInt(this.section.stationId);
-    this.store.dispatch(new CreateSectionAction(this.section));
+    this.store.dispatch(new CreateSectionAction());
   }
 }
