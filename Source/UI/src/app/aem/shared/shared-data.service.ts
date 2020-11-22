@@ -1,4 +1,4 @@
-import { Injectable, OnInit, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Store, select } from '@ngrx/store';
 import {
@@ -86,14 +86,12 @@ export class SharedDataService implements OnDestroy {
       }
       const sub = this.appRoot
         .subscribe(p => {
-          console.log('Service::getTalukasByDistrictId');
           if (p.talukas.has(did)) {
             const ts = p.talukas.get(did);
             const vs = [this.defaultTaluka, ...ts];
             observer.next(vs);
             try {
               sub.unsubscribe();
-              console.log('Service::getTalukasByDistrictId::Unsubscribed');
             } catch { }
           } else {
             this.http.get<Taluka[]>(this.baseUrl + 'contextapi/taluka/' + districtId)
@@ -102,7 +100,6 @@ export class SharedDataService implements OnDestroy {
                 observer.next(vs);
                 this.store.dispatch(new SaveTaulkasAction(new SaveTaluka(did, (p as Taluka[]))));
                 sub.unsubscribe();
-                console.log('Service::getTalukasByDistrictId::Unsubscribed::Http');
               });
           }
         });
@@ -121,14 +118,12 @@ export class SharedDataService implements OnDestroy {
 
       const sub = this.appRoot
         .subscribe(p => {
-          console.log('Service::getVillagesByTalukaId');
           if (p.villages.has(tid)) {
             const villages = p.villages.get(tid);
             const vs = [this.defaultVillage, ...villages];
             observer.next(vs);
             try {
               sub.unsubscribe();
-              console.log('Service::getVillagesByTalukaId::Unsubscribed');
             } catch { }
           } else {
             this.http.get<Village[]>(this.baseUrl + 'contextapi/village/' + talukaId)
@@ -137,7 +132,6 @@ export class SharedDataService implements OnDestroy {
                 observer.next(vs);
                 this.store.dispatch(new SaveVillagesAction(new SaveVillage(tid, (p as Village[]))));
                 sub.unsubscribe();
-                console.log('Service::getVillagesByTalukaId::Unsubscribed::Http');
               });
           }
         });

@@ -3,9 +3,10 @@ import { Observable, Subscription } from 'rxjs';
 import { District, Taluka, Village, Station, Section } from 'src/app/aem/shared/models';
 import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { FeederFormValue, FeederState } from '../feeder.state';
+import { FeederFormValue } from '../feeder.state';
 import { FormGroupState } from 'ngrx-forms';
 import { CreateFeederAction, ResetFeederFormAction } from '../feeder.actions';
+import { DataConfigurationRootState } from '../../data.configuration.reducer';
 
 @Component({
   selector: 'app-create-feeder',
@@ -26,8 +27,8 @@ export class CreateFeederComponent implements OnInit, OnDestroy {
   formState$: Observable<FormGroupState<FeederFormValue>>;
 
   constructor(private service: SharedDataService,
-              private store: Store<{ feeder: FeederState }>) {
-                this.formState$ = store.select(p => p.feeder.formState);
+              private store: Store<DataConfigurationRootState>) {
+                this.formState$ = store.select(p => p.dataConfiguration.feeder.formState);
                }
 
   ngOnDestroy(): void {

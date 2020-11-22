@@ -3,9 +3,10 @@ import { Observable, Subscription } from 'rxjs';
 import { District, AppRoot, Taluka, Village, Station } from 'src/app/aem/shared/models';
 import { Store } from '@ngrx/store';
 import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
-import { SectionFormValue, SectionState } from '../section.state';
+import { SectionFormValue } from '../section.state';
 import { CreateSectionAction, ResetSectionFormAction } from '../section.actions';
 import { FormGroupState } from 'ngrx-forms';
+import { DataConfigurationRootState } from '../../data.configuration.reducer';
 
 @Component({
   selector: 'app-create-section',
@@ -24,8 +25,8 @@ export class CreateSectionComponent implements OnInit, OnDestroy {
   formState$: Observable<FormGroupState<SectionFormValue>>;
 
   constructor(private service: SharedDataService,
-              private store: Store<{ section: SectionState }>) {
-                this.formState$ = store.select(p => p.section.formState);
+              private store: Store<DataConfigurationRootState>) {
+                this.formState$ = store.select(p => p.dataConfiguration.section.formState);
               }
 
   ngOnDestroy(): void {

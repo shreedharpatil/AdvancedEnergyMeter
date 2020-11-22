@@ -6,6 +6,7 @@ import { SharedDataService } from 'src/app/aem/shared/shared-data.service';
 import { AddCustomerAction, ResetRegisterCustomerFormAction } from '../customer.actions';
 import { CustomerFormValue, CustomerState } from '../customer.state';
 import { FormGroupState } from 'ngrx-forms';
+import { DataConfigurationRootState } from '../../data.configuration.reducer';
 
 @Component({
   selector: 'app-register-customer',
@@ -33,8 +34,8 @@ export class RegisterCustomerComponent implements OnInit, OnDestroy {
   formState$: Observable<FormGroupState<CustomerFormValue>>;
 
   constructor(private service: SharedDataService,
-              private store: Store<{ customer: CustomerState }>) {
-                this.formState$ = store.select(p => p.customer.formState);
+              private store: Store<DataConfigurationRootState>) {
+                this.formState$ = store.select(p => p.dataConfiguration.customer.formState);
               }
 
   ngOnDestroy(): void {
