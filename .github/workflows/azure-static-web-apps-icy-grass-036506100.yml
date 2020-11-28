@@ -30,7 +30,7 @@ jobs:
           app_location: "/Source/UI" # App source code path
           api_location: "api" # Api source code path - optional
           output_location: "dist/UI" # Built app content directory - optional
-          api_build_command: "npm run build-prod"
+          app_build_command: "npm run build-prod"
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
