@@ -23,6 +23,7 @@
     "@aspnet/signalr": "^1.1.4",
     "@ngrx/effects": "9.1.2",
     "@ngrx/store": "9.1.2",
+    "@ngrx/store-devtools": "^10.1.0",
     "jquery": "^3.5.1",
     "ngrx-forms": "^6.3.3",
     "ngx-spinner": "^9.0.2",

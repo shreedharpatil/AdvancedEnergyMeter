@@ -24,6 +24,8 @@ import { StationEffects } from './station/station.effects';
 import { TransformerEffects } from './transformer/transformer.effects';
 import { StoreModule } from '@ngrx/store';
 import { DATA_CONFIGURATION_FEATURE_NAME, DataConfigurationReducer } from './data.configuration.reducer';
+import { CustomKeyValuePipe } from './station/pipes';
+import { DataConfigurationEffects } from './data.configuration.effects';
 
 const routes: Routes = [
     // { path: '', redirectTo: 'home-landing'},
@@ -49,6 +51,7 @@ const routes: Routes = [
     ToastrModule.forRoot(),
     StoreModule.forFeature(DATA_CONFIGURATION_FEATURE_NAME, DataConfigurationReducer),
     EffectsModule.forFeature([
+      DataConfigurationEffects,
       VillageEffects,
       StationEffects,
       SectionEffects,
@@ -69,6 +72,7 @@ const routes: Routes = [
     CreateTransformerComponent,
     DataConfigurationMenusComponent,
     DataConfigurationComponent,
+    CustomKeyValuePipe
     ]
 })
 

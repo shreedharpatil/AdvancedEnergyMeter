@@ -1,43 +1,50 @@
 import {AppRoot, SaveTaluka,
     SaveVillage, SaveStation,
     SaveSection, SaveFeeder, SaveTransformer,
-    District, LoadType} from 'src/app/aem/shared/models';
-import { PortfolioAction } from './portfolio.actions';
-import { PortfolioActionType } from './portfolio-action-type';
+    defaultTaluka, defaultVillage, defaultDistrict, defaultLoadType} from 'src/app/aem/shared/models';
+import { PortfolioAction,
+    SaveDistrictsAction,
+    SaveFeedersAction,
+    SaveLoadTypesAction,
+    SaveSectionsAction,
+    SaveStationsAction,
+    SaveTaulkasAction,
+    SaveTransformersAction,
+    SaveVillagesAction } from './portfolio.actions';
 
 const appState: AppRoot = new AppRoot();
 
 export function PortfolioReducer(state: AppRoot = appState, action: PortfolioAction): AppRoot {
     switch (action.type) {
-        case PortfolioActionType.SaveDistrict:
-            return { ...state, districts : action.payload as District[] };
+        case SaveDistrictsAction.TYPE:
+            return { ...state, districts : [defaultDistrict, ...action.payload] };
             break;
-        case PortfolioActionType.SaveLoadTypes:
-            return { ...state, loadTypes : action.payload as LoadType[] };
+        case SaveLoadTypesAction.TYPE:
+            return { ...state, loadTypes : [defaultLoadType, ...action.payload] };
             break;
-        case PortfolioActionType.SaveTalukas:
+        case SaveTaulkasAction.TYPE:
             const t = action.payload as SaveTaluka;
-            return { ...state, talukas: state.talukas.set(t.districtId, t.talukas)};
+            return { ...state, talukas: state.talukas.set(t.districtId, [defaultTaluka, ...t.talukas])};
             break;
-        case PortfolioActionType.SaveVillages:
+        case SaveVillagesAction.TYPE:
             const p = action.payload as SaveVillage;
-            return { ...state, villages: state.villages.set(p.talukaId, p.villages) };
+            return { ...state, villages: state.villages.set(p.talukaId, [defaultVillage, ...p.villages]) };
             break;
-        case PortfolioActionType.SaveStations:
+        case SaveStationsAction.TYPE:
             const station = action.payload as SaveStation;
-            return { ...state, stations: state.stations.set(station.villageId, station.stations) };
+            return { ...state, stations: state.stations.set(station.villageId, [defaultVillage, ...station.stations]) };
             break;
-        case PortfolioActionType.SaveSections:
+        case SaveSectionsAction.TYPE:
             const section = action.payload as SaveSection;
-            return { ...state, sections: state.sections.set(section.stationId, section.sections) };
+            return { ...state, sections: state.sections.set(section.stationId, [defaultVillage, ...section.sections]) };
             break;
-        case PortfolioActionType.SaveFeeders:
+        case SaveFeedersAction.TYPE:
             const feeder = action.payload as SaveFeeder;
-            return { ...state, feeders: state.feeders.set(feeder.sectionId, feeder.feeders) };
+            return { ...state, feeders: state.feeders.set(feeder.sectionId, [defaultVillage, ...feeder.feeders]) };
             break;
-        case PortfolioActionType.SaveTransformers:
+        case SaveTransformersAction.TYPE:
             const tc = action.payload as SaveTransformer;
-            return { ...state, transformers: state.transformers.set(tc.feederId, tc.transformers) };
+            return { ...state, transformers: state.transformers.set(tc.feederId, [defaultVillage, ...tc.transformers]) };
             break;
         default:
             return state;

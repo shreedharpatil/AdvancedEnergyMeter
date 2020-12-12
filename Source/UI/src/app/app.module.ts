@@ -17,6 +17,9 @@ import { HttpHelperEffects } from './aem/shared/http/http-helper-effects';
 import { SpinnerEffects } from './aem/shared/spinner/spinner-effects';
 import { NgrxFormsModule } from 'ngrx-forms';
 import { reducers } from './app.state';
+import { AuthGuard } from './aem/login/authentication/auth.guard';
+import { environment } from 'src/environments/environment';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,10 @@ import { reducers } from './app.state';
   imports: [
     BrowserModule,
     StoreModule.forRoot(reducers),
+    ...environment.enableStoreDevTools ? [StoreDevtoolsModule.instrument({
+      name: 'AEM',
+      maxAge: 25,
+    })] : [],
     NgrxFormsModule,
     EffectsModule.forRoot([
       SharedDataEffects,
@@ -41,7 +48,7 @@ import { reducers } from './app.state';
     NgxSpinnerModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [SharedDataService],
+  providers: [SharedDataService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

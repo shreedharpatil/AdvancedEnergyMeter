@@ -11,7 +11,7 @@
                                 <label class="col-sm-3 form-control-label">District</label>
                                 <div class="col-sm-9">
                                   <select name="district" [ngrxFormControlState]="formState.controls.districtId" class="form-control mb-3 mb-3" (change)='getTalukasByDistrictId($event)'>
-                                    <option *ngFor="let d of districts" [value]="d.id">{{d.name}}</option>
+                                    <option *ngFor="let d of ((appRoot$ | async).districts)" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="formState.controls.districtId.isDirty && formState.controls.districtId.errors['greaterThan']">
                                     <div *ngIf="formState.controls.districtId.errors['greaterThan']" class="text-danger">
@@ -24,7 +24,7 @@
                                 <label class="col-sm-3 form-control-label">Taluka</label>
                                 <div class="col-sm-9">
                                   <select name="taluka" [ngrxFormControlState]="formState.controls.talukaId" class="form-control mb-3 mb-3" (change)='getVillagesByTalukaId($event)'>
-                                    <option *ngFor="let d of talukas" [value]="d.id">{{d.name}}</option>
+                                    <option *ngFor="let d of ((appRoot$ | async).talukas.get(formState.controls.districtId.value))" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="formState.controls.talukaId.isDirty && formState.controls.talukaId.errors['greaterThan']">
                                     <div *ngIf="formState.controls.talukaId.errors['greaterThan']" class="validation-error-message">
@@ -37,7 +37,7 @@
                                 <label class="col-sm-3 form-control-label">Village/Area</label>
                                 <div class="col-sm-9">
                                   <select name="account" [ngrxFormControlState]="formState.controls.villageId" class="form-control mb-3 mb-3" (change)='getStationsByVillageId($event)'>
-                                    <option *ngFor="let d of villages" [value]="d.id">{{d.name}}</option>
+                                    <option *ngFor="let d of ((appRoot$ | async).villages.get(formState.controls.talukaId.value))" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="formState.controls.villageId.isDirty && formState.controls.villageId.errors['greaterThan']">
                                     <div *ngIf="formState.controls.villageId.errors['greaterThan']" class="validation-error-message">
@@ -50,7 +50,7 @@
                                 <label class="col-sm-3 form-control-label">Station</label>
                                 <div class="col-sm-9">
                                   <select name="account" [ngrxFormControlState]="formState.controls.stationId" class="form-control mb-3 mb-3" (change)='getSectionsByStationId($event)'>
-                                    <option *ngFor="let d of stations" [value]="d.id">{{d.name}}</option>
+                                    <option *ngFor="let d of ((appRoot$ | async).stations.get(formState.controls.villageId.value))" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="formState.controls.stationId.isDirty && formState.controls.stationId.errors['greaterThan']">
                                     <div *ngIf="formState.controls.stationId.errors['greaterThan']" class="validation-error-message">
@@ -63,7 +63,7 @@
                                 <label class="col-sm-3 form-control-label">Section</label>
                                 <div class="col-sm-9">
                                   <select name="account" [ngrxFormControlState]="formState.controls.sectionId" class="form-control mb-3 mb-3" (change)='getFeedersBySectionId($event)'>
-                                    <option *ngFor="let d of sections" [value]="d.id">{{d.name}}</option>
+                                    <option *ngFor="let d of ((appRoot$ | async).sections.get(formState.controls.stationId.value))" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="formState.controls.sectionId.isDirty && formState.controls.sectionId.errors['greaterThan']">
                                     <div *ngIf="formState.controls.sectionId.errors['greaterThan']" class="validation-error-message">
@@ -76,7 +76,7 @@
                                 <label class="col-sm-3 form-control-label">Feeder</label>
                                 <div class="col-sm-9">
                                   <select name="account" [ngrxFormControlState]="formState.controls.feederId" class="form-control mb-3 mb-3">
-                                    <option *ngFor="let d of feeders" [value]="d.id">{{d.name}}</option>
+                                    <option *ngFor="let d of ((appRoot$ | async).feeders.get(formState.controls.sectionId.value))" [value]="d.id">{{d.name}}</option>
                                   </select>
                                   <div *ngIf="formState.controls.feederId.isDirty && formState.controls.feederId.errors['greaterThan']">
                                     <div *ngIf="formState.controls.feederId.errors['greaterThan']" class="validation-error-message">

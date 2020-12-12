@@ -20,6 +20,19 @@ export function post<TResponse = null>(http: HttpClient,
     );
 }
 
+export function get<TResponse = null>(http: HttpClient,
+                                      url: string,
+                                      project: (resp: TResponse) => ObservableInput<Action>,
+                                      errorMessageTitle: string = 'An error has occurred while fetching data.'): Observable<Action> {
+const obs = (() => {
+return http.get<TResponse>(environment.apiBaseUrl + url);
+})();
+
+return handleResponse(
+obs, project, errorMessageTitle
+);
+}
+
 function handleResponse<TResponse = null>(source: Observable<TResponse>,
                                           project: (resp: HttpResponse<TResponse> | TResponse) => ObservableInput<Action>,
                                           errorMessageTitle: string):

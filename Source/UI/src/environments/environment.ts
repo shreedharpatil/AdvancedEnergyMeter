@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl:'https://localhost:44354/'
+  apiBaseUrl:'https://localhost:44354/',
+  enableStoreDevTools: true,
+  // apiBaseUrl:'http://localhost:9798/'
 };
 
 /*

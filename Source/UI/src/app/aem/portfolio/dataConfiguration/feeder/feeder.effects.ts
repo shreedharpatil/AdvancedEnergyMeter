@@ -5,12 +5,14 @@ import { Action, Store } from '@ngrx/store';
 import { FormGroupState } from 'ngrx-forms';
 import { Observable } from 'rxjs';
 import { map, flatMap, withLatestFrom, filter } from 'rxjs/operators';
-import { post } from 'src/app/aem/shared/http/http-helper';
+import { get, post } from 'src/app/aem/shared/http/http-helper';
+import { Feeder, SaveFeeder } from 'src/app/aem/shared/models';
 import { NotificationService } from 'src/app/aem/shared/notification.service';
 import { LoadFeedersBySectionIdAction } from 'src/app/aem/shared/shared.data.actions';
 import { HideLoaderAction } from 'src/app/aem/shared/spinner/spinner-actions';
+import { SaveFeedersAction } from '../../portfolio/portfolio.actions';
 import { DataConfigurationRootState } from '../data.configuration.reducer';
-import { CreateFeederAction, ResetFeederFormAction } from './feeder.actions';
+import { CreateFeederAction, LoadFeedersBySectionAction, ResetFeederFormAction } from './feeder.actions';
 import { FeederFormValue } from './feeder.state';
 
 @Injectable()
@@ -35,6 +37,21 @@ export class FeederEffects {
                     return [new HideLoaderAction(), new LoadFeedersBySectionIdAction(feeder.sectionId), new ResetFeederFormAction()];
                 },
                 'Create Feeder');
+        })
+    );
+
+    @Effect()
+    loadFeedersBySection$: Observable<Action> = this.actions$.pipe(
+        ofType<LoadFeedersBySectionAction>(LoadFeedersBySectionAction.TYPE),
+        withLatestFrom(this.store.select(p => p.portfolio.feeders)),
+        filter(([action, feeders]) => !(feeders.has(action.sectionId))),
+        flatMap(([action, _]) => {
+            return get<Feeder[]>(this.http,
+                `contextapi/feeder/${action.sectionId}` ,
+                (p) => {
+                    return [new HideLoaderAction(),
+                        new SaveFeedersAction(new SaveFeeder(action.sectionId, p))];
+                });
         })
     );
 

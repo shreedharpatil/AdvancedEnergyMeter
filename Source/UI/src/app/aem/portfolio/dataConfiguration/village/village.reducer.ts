@@ -1,6 +1,6 @@
 import { updateGroup, setValue, validate, formGroupReducer } from 'ngrx-forms';
 import { required, pattern, greaterThan } from 'ngrx-forms/validation';
-import { VillageAction, ResetVillageFormAction } from './village.actions';
+import { VillageAction, ResetVillageFormAction, SaveFilteredTalukasAction } from './village.actions';
 import { VillageFormState, VillageState, INITIAL_VILLAGE_STATE } from './village.state';
 
 const resetVillageForm = updateGroup<VillageFormState>({
@@ -27,6 +27,12 @@ export function VillageReducer(state: VillageState = INITIAL_VILLAGE_STATE, acti
             return {
                 ...state,
                 formState: resetVillageForm(state.formState)
+            };
+        case SaveFilteredTalukasAction.TYPE:
+            const t = action as SaveFilteredTalukasAction;
+            return {
+                ...state,
+                talukas: t.talukas,
             };
         default: {
           return state;

@@ -3,6 +3,7 @@ import { AppRootState } from 'src/app/app.state';
 import { callNestedReducers } from '../../shared/ngrx';
 import { CustomerReducer } from './customer/customer.reducer';
 import { CustomerState, INITIAL_CUSTOMER_STATE } from './customer/customer.state';
+import { DataConfigurationAction } from './data.configuration.actions';
 import { FeederReducer } from './feeder/feeder.reducer';
 import { FeederState, INITIAL_FEEDER_STATE } from './feeder/feeder.state';
 import { SectionReducer } from './section/section.reducer';
@@ -38,7 +39,7 @@ export const INITIAL_DATA_CONFIGURATION_STATE: DataConfigurationState = {
 };
 
 export function DataConfigurationReducer(state: DataConfigurationState = INITIAL_DATA_CONFIGURATION_STATE,
-                                         action: Action): DataConfigurationState {
+                                         action: DataConfigurationAction): DataConfigurationState {
 
     state = callNestedReducers(state, action, {
             customer: CustomerReducer,

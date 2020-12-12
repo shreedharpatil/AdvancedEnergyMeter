@@ -1,4 +1,5 @@
-import { createFormGroupState, FormGroupState } from 'ngrx-forms';
+import { Pipe, PipeTransform } from '@angular/core';
+import { createFormGroupState, FormGroupState, KeyValue } from 'ngrx-forms';
 
 export interface StationState {
     formState: FormGroupState<StationFormValue>;
@@ -18,4 +19,4 @@ export const INITIAL_STATION_STATE: StationState = {
         villageId: 0,
         stationName: '',
     })
-}
+};

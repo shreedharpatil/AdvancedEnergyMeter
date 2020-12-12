@@ -5,12 +5,14 @@ import { Action, Store } from '@ngrx/store';
 import { FormGroupState } from 'ngrx-forms';
 import { Observable } from 'rxjs';
 import { map, flatMap, withLatestFrom, filter } from 'rxjs/operators';
-import { post } from 'src/app/aem/shared/http/http-helper';
+import { get, post } from 'src/app/aem/shared/http/http-helper';
+import { SaveTransformer, Transformer } from 'src/app/aem/shared/models';
 import { NotificationService } from 'src/app/aem/shared/notification.service';
 import { LoadTransformersByFeederIdAction } from 'src/app/aem/shared/shared.data.actions';
 import { HideLoaderAction } from 'src/app/aem/shared/spinner/spinner-actions';
+import { SaveTransformersAction } from '../../portfolio/portfolio.actions';
 import { DataConfigurationRootState } from '../data.configuration.reducer';
-import { CreateTransformerAction, ResetTransformerFormAction } from './transformer.actions';
+import { CreateTransformerAction, LoadTransformersByFeederAction, ResetTransformerFormAction } from './transformer.actions';
 import { TransformerFormValue } from './transformer.state';
 
 @Injectable()
@@ -37,6 +39,21 @@ export class TransformerEffects {
                         new ResetTransformerFormAction()];
                 },
                 'Create Transformer');
+        })
+    );
+
+    @Effect()
+    loadTransformersByFeeder$: Observable<Action> = this.actions$.pipe(
+        ofType<LoadTransformersByFeederAction>(LoadTransformersByFeederAction.TYPE),
+        withLatestFrom(this.store.select(p => p.portfolio.transformers)),
+        filter(([action, transformers]) => !(transformers.has(action.feederId))),
+        flatMap(([action, _]) => {
+            return get<Transformer[]>(this.http,
+                `contextapi/transformer/${action.feederId}` ,
+                (p) => {
+                    return [new HideLoaderAction(),
+                        new SaveTransformersAction(new SaveTransformer(action.feederId, p))];
+                });
         })
     );
 

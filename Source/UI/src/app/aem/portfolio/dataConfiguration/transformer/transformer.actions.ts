@@ -11,6 +11,16 @@ export class CreateTransformerAction implements Action {
     type = CreateTransformerAction.TYPE;
 }
 
+export class LoadTransformersByFeederAction implements Action {
+    static readonly TYPE = 'LOAD_TRANSFORMERS_BY_FEEDER_ID';
+    type = LoadTransformersByFeederAction.TYPE;
+    public feederId: number;
+    constructor(feederId) {
+        this.feederId = parseInt(feederId.toString(), 10);
+    }
+}
+
 export type TransformerAction = CreateTransformerAction
                            | ResetTransformerFormAction
+                           | LoadTransformersByFeederAction
                            ;

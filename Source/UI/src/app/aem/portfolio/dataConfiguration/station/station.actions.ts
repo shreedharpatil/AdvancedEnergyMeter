@@ -1,4 +1,3 @@
-import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 
@@ -12,5 +11,16 @@ export class CreateStationAction implements Action {
     type = CreateStationAction.TYPE;
 }
 
+export class LoadStationsByVillageAction implements Action {
+    static readonly TYPE = 'LOAD_STATIONS_BY_VILLAGE_ID';
+    type = LoadStationsByVillageAction.TYPE;
+    public villageId: number;
+    constructor(villageId) {
+        this.villageId = parseInt(villageId.toString(), 10);
+    }
+}
+
 export type StationAction = CreateStationAction
-                           | ResetStationFormAction;
+                           | ResetStationFormAction
+                           | LoadStationsByVillageAction
+                           ;

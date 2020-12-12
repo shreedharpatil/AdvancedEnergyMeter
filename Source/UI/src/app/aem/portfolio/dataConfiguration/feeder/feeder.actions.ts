@@ -11,6 +11,16 @@ export class CreateFeederAction implements Action {
     type = CreateFeederAction.TYPE;
 }
 
+export class LoadFeedersBySectionAction implements Action {
+    static readonly TYPE = 'LOAD_FEEDERS_BY_SECTION_ID';
+    type = LoadFeedersBySectionAction.TYPE;
+    public sectionId: number;
+    constructor(sectionId) {
+        this.sectionId = parseInt(sectionId.toString(), 10);
+    }
+}
+
 export type FeederAction = CreateFeederAction
                            | ResetFeederFormAction
+                           | LoadFeedersBySectionAction
                            ;

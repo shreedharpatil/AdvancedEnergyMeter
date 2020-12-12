@@ -69,9 +69,18 @@ export class LoadType {
     id: number;
     name: string;
 }
+const pleaseSelect = '-----Please Select-----';
+export const defaultDistrict = { id: 0, name: pleaseSelect };
+export const defaultTaluka = { id: 0, name: pleaseSelect };
+export const defaultVillage = new Village(0, pleaseSelect); // [[0, [defaultVillage]]]
+export const defaultLoadType = new LoadType(0, pleaseSelect);
+export const defaultstation = new Station(0, pleaseSelect);
+export const defaultSection = new Section(0, pleaseSelect);
+export const defaultFeeder = new Feeder(0, pleaseSelect);
+export const defaultTransformer = new Transformer(0, pleaseSelect);
 
 export class AppRoot {
-    constructor(){
+    constructor() {
         this.districts = new Array<District>();
         this.loadTypes = new Array<LoadType>();
         this.talukas = new Map<number, Taluka[]>();
@@ -120,7 +129,7 @@ export class SaveFeeder {
 }
 
 export class SaveTransformer {
-    constructor(public feederId: number, public transformers: Section[]) {}
+    constructor(public feederId: number, public transformers: Transformer[]) {}
 }
 
 export class Customer {

@@ -5,12 +5,14 @@ import { Action, Store } from '@ngrx/store';
 import { FormGroupState } from 'ngrx-forms';
 import { Observable } from 'rxjs';
 import { map, flatMap, withLatestFrom, filter } from 'rxjs/operators';
-import { post } from 'src/app/aem/shared/http/http-helper';
+import { get, post } from 'src/app/aem/shared/http/http-helper';
+import { Section, SaveSection } from 'src/app/aem/shared/models';
 import { NotificationService } from 'src/app/aem/shared/notification.service';
 import { LoadSectiosByStationIdAction } from 'src/app/aem/shared/shared.data.actions';
 import { HideLoaderAction } from 'src/app/aem/shared/spinner/spinner-actions';
+import { SaveSectionsAction } from '../../portfolio/portfolio.actions';
 import { DataConfigurationRootState } from '../data.configuration.reducer';
-import { CreateSectionAction, ResetSectionFormAction } from './section.actions';
+import { CreateSectionAction, LoadSectionsByStationAction, ResetSectionFormAction } from './section.actions';
 import { SectionFormValue } from './section.state';
 
 @Injectable()
@@ -35,6 +37,21 @@ export class SectionEffects {
                     return [new HideLoaderAction(), new LoadSectiosByStationIdAction(section.stationId), new ResetSectionFormAction()];
                 },
                 'Create Section');
+        })
+    );
+
+    @Effect()
+    loadSectionsByStation$: Observable<Action> = this.actions$.pipe(
+        ofType<LoadSectionsByStationAction>(LoadSectionsByStationAction.TYPE),
+        withLatestFrom(this.store.select(p => p.portfolio.sections)),
+        filter(([action, sections]) => !(sections.has(action.stationId))),
+        flatMap(([action, _]) => {
+            return get<Section[]>(this.http,
+                `contextapi/section/${action.stationId}` ,
+                (p) => {
+                    return [new HideLoaderAction(),
+                        new SaveSectionsAction(new SaveSection(action.stationId, p))];
+                });
         })
     );
 

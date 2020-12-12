@@ -1,7 +1,9 @@
 import { FormGroupState, createFormGroupState } from 'ngrx-forms';
+import { Taluka } from 'src/app/aem/shared/models';
 
 export interface VillageState {
-formState: FormGroupState<VillageFormState>;
+    talukas: Taluka[];
+    formState: FormGroupState<VillageFormState>;
 }
 
 export interface VillageFormState {
@@ -17,5 +19,6 @@ const InitialVillageForm = createFormGroupState<VillageFormState>('VillageFormGr
 });
 
 export const INITIAL_VILLAGE_STATE: VillageState = {
-formState: InitialVillageForm,
+    talukas: [],
+    formState: InitialVillageForm,
 };

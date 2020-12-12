@@ -7,6 +7,8 @@ import { SectionFormValue } from '../section.state';
 import { CreateSectionAction, ResetSectionFormAction } from '../section.actions';
 import { FormGroupState } from 'ngrx-forms';
 import { DataConfigurationRootState } from '../../data.configuration.reducer';
+import { LoadStationsByVillageAction } from '../../station/station.actions';
+import { LoadTalukasByDistrictAction, LoadVillagesByTalukaAction } from '../../village/village.actions';
 
 @Component({
   selector: 'app-create-section',
@@ -22,46 +24,51 @@ export class CreateSectionComponent implements OnInit, OnDestroy {
   getVillagesByTalukaIdSubscription: Subscription;
   getDistrictsAndLoadTypesSubscription: Subscription;
   getStationsByVillageIdSubscription: Subscription;
+  appRoot$: Observable<AppRoot>;
   formState$: Observable<FormGroupState<SectionFormValue>>;
 
   constructor(private service: SharedDataService,
               private store: Store<DataConfigurationRootState>) {
+                this.appRoot$ = store.select(p => p.portfolio);
                 this.formState$ = store.select(p => p.dataConfiguration.section.formState);
               }
 
   ngOnDestroy(): void {
-    this.getDistrictsAndLoadTypesSubscription.unsubscribe();
+    // this.getDistrictsAndLoadTypesSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.getDistrictsAndLoadTypesSubscription = this.service.getDistrictsAndLoadTypes()
-      .subscribe(p => {
-        this.districts = p.districts;
-      });
+    // this.getDistrictsAndLoadTypesSubscription = this.service.getDistrictsAndLoadTypes()
+    //   .subscribe(p => {
+    //     this.districts = p.districts;
+    //   });
   }
 
   getTalukasByDistrictId(event) {
-    this.getTalukasByDistrictIdSubscription = this.service.getTalukasByDistrictId(event.target.value)
-      .subscribe(p => {
-        this.talukas = p;
-        this.getTalukasByDistrictIdSubscription.unsubscribe();
-      });
+    this.store.dispatch(new LoadTalukasByDistrictAction(event.target.value));
+    // this.getTalukasByDistrictIdSubscription = this.service.getTalukasByDistrictId(event.target.value)
+    //   .subscribe(p => {
+    //     this.talukas = p;
+    //     this.getTalukasByDistrictIdSubscription.unsubscribe();
+    //   });
   }
 
   getVillagesByTalukaId(event) {
-    this.getVillagesByTalukaIdSubscription = this.service.getVillagesByTalukaId(event.target.value)
-      .subscribe(p => {
-        this.villages = p;
-        this.getVillagesByTalukaIdSubscription.unsubscribe();
-      });
+    this.store.dispatch(new LoadVillagesByTalukaAction(event.target.value));
+    // this.getVillagesByTalukaIdSubscription = this.service.getVillagesByTalukaId(event.target.value)
+    //   .subscribe(p => {
+    //     this.villages = p;
+    //     this.getVillagesByTalukaIdSubscription.unsubscribe();
+    //   });
   }
 
   getStationsByVillageId(event) {
-    this.getStationsByVillageIdSubscription = this.service.getStationsByVillageId(event.target.value)
-      .subscribe(p => {
-        this.stations = p;
-        this.getStationsByVillageIdSubscription.unsubscribe();
-      });
+    this.store.dispatch(new LoadStationsByVillageAction(event.target.value));
+    // this.getStationsByVillageIdSubscription = this.service.getStationsByVillageId(event.target.value)
+    //   .subscribe(p => {
+    //     this.stations = p;
+    //     this.getStationsByVillageIdSubscription.unsubscribe();
+    //   });
   }
 
   clearForm() {

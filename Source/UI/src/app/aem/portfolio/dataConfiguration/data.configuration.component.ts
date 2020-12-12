@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { User } from '../../shared/user/user';
 import { LoadCustomersAction } from './customer/customer.actions';
+import { LoadDistrictsAction, LoadLoadTypesAction } from './data.configuration.actions';
 
 @Component({
   selector: 'app-data.configuration',
@@ -16,6 +17,7 @@ export class DataConfigurationComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new LoadCustomersAction());
+    this.store.dispatch(new LoadDistrictsAction());
+    this.store.dispatch(new LoadLoadTypesAction());
   }
-
 }
