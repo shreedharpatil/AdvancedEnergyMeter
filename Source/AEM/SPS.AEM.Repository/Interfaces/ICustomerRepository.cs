@@ -12,6 +12,8 @@ namespace SPS.AEM.Repository.Interfaces
     {
         Task<IEnumerable<CustomerDto>> GetAllCustomersAsync();
 
+        Task<CustomerDto> GetByRRNo(string rrNumber);
+
         Task<CustomerDto> GetCustomerByIdAsync(int id);
 
         Task AddCustomerAsync(CustomerDto customer);

@@ -1,21 +1,65 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Configuration;
+using System.Net.Http;
 using System.Text;
+using System.Threading;
+using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Client;
 using Newtonsoft.Json;
 using SPS.AEM.Shared;
+using Message = Microsoft.Azure.Devices.Client.Message;
 
-namespace SPS.AEM.DeviceToCloudSender
+namespace SPS.AEM.SimulatorDevice
 {
     class Program
     {
         private static DeviceClient deviceClient;
-        private static string deviceId = "MyFirstIoTHubDevice";
+        private static string deviceId = "";
+        private static string connectionString = "";
         static void Main(string[] args)
         {
-            var connectionString = ConfigurationManager.AppSettings["EventHubConnectionString"];
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Please pass RRNo as argument. Exiting app.");
+                return;
+            }
+
+            var rrno = args[0];
+            Console.WriteLine($"Device Id: {rrno}");
+            var uri = string.Format(ConfigurationManager.AppSettings["DeviceApiUrl"], rrno);
+            using var httpclient = new HttpClient();
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine($"-----Sending request to retrieve device details for device: {rrno}------");
+                var deviceRequestTask = httpclient.GetAsync(uri);
+                deviceRequestTask.Wait();
+                var response = deviceRequestTask.Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"------No details found for device: {rrno}. Trying again in 30 sec-------");
+                    Thread.Sleep(30000);
+                    continue;
+                }
+
+                var result = new { deviceId = "", hubConnectionString = "" };
+                var data = JsonConvert.DeserializeAnonymousType(response.Content.ReadAsStringAsync().Result, result);
+                Console.WriteLine($"Received device details. connectionString: {connectionString}");
+                deviceId = data.deviceId;
+                connectionString = data.hubConnectionString;
+                break;
+            }
+
+            if (string.IsNullOrWhiteSpace(deviceId) && string.IsNullOrWhiteSpace(connectionString))
+            {
+                Console.WriteLine("Attempted 5 times to retrieve details of device but couldn't found. Please make sure device is provisioned and try again.");
+                Console.WriteLine("Press any key to exit");
+                Console.ReadKey();
+                return;
+            }
+
             deviceClient = DeviceClient.CreateFromConnectionString(connectionString);
+            
             var backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += ReceiveMessageFromCloud;
             backgroundWorker.RunWorkerAsync();
@@ -38,14 +82,13 @@ namespace SPS.AEM.DeviceToCloudSender
                     Console.WriteLine("s -> send another message, e -> stop");
                     input = Console.ReadLine();
                 } while (input == "s");
-                
+
             }
             catch (Exception e)
             {
-                // deviceClient?.Dispose();
                 Console.WriteLine(e);
             }
-            
+
             Console.WriteLine("Press any key to close");
             deviceClient?.Dispose();
             Console.ReadKey();
@@ -55,7 +98,7 @@ namespace SPS.AEM.DeviceToCloudSender
         {
             while (true)
             {
-                
+
                 var message = await deviceClient.ReceiveAsync();
 
                 // Check if message was received
@@ -84,7 +127,7 @@ namespace SPS.AEM.DeviceToCloudSender
 
         private static EventData BuildResponse(string command)
         {
-            var data = new EventData{  EventType = command, DeviceId = deviceId};
+            var data = new EventData { EventType = command, DeviceId = deviceId };
             if (command == EventType.Reading.ToString())
             {
                 data.Payload = new Random().Next(1000).ToString();
@@ -96,6 +139,10 @@ namespace SPS.AEM.DeviceToCloudSender
             else if (command == EventType.UnblockDevice.ToString())
             {
                 data.Payload = "Device unblocked";
+            }
+            else
+            {
+                data.Payload = "Unknown command.";
             }
 
             return data;

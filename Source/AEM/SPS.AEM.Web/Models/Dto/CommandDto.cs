@@ -10,5 +10,8 @@ namespace SPS.AEM.Web.Models.Dto
     {
         [Required]
         public string Command { get; set; }
+
+        [Required]
+        public string RRNo { get; set; }
     }
 }

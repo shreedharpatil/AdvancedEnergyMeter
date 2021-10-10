@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Devices;
 using Microsoft.Extensions.Configuration;
+using SPS.AEM.Repository.Interfaces;
 using SPS.AEM.Web.Models.Dto;
 
 namespace SPS.AEM.Web.Controllers
@@ -13,11 +14,13 @@ namespace SPS.AEM.Web.Controllers
     [Route("contextapi/sendcommand")]
     public class CommandController : Controller
     {
+        private readonly IDeviceRepository deviceRepository;
         private readonly IConfiguration configuration;
 
-        public CommandController(IConfiguration configuration)
+        public CommandController(IConfiguration configuration, IDeviceRepository deviceRepository)
         {
             this.configuration = configuration;
+            this.deviceRepository = deviceRepository;
         }
 
         public async Task<IActionResult> Post([FromBody] CommandDto command)
@@ -28,7 +31,8 @@ namespace SPS.AEM.Web.Controllers
             }
 
             string connectionString = this.configuration["ConnectionStrings:EventHub"];
-            string deviceId = "MyFirstIoTHubDevice";
+            var device = await deviceRepository.GetByIdAsync(command.RRNo);
+            string deviceId = device.DeviceId;
             using (var serviceClient = ServiceClient.CreateFromConnectionString(connectionString))
             {
                 var commandMessage = new Message();

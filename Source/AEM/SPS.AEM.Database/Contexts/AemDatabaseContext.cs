@@ -37,6 +37,8 @@ namespace SPS.AEM.Database.Contexts
 
         public DbSet<Transformer> Transformers { get; set; }
 
+        public DbSet<Device> Devices { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -90,8 +92,13 @@ namespace SPS.AEM.Database.Contexts
                 .OnDelete(DeleteBehavior.ClientSetNull);
             modelBuilder.Entity<Transformer>().Property(p => p.Id).UseIdentityColumn();
 
+            modelBuilder.Entity<Device>().ToTable(nameof(Device)).HasKey(p => p.RRNo);
+            modelBuilder.Entity<Device>().Property(p => p.RRNo).HasMaxLength(100);
+            modelBuilder.Entity<Device>().Property(p => p.HubName).IsRequired().HasMaxLength(1000);
+            modelBuilder.Entity<Device>().Property(p => p.DeviceId).IsRequired().HasMaxLength(1000);
+            modelBuilder.Entity<Device>().Property(p => p.Status).IsRequired().HasMaxLength(100);
 
-            modelBuilder.Entity<District>().HasData(new District { Id = 1, Name = "Bagalkot",});
+            modelBuilder.Entity<District>().HasData(new District { Id = 1, Name = "Bagalkot" });
             modelBuilder.Entity<Taluka>().HasData(new List<Taluka>
             {
                 new Taluka {Id = 1, DistrictId = 1, Name = "Bagalkot"},
