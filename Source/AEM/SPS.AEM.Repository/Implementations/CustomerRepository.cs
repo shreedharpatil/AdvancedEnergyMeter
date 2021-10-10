@@ -78,5 +78,15 @@ namespace SPS.AEM.Repository.Implementations
             customer.Id = customerToBeAdded.Id;
             await this.context.SaveChangesAsync();
         }
+
+        public Task<CustomerDto> GetByRRNo(string rrNumber)
+        {
+            return this.context.Customers
+                .Select(p => new CustomerDto
+                {
+                    Id = p.Id
+                })
+                .FirstOrDefaultAsync(p => p.RRNumber == rrNumber);
+        }
     }
 }

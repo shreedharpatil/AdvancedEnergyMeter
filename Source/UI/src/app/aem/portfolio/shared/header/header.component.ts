@@ -25,7 +25,8 @@ export class HeaderComponent implements OnInit {
   }
 
   sendCommand(event) {
-    this.http.post(environment.apiBaseUrl + 'contextapi/sendcommand', { command: event.target.value})
+    let rrno = $('#rrno').val();
+    this.http.post(environment.apiBaseUrl + 'contextapi/sendcommand', { rrno, command: event.target.value})
     .subscribe(p => console.log(p));
   }
 

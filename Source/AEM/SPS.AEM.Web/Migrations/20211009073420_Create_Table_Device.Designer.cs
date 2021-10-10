@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPS.AEM.Database.Contexts;
 
 namespace SPS.AEM.Web.Migrations
 {
     [DbContext(typeof(AemDatabaseContext))]
-    partial class AemDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211009073420_Create_Table_Device")]
+    partial class Create_Table_Device
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

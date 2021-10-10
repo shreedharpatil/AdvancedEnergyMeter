@@ -7,10 +7,14 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200426122432_Made_UserId_PrimaryKey_For_Login_Table.cs" />
     <Compile Remove="Migrations\20200426122432_Made_UserId_PrimaryKey_For_Login_Table.Designer.cs" />
+    <Compile Remove="Migrations\20211009072233_Create_Table_Device.cs" />
+    <Compile Remove="Migrations\20211009072233_Create_Table_Device.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices" Version="1.20.1" />
+    <PackageReference Include="Microsoft.Azure.Devices.Provisioning.Client" Version="1.18.0" />
+    <PackageReference Include="Microsoft.Azure.Devices.Provisioning.Transport.Amqp" Version="1.15.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
       <PrivateAssets>all</PrivateAssets>

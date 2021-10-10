@@ -12,8 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SPS.AEM.Database.Contexts;
+using SPS.AEM.Database.Entities;
 using SPS.AEM.Repository.Implementations;
 using SPS.AEM.Repository.Interfaces;
+using SPS.AEM.Web.Commands;
 using SPS.AEM.Web.Hub;
 
 namespace SPS.AEM.Web
@@ -49,6 +51,9 @@ namespace SPS.AEM.Web
             services.AddTransient<ISectionRepository, SectionRepository>();
             services.AddTransient<IFeederRepository, FeederRepository>();
             services.AddTransient<ITransformerRepository, TransformerRepository>();
+            services.AddTransient<IDeviceRepository, DeviceRepository>();
+            services.AddTransient<IProvisionDeviceCommandHandler, ProvisionDeviceCommandHandler>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
