@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: svc-aem-ui
+spec:
+    type: NodePort
+    ports:
+      - port: 80
+        nodePort: 30000
+        targetPort: 80
+        protocol: TCP
+    selector:
+        app: aem-ui

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: aem-deployment
+    labels:
+        app: aem
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: aem
+    template:
+        metadata:
+            name: aem-pod
+            labels:
+                app: aem
+        spec:
+            containers:
+              - name: aem
+                image: shreedharp/aem
+                imagePullPolicy: Always
+                ports:
+                   - containerPort: 5000 

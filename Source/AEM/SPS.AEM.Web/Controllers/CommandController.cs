@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Devices;
@@ -35,7 +35,8 @@ namespace SPS.AEM.Web.Controllers
             string deviceId = device.DeviceId;
             using (var serviceClient = ServiceClient.CreateFromConnectionString(connectionString))
             {
-                var commandMessage = new Message();
+                
+                var commandMessage = new Message(Encoding.UTF8.GetBytes(command.Command));
                 commandMessage.Properties.Add(new KeyValuePair<string, string>("Command", command.Command));
                 commandMessage.Ack = DeliveryAcknowledgement.Full;
                 await serviceClient.SendAsync(deviceId, commandMessage);

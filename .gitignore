@@ -34,4 +34,9 @@ packages/
 .vs/
 
 App - Copy.config
-appsettings - Copy.json
+appsettings.development.json
+appsettings.production.json
+Dockerfile.Dev
+Dockerfile.Prod
+Simulator.Dockerfile
+environment.production.ts

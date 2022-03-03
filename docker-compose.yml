@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+    aem-ui:
+        container_name: aem-ui
+        image: shreedharp/aem-ui
+        build:
+            context: Source/UI/
+            dockerfile: Dockerfile
+        ports:
+            - "30000:80"
+            
+    aem:
+        container_name: aem
+        image: shreedharp/aem
+        build:
+            context: Source/AEM/
+            dockerfile: Dockerfile
+        ports:
+            - "30001:5000"
+          
+    simulator:
+        container_name: simulator
+        image: shreedharp/aem-simulator
+        tty: true
+        build:
+            context: Source/AEM/
+            dockerfile: Simulator.Dockerfile
+        

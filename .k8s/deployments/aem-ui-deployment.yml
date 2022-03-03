@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: aem-ui-deployment
+    labels:
+        app: aem-ui
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: aem-ui
+    minReadySeconds: 5
+    strategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxUnavailable: 0
+            maxSurge: 1
+    template:
+        metadata:
+            labels:
+                app: aem-ui
+        spec:
+            containers:
+              - name: aem-ui
+                image: shreedharp/aem-ui
+                imagePullPolicy: Always
+                ports:
+                   - containerPort: 80 
