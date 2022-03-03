@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: aem
+    labels:
+        app: aem
+spec:
+    containers:
+        - name: aem
+          image: shreedharp/aem
+          ports:
+            - containerPort: 5000
+            
+        - name: aem-ui
+          image: shreedharp/aem-ui
+          ports:
+            - containerPort: 80

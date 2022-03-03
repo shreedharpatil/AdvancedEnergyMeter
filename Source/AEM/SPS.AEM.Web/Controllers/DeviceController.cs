@@ -36,7 +36,8 @@ namespace SPS.AEM.Web.Controllers
                 var deviceDto = new DeviceDto
                 {
                     DeviceId = device.DeviceId,
-                    HubConnectionString = $"HostName={device.HubName};DeviceId={device.DeviceId};SharedAccessKey={sk}"
+                    FullyQualifiedHubName = device.HubName,
+                    DeviceKey = sk
             };
 
                 return Ok(deviceDto);
