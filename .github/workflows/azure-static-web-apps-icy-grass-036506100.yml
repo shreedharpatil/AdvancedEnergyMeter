@@ -22,11 +22,13 @@ jobs:
         with:
           username: "shreedharp"
           password: "dckr_pat_SEnEqKQZld4pNh4kRA9kPCtSylM"
+      - name: List dir
+        run: ls
       -
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: "Source/UI"
+          context: "./Source/UI"
           push: true
           tags: shreedharp/aem-ui:ci-test-1
 
