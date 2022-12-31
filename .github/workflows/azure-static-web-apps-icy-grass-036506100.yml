@@ -15,31 +15,20 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
         with:
-          submodules: true
-      - name: Set build context
-        run: 'cd Source/UI'
-      - name: Build and Publish Dockerfile
-          # You may pin to the exact commit or the version.
-          # uses: ryanjfrizzell/action-bpd@7d6d0456081acbdbe2adeae5da1d14f1a0e54498
-        uses: ryanjfrizzell/action-bpd@v1.0.2
+          username: "shreedharp"
+          password: "dckr_pat_SEnEqKQZld4pNh4kRA9kPCtSylM"
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
         with:
-          docker_registry: "shreedharp/aem-ui"
-          #docker_registry_owner: "shreedharp"
-          docker_repository: "shreedharp"
-          # image name to use
-          docker_image: "aem-ui"
-          # username needed to login to your registry
-          docker_username: "shreedharp"
-          # password needed to login to your registry
-          docker_password: "dckr_pat_SEnEqKQZld4pNh4kRA9kPCtSylM"
-          # the location of your dockerfile
-          dockerfile: "Dockerfile"
-          # the tag version you would like to use
-          docker_image_tag: "ci-test-1"
-          # are you trying to push to dockerhub? [true/false]
-          dockerhub: true
+          context: "{{defaultContext}}/Source/UI"
+          push: true
+          tags: shreedharp/aem-ui:ci-test-1
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
