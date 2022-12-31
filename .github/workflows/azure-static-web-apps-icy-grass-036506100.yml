@@ -25,13 +25,13 @@ jobs:
         with:
           username: "shreedharp"
           password: "dckr_pat_SEnEqKQZld4pNh4kRA9kPCtSylM"
-      -
-        name: Build and push Front End
-        uses: docker/build-push-action@v3
-        with:
-          context: "./Source/UI"
-          push: true
-          tags: shreedharp/aem-ui:ci-test-1
+      #-
+        #name: Build and push Front End
+        #uses: docker/build-push-action@v3
+        #with:
+        #  context: "./Source/UI"
+        #  push: true
+        #  tags: shreedharp/aem-ui:ci-test-1
       -
         name: Build and push Back End
         uses: docker/build-push-action@v3
