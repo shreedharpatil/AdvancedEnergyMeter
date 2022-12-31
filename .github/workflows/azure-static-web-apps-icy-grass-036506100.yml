@@ -33,7 +33,7 @@ jobs:
           # password needed to login to your registry
           docker_password: "dckr_pat_SEnEqKQZld4pNh4kRA9kPCtSylM"
           # the location of your dockerfile
-          dockerfile: "/Source/UI/Dockerfile"
+          dockerfile: "Source/UI/Dockerfile"
           # the tag version you would like to use
           docker_image_tag: "ci-test-1"
           # are you trying to push to dockerhub? [true/false]
