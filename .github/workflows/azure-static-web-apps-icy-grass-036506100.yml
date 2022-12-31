@@ -24,10 +24,10 @@ jobs:
         uses: ryanjfrizzell/action-bpd@v1.0.2
         with:
           docker_registry_url: "https://hub.docker.com"
-          docker_registry_owner: "shreedharp"
-          docker_repository: "aem-ui"
+          #docker_registry_owner: "shreedharp"
+          docker_repository: "shreedharp"
           # image name to use
-          #docker_image: "aem-ui"
+          docker_image: "aem-ui"
           # username needed to login to your registry
           docker_username: "shreedharp"
           # password needed to login to your registry
