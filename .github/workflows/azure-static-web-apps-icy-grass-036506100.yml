@@ -31,14 +31,14 @@ jobs:
         with:
           context: "./Source/AEM"
           push: true
-          tags: shreedharp/aem:ci-test-1
+          tags: "${{ secrets.DOCKERHUB_USERNAME }}/aem:ci-test-1"
       -
         name: Build and push Front End
         uses: docker/build-push-action@v3
         with:
           context: "./Source/UI"
           push: true
-          tags: shreedharp/aem-ui:ci-test-1
+          tags: "${{ secrets.DOCKERHUB_USERNAME }}/aem-ui:ci-test-1"
       
 
   close_pull_request_job:
