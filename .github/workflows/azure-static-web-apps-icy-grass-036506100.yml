@@ -32,6 +32,24 @@ jobs:
           output_location: "dist/UI" # Built app content directory - optional
           app_build_command: "npm run build-prod"
           ###### End of Repository/Build Configurations ######
+      - name: Build and Publish Dockerfile
+          # You may pin to the exact commit or the version.
+          # uses: ryanjfrizzell/action-bpd@7d6d0456081acbdbe2adeae5da1d14f1a0e54498
+        uses: ryanjfrizzell/action-bpd@v1.0.2
+        with:
+          docker_repository: aem-ui
+          # image name to use
+          docker_image: aem-ui
+          # username needed to login to your registry
+          docker_username: "shreedharp"
+          # password needed to login to your registry
+          docker_password: "dckr_pat_SEnEqKQZld4pNh4kRA9kPCtSylM"
+          # the location of your dockerfile
+          dockerfile: "/Source/UI/Dockerfile"
+          # the tag version you would like to use
+          docker_image_tag: ci-test-1
+          # are you trying to push to dockerhub? [true/false]
+          dockerhub: true
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
