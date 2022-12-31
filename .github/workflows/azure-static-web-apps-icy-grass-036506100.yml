@@ -37,17 +37,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: "./Source/AEM"
-          file: "Web.Dockerfile"
+          file: "Dockerfile"
           push: true
           tags: shreedharp/aem:ci-test-1
-      -
-        name: Build and push Simulator
-        uses: docker/build-push-action@v3
-        with:
-          context: "./Source/AEM"
-          file: "Simulator.Prod.Dockerfile"
-          push: true
-          tags: shreedharp/aem-simulator:ci-test-1
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
