@@ -23,7 +23,7 @@ jobs:
           # uses: ryanjfrizzell/action-bpd@7d6d0456081acbdbe2adeae5da1d14f1a0e54498
         uses: ryanjfrizzell/action-bpd@v1.0.2
         with:
-          docker_registry: "shreedharp/aem-ui:ci-test-1"
+          docker_registry: "shreedharp/aem-ui"
           #docker_registry_owner: "shreedharp"
           docker_repository: "shreedharp"
           # image name to use
