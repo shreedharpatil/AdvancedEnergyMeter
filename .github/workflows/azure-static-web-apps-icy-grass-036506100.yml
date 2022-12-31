@@ -23,9 +23,10 @@ jobs:
           # uses: ryanjfrizzell/action-bpd@7d6d0456081acbdbe2adeae5da1d14f1a0e54498
         uses: ryanjfrizzell/action-bpd@v1.0.2
         with:
-          docker_repository: "shreedharp"
+          docker_registry_owner: "shreedharp"
+          docker_repository: "aem-ui"
           # image name to use
-          docker_image: "aem-ui"
+          # docker_image: "aem-ui"
           # username needed to login to your registry
           docker_username: "shreedharp"
           # password needed to login to your registry
