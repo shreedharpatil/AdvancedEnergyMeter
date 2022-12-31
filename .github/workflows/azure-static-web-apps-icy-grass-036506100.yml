@@ -18,6 +18,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      - name: Set build context
+        run: 'cd Source/UI'
       - name: Build and Publish Dockerfile
           # You may pin to the exact commit or the version.
           # uses: ryanjfrizzell/action-bpd@7d6d0456081acbdbe2adeae5da1d14f1a0e54498
@@ -33,7 +35,7 @@ jobs:
           # password needed to login to your registry
           docker_password: "dckr_pat_SEnEqKQZld4pNh4kRA9kPCtSylM"
           # the location of your dockerfile
-          dockerfile: "Source/UI/Dockerfile"
+          dockerfile: "Dockerfile"
           # the tag version you would like to use
           docker_image_tag: "ci-test-1"
           # are you trying to push to dockerhub? [true/false]
