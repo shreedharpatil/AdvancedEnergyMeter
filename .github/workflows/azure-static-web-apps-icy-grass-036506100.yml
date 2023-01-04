@@ -13,9 +13,7 @@ jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
-    env:
-      Test: ${{ secrets.DOCKERHUB_USERNAME }}
+    name: Build and Deploy Job    
     steps:
       - uses: actions/checkout@v2
         with:
@@ -23,11 +21,13 @@ jobs:
       - name: Create dummy file
         run: 'echo "Value of Test is :: ${Test}" >> dummy.txt && cat dummy.txt'
       - name: Substitute env vars in files
+        env:
+          Test: "${{ secrets.DOCKERHUB_USERNAME }}"
         uses: chris-peterson/virgo@v1
         with:
           templates: "dummy.txt"
       - name: Display updated file content
-        run: ls && echo "$(<dummy.txt)"
+        run: echo "$(<dummy.txt)"
       
 
   close_pull_request_job:
