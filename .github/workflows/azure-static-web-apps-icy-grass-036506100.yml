@@ -19,13 +19,15 @@ jobs:
         with:
           submodules: true
       - name: Create dummy file
-        run: 'echo "{ Value: $"{Test}}"" >> dummy.json && cat dummy.json && ls'
+        run: 'echo "{ Value: $"{Test_Str}}"" >> dummy.json && cat dummy.json && ls'
       - name: Set env variables
         uses: Firenza/secrets-to-env@v1.2.0
         with:
           secrets: ${{ toJSON(secrets) }}
       - name: Substitute env vars in files
         uses: chris-peterson/virgo@v1
+        env:
+          Test_Str: 'Think should work'
         with:
           templates: "dummy.json,Source/AEM/SPS.AEM.Web/appsettings.json"
       - name: Display updated file content
