@@ -19,13 +19,13 @@ jobs:
         with:
           submodules: true
       - name: Create dummy file
-        run: 'echo "Value of Test is :: ${Test}" >> dummy.txt && cat dummy.txt'
+        run: 'echo "Value of Test is :: ${Test}" >> dummy.txt && cat dummy.txt && ls'
       - name: Substitute env vars in files
         env:
           Test: "${{ secrets.DOCKERHUB_USERNAME }}"
         uses: chris-peterson/virgo@v1
         with:
-          templates: "Source/AEM/SPS.AEM.WEB/appsettings.json"
+          templates: "./Source/AEM/SPS.AEM.WEB/appsettings.json"
       - name: Display updated file content
         run: echo "$(<Source/AEM/SPS.AEM.WEB/appsettings.json)"
       
