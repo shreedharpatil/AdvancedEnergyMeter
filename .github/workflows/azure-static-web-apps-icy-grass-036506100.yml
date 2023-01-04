@@ -21,7 +21,7 @@ jobs:
       - name: Create dummy file
         run: 'echo "{ Value: $"{Test_Str}", Another: $"{Another}"}" >> dummy.json && cat dummy.json && ls'
       - name: Display secrets json
-        run: echo "${toJSON(secrets)}"
+        run: echo toJSON(secrets)
       - name: Set env variables
         uses: Firenza/secrets-to-env@v1.2.0
         with:
