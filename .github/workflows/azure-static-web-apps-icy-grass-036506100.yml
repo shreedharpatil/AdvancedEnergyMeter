@@ -21,11 +21,11 @@ jobs:
       - name: Create dummy file
         run: 'echo "{ Value: $"{Test_Str}", Another: $"{Another}"}" >> dummy.json && cat dummy.json && ls'
       - name: Display secrets json
-        run: echo secrets
+        run: echo ${secrets}
       - name: Set env variables
         uses: Firenza/secrets-to-env@v1.2.0
         with:
-          secrets: secrets
+          secrets: ${secrets}
       - name: Substitute env vars in files
         uses: chris-peterson/virgo@v1
         env:
