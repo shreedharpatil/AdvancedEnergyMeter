@@ -22,10 +22,14 @@ jobs:
         run: 'echo "{ Value: $"Test_Str", Another: $"Another"}" >> dummy.json && cat dummy.json && ls'
       - name: Display secrets json
         run: echo "${{ toJSON(secrets) }}"
-      - name: Set env variables
-        uses: Firenza/secrets-to-env@v1.2.0
+      #- name: Set env variables
+      #  uses: Firenza/secrets-to-env@v1.2.0
+      #  with:
+      #    secrets: ${{ toJSON(secrets) }}
+      - uses: oNaiPs/secrets-to-env-action@v1
         with:
           secrets: ${{ toJSON(secrets) }}
+      - run: echo "Value of MY_SECRET:$DOCKERHUB_USERNAME, $TEST, $TEST_HUB"
       - name: Substitute env vars in files
         uses: chris-peterson/virgo@v1
         env:
