@@ -27,7 +27,7 @@ jobs:
         with:
           templates: "dummy.json,Source/AEM/SPS.AEM.Web/appsettings.json"
       - name: Display updated file content
-        run: echo "$(<dummy.json)" && echo "$(<Source/AEM/SPS.AEM.WEB/appsettings.json)"
+        run: echo "$(<dummy.json)" && echo "$(<Source/AEM/SPS.AEM.Web/appsettings.json)"
       
 
   close_pull_request_job:
