@@ -21,16 +21,16 @@ jobs:
       - name: Create dummy file
         run: 'echo "{ Value: $"{Test_Str}", Another: $"{Another}"}" >> dummy.json && cat dummy.json && ls'
       - name: Display secrets json
-        run: echo "${{ toJSON(secrets) }}"
+        run: echo secrets
       - name: Set env variables
         uses: Firenza/secrets-to-env@v1.2.0
         with:
-          secrets: ${{ toJSON(secrets) }}
+          secrets: secrets
       - name: Substitute env vars in files
         uses: chris-peterson/virgo@v1
         env:
           Test_Str: 'Think should work'
-          Another: ${{ secrets.DOCKERHUB_USERNAME }}
+          Another: ${secrets.DOCKERHUB_USERNAME}
         with:
           templates: "dummy.json,Source/AEM/SPS.AEM.Web/appsettings.json"
       - name: Display updated file content
