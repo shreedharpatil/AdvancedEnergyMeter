@@ -25,9 +25,9 @@ jobs:
           Test: "${{ secrets.DOCKERHUB_USERNAME }}"
         uses: chris-peterson/virgo@v1
         with:
-          templates: "dummy.txt"
+          templates: "Source/AEM/SPS.AEM.WEB/appsettings.json"
       - name: Display updated file content
-        run: echo "$(<dummy.txt)"
+        run: echo "$(<Source/AEM/SPS.AEM.WEB/appsettings.json)"
       
 
   close_pull_request_job:
