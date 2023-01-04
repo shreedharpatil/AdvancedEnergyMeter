@@ -14,31 +14,20 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    env:
+      Test: ${{ secrets.DOCKERHUB_USERNAME }}
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
+      - name: Create dummy file
+        run: 'echo "Value of Test is :: ${Test}" >> dummy.txt && cat dummy.txt'
+      - name: Substitute env vars in files
+        uses: chris-peterson/virgo@v1
         with:
-          username: "${{ secrets.DOCKERHUB_USERNAME }}"
-          password: "${{ secrets.DOCKERHUB_TOKEN }}"
-      -
-        name: Build and push Back End
-        uses: docker/build-push-action@v3
-        with:
-          context: "./Source/AEM"
-          push: true
-          tags: "${{ secrets.DOCKERHUB_USERNAME }}/aem:ci-test-1"
-      -
-        name: Build and push Front End
-        uses: docker/build-push-action@v3
-        with:
-          context: "./Source/UI"
-          push: true
-          tags: "${{ secrets.DOCKERHUB_USERNAME }}/aem-ui:ci-test-1"
+          templates: "dummy.txt"
+      - name: Display updated file content
+        run: ls && echo "$(<dummy.txt)"
       
 
   close_pull_request_job:
