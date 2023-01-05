@@ -13,25 +13,44 @@ jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    name: Build and Deploy Job    
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+      #- name: Create dummy file
+      #  run: 'echo "{ Value: $"Test_Str", Another: $"Another"}" >> dummy.json && cat dummy.json && ls'
+      #- name: Display secrets json
+      #  run: echo "${{ toJSON(secrets) }}"
+      #- name: Set env variables
+      #  uses: Firenza/secrets-to-env@v1.2.0
+      #  with:
+      #    secrets: ${{ toJSON(secrets) }}
+      - uses: oNaiPs/secrets-to-env-action@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ICY_GRASS_036506100 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-          action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match you app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/Source/UI" # App source code path
-          api_location: "api" # Api source code path - optional
-          output_location: "dist/UI" # Built app content directory - optional
-          app_build_command: "npm run build-prod"
-          ###### End of Repository/Build Configurations ######
+          secrets: ${{ toJSON(secrets) }}
+      - run: echo "Value of MY_SECRET:$ALLOWED_ORIGIN, $AEM_CONNECTION_STRING"
+      - name: Substitute env vars in files
+        uses: chris-peterson/virgo@v1
+        with:
+          templates: "Source/AEM/SPS.AEM.Web/appsettings.json"
+      - name: Display updated file content
+        run: echo "$(<Source/AEM/SPS.AEM.Web/appsettings.json)"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: "${{ secrets.DOCKERHUB_USERNAME }}"
+          password: "${{ secrets.DOCKERHUB_TOKEN }}"
+      -
+        name: Build and push Back End
+        uses: docker/build-push-action@v3
+        with:
+          context: "./Source/AEM"
+          push: true
+          tags: "${{ secrets.DOCKERHUB_USERNAME }}/aem:ci-test-2"
+      
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
